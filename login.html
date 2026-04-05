@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar - Grouvex Studios</title>
+    <meta property="og:site_name" content="Grouvex Studios">
+    <meta property="og:title" content="Registrar - Grouvex Studios">
+    <meta property="og:description" content="Registrarse en ©Grouvex Studios">
+    <meta property="og:type" content="website">
+    <meta property="og:image" href="img/GROUVEX.png">
+    <meta property="og:url" content="https://grouvex.com/">
+    <meta property="og:locale" content="es_ES">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="temas.css">
+    <link rel="icon" href="img/GROUVEX.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="MobileOptimized" content="width">
+    <meta name="author" content="Grouvex Studios">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="copyright" content="Grouvex Studios">
+    <meta name="google-site-verification" content="54a46b8f7ec187ad80dd5a45fff8f43b">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Referrer-Policy" content="no-referrer">
+    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects">
+    <meta name="theme-color" content="#hexcode">
+    <link rel="canonical" href="https://grouvex.com/">
+    <link rel="shortlink" href="https://grouvex.com/">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="HandheldFriendly" content="true">
+    <link rel="preconnect" href="https://example.com">
+    <link rel="dns-prefetch" href="https://example.com">
+    <!-- Scripts sin nonce -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+    <script src="jquery-3.5.1.min.js"></script>
+    <script> 
+        document.addEventListener("DOMContentLoaded", function() { 
+            $("#menuG").load("menuG.html"); 
+            $("#menuE").load("menuE.html"); 
+            $("#menuT").load("menuT.html");
+            $("#menuU").load("menuU.html");
+            $("#footer").load("footer.html"); 
+            $("#news").load("news.html"); 
+            $("#tosypp").load("tosypp.html");
+        });
+    </script>
+    <script src="//www.youtube.com/player_api"></script><script src="https://www.youtube.com/iframe_api"></script>
+    <script src="time.js"></script><script type="module" src="abc.js"></script><script src="index.js"></script>
+    <style>
+        /* Estilos específicos para el formulario de autenticación */
+#auth-container {
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    background: rgb(22 213 245 / 38%);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px); /* Efecto de desenfoque */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+#authForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+#formTitle {
+    text-align: center;
+    font-size: 24px;
+    color: white;
+    margin-bottom: 10px;
+}
+
+#authForm input {
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    background: rgb(0 0 0 / 49%);
+    color: white;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+#authForm input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+#authForm input:focus {
+    border-color: #6200ea; /* Color morado */
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.icon-button {
+    background-color: #6200ea; /* Color morado */
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%; /* Botones circulares */
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.icon-button:hover {
+    background-color: #3700b3; /* Color morado más oscuro al pasar el mouse */
+    transform: scale(1.1); /* Efecto de escala al pasar el mouse */
+}
+
+.icon-button:active {
+    transform: scale(0.9); /* Efecto de escala al hacer clic */
+}
+
+.icon-button.secondary {
+    background-color: #757575; /* Color gris */
+}
+
+.icon-button.secondary:hover {
+    background-color: #616161; /* Color gris más oscuro al pasar el mouse */
+}
+
+.icon-button.google {
+    background-color: #db4437; /* Color rojo de Google */
+}
+
+.icon-button.google:hover {
+    background-color: #c1351d; /* Color rojo más oscuro al pasar el mouse */
+}
+
+.icon-button.email {
+    background-color: #4285f4; /* Color azul de Gmail */
+}
+
+.icon-button.email:hover {
+    background-color: #357abf; /* Color azul más oscuro al pasar el mouse */
+}
+
+.icon-button img {
+    width: 15px;
+    height: 15px;
+}
+
+/* Estilos para el texto debajo del formulario */
+#auth-container p {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 12px;
+    margin-top: 10px;
+}
+
+#auth-container a {
+    color: #6200ea; /* Color morado */
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+#auth-container a:hover {
+    color: #3700b3; /* Color morado más oscuro */
+}
+    </style>
+</head>
+<body>
+    <header>
+        <a href="https://grouvex.github.io/"><div class="img-container"></div></a> 
+        <span style="font-family: Times New Roman;color:white;box-shadow: 0 0 10px gold;width:100%">
+            <span id="menuG"></span> <!-- General -->
+            <span id="menuT"></span> <!-- Temas/Idioma -->
+            <span id="menuU"></span> <!-- Usuario -->
+        </span>
+    </header>
+    <main>
+        <h1>Autenticación de Usuarios en Grouvex Studios</h1>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<div id="auth-container">
+    <form id="authForm">
+        <h2 id="formTitle">Inicio de Sesión</h2>
+        <input type="email" id="authEmail" placeholder="Email" required>
+        <input type="password" id="authPassword" placeholder="Password" required>
+        <input type="text" id="authDisplayName" placeholder="Nombre de Usuario">
+        <div class="button-container">
+            <button type="submit" id="authButton" class="icon-button" title="Verificar Autenticación">
+                <img src="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified.png" alt="Iniciar Sesión" width="15" height="15">
+            </button>
+            <button type="button" id="toggleButton" class="icon-button secondary" title="Cambia de Iniciar Sesión a Registrarse y viceversa" disabled>
+                <i class="fas fa-sync-alt"></i> <!-- Ícono de cambio -->
+            </button>
+            <button id="google-login-btn" class="icon-button google" title="Iniciar Sesión/Registrarse con Google" disabled>
+                <img src="https://img.icons8.com/?size=512&id=17949&format=png" alt="Google" width="15" height="15">
+            </button>
+            <button id="email-login-btn" class="icon-button email" title="Iniciar Sesión/Registrarse con Email" disabled>
+                <img src="https://static.vecteezy.com/system/resources/previews/022/484/508/non_2x/google-mail-gmail-icon-logo-symbol-free-png.png" alt="Email" width="15" height="15">
+            </button>
+        </div>
+    </form>
+    <p>¿Olvidaste tu contraseña? Póngase en contacto con: <a href="mailto:administracion@grouvex.com?subject=Cambiar%20contraseña&body=Hola,%0A%0ASoy%20[Nombre de Usuario],%20mi%20correo%20asociado%20es%20[Correo del Usuario]%20y%20mi%20GSUserID%20es:%20[UID del Usuario]%0ASe%20me%20ha%20olvidado%20mi%20contraseña%20y%20me%20gustaría%20cambiarla.%0A%0AGracias,%0A[Nombre de Usuario]" style="color:white">administracion@grouvex.com</a></p>
+    <p>Al registrarte o iniciar sesión en Grouvex Studios, acepta los <a href="https://grouvex.github.io/tos">Términos de Servicios</a> y <a href="https://grouvex.github.io/pp">Políticas de Privacidad del mismo</a>.</p>
+    <hr>
+    <aside>
+    <p>Para registrarse dirijase <a href="https://script.google.com/macros/s/AKfycbyx2ZKEOGThYPBLjDeavIn1EYF9tmcYieT-6mfvAZAeiR0-nO__NKiJTejXxjJGJCBaBA/exec">aquí</a></p>
+    </aside>
+</div>
+        <div id="content" style="display: none;">
+            <h2>Bienvenido</h2>
+            <p>Este contenido es visible solo para usuarios autenticados.</p>
+            <p>Si desea eliminar la cuenta, envie un correo a <a href="mailto:administracion@grouvex.com?subject=Solicitud%20de%20Eliminación%20de%20la%20Cuenta%20de%20Grouvex%20Studios" style="color:white">administracion@grouvex.com</a>, indicando: Nombre de Usuario, Correo Electronico y el GSUserID.</p>
+            <p>Bienvenid@, si necesita ayuda, puede ponerse en <a href="https://grouvex.github.io/contacto" style="color:white">contacto</a> con el equipo.</p>
+            <hr>
+            <p>Información de la cuenta</p>
+    <div class="tarjetas">
+        <div class="tarjeta">
+    <img id="fotoPerfil" src="https://grouvex.com/img/GROUVEX.png" alt="Foto de perfil">
+    <div>
+      <h2><span class="usuario"></span></h2>
+      <hr>
+      <span class="insignias-container"></span>
+      <p style="font-size:6px;font-family: Arial, Helvetica, sans-serif;"><n><span id="userID"></span></n></p>
+      <p><footer><span id="correoElectronico"></span></footer></p>
+    </div></div></div>
+    <p style="font-size:12px">El GSUserID (GS-XXXXXXXXXXXX) es único por cada usuario. Sirve para formularios o para comprobar la existencia y el estado del usuario. En caso de no aparecer tu nombre de usuario, deberás iniciar con Google.</p>
+            <hr>
+            <button id="resetPasswordBtn">Cambiar Contraseña</button><button id="logoutBtn">Cerrar Sesión</button>
+            <hr>
+            <button id="deleteBtn">Eliminar Cuenta</button>
+</div>
+    </main>
+    <!-- Footer -->
+    <div id="footer"></div>
+</body>
+</html>
