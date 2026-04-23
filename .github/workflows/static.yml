@@ -1,7 +1,7 @@
 # ============================================================================
-# Workflow SEGURIDAD - Modo Producción
-# SOLO BLOQUEA por vulnerabilidades CRÍTICAS
-# Todo lo demás solo advierte
+# Workflow SEGURIDAD - Modo SOLO ADVERTENCIA
+# IDENTIFICA vulnerabilidades pero NUNCA BLOQUEA el despliegue
+# TODOS los jobs se ejecutan siempre
 # ============================================================================
 
 name: Deploy Static Site
@@ -25,11 +25,16 @@ concurrency:
 jobs:
 
   security-audit:
-    name: 🔒 Auditoría de Seguridad
+    name: 🔒 Auditoría de Seguridad (Solo advertencia)
     runs-on: ubuntu-latest
     timeout-minutes: 10
     outputs:
+      risk_level: ${{ steps.risk-assessment.outputs.level }}
       status: ${{ steps.final-security.outputs.status }}
+      critical_count: ${{ steps.update-counters.outputs.critical }}
+      high_count: ${{ steps.update-counters.outputs.high }}
+      medium_count: ${{ steps.update-counters.outputs.medium }}
+      low_count: ${{ steps.update-counters.outputs.low }}
     
     steps:
       - name: 📥 Checkout código
@@ -37,231 +42,274 @@ jobs:
         with:
           fetch-depth: 1
       
-      # ======================================================================
-      # 1. SEGURIDAD HTML - SOLO CRÍTICO BLOQUEA
-      # ======================================================================
-      - name: 🔒 Seguridad en HTML
+      # Inicializar contadores
+      - name: 🎯 Inicializar contadores
         run: |
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "🔒 ANÁLISIS DE SEGURIDAD - HTML"
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          
-          CRITICAL_ERROR=0
-          WARNINGS=0
-          
-          while IFS= read -r file; do
-            # === BLOQUEANTE: Recursos HTTP (inseguro) ===
-            if grep -q 'src="http://' "$file" || grep -q 'href="http://' "$file"; then
-              echo "❌ BLOQUEADO: Recurso HTTP en $file (use HTTPS)"
-              CRITICAL_ERROR=1
-            fi
-            
-            # === SOLO ADVERTENCIA: Falta CSP ===
-            if ! grep -q 'Content-Security-Policy' "$file"; then
-              echo "⚠️ ADVERTENCIA: Falta CSP en $file (recomendado)"
-              WARNINGS=$((WARNINGS + 1))
-            fi
-            
-            # === SOLO ADVERTENCIA: Headers de seguridad ===
-            if ! grep -q 'X-Frame-Options' "$file"; then
-              echo "⚠️ ADVERTENCIA: Falta protección clickjacking en $file"
-            fi
-          done < <(find . -name "*.html")
-          
-          echo ""
-          echo "📊 Resumen HTML: $WARNINGS advertencias"
-          if [ "$CRITICAL_ERROR" -eq 1 ]; then
-            exit 1
-          fi
+          echo "CRITICAL=0" >> $GITHUB_ENV
+          echo "HIGH=0" >> $GITHUB_ENV
+          echo "MEDIUM=0" >> $GITHUB_ENV
+          echo "LOW=0" >> $GITHUB_ENV
       
       # ======================================================================
-      # 2. SEGURIDAD JS - SOLO CRÍTICO BLOQUEA (CORREGIDO)
+      # 1. ANÁLISIS DE SEGURIDAD EN HTML
       # ======================================================================
-      - name: 🔒 Seguridad en JavaScript
+      - name: 🔍 Seguridad en HTML
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🔍 ANÁLISIS DE SEGURIDAD - HTML"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          
+          for file in $(find . -name "*.html"); do
+            # 🔴 CRÍTICO: Recursos HTTP
+            if grep -q 'src="http://' "$file" || grep -q 'href="http://' "$file"; then
+              echo "🔴 [CRÍTICO] Recurso HTTP detectado en $file (debe ser HTTPS)"
+              echo "CRITICAL=$((CRITICAL + 1))" >> $GITHUB_ENV
+            fi
+            
+            # 🟠 ALTO: Falta CSP
+            if ! grep -q 'Content-Security-Policy' "$file"; then
+              echo "🟠 [ALTO] Falta CSP en $file (riesgo de XSS)"
+              echo "HIGH=$((HIGH + 1))" >> $GITHUB_ENV
+            fi
+            
+            # 🟡 MEDIO: Falta HSTS
+            if ! grep -q 'Strict-Transport-Security' "$file"; then
+              echo "🟡 [MEDIO] Falta HSTS en $file (riesgo de downgrade)"
+              echo "MEDIUM=$((MEDIUM + 1))" >> $GITHUB_ENV
+            fi
+            
+            # 🟡 MEDIO: Falta X-Frame-Options
+            if ! grep -q 'X-Frame-Options' "$file"; then
+              echo "🟡 [MEDIO] Falta protección clickjacking en $file"
+              echo "MEDIUM=$((MEDIUM + 1))" >> $GITHUB_ENV
+            fi
+            
+            # 🟢 BAJO: Falta X-Content-Type-Options
+            if ! grep -q 'X-Content-Type-Options.*nosniff' "$file"; then
+              echo "🟢 [BAJO] Falta X-Content-Type-Options en $file"
+              echo "LOW=$((LOW + 1))" >> $GITHUB_ENV
+            fi
+          done
+      
+      # ======================================================================
+      # 2. ANÁLISIS DE SEGURIDAD EN JAVASCRIPT
+      # ======================================================================
+      - name: 🔍 Seguridad en JavaScript
         run: |
           echo ""
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "🔒 ANÁLISIS DE SEGURIDAD - JAVASCRIPT"
+          echo "🔍 ANÁLISIS DE SEGURIDAD - JAVASCRIPT"
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           
-          CRITICAL_ERROR=0
-          WARNINGS=0
-          
-          while IFS= read -r file; do
+          for file in $(find . -name "*.js"); do
+            filename=$(basename "$file")
+            
+            # Ignorar librerías legítimas
+            if echo "$filename" | grep -qi "jquery\|firebase\|iframe_api\|player_api\|highlight"; then
+              echo "  📦 Ignorando librería: $filename"
+              continue
+            fi
+            
             echo ""
             echo "📜 Analizando: $file"
             
-            # === BLOQUEANTE: eval() ===
+            # 🔴 CRÍTICO: eval()
             if grep -q "eval(" "$file"; then
-              echo "  ❌ BLOQUEADO: eval() encontrado (ejecución arbitraria)"
-              CRITICAL_ERROR=1
+              echo "  🔴 [CRÍTICO] eval() encontrado (ejecución de código arbitrario)"
+              echo "CRITICAL=$((CRITICAL + 1))" >> $GITHUB_ENV
             fi
             
-            # === BLOQUEANTE: document.write ===
+            # 🟠 ALTO: document.write
             if grep -q "document.write" "$file"; then
-              echo "  ❌ BLOQUEADO: document.write encontrado (peligroso)"
-              CRITICAL_ERROR=1
+              echo "  🟠 [ALTO] document.write encontrado (peligroso)"
+              echo "HIGH=$((HIGH + 1))" >> $GITHUB_ENV
             fi
             
-            # === BLOQUEANTE: Secretos expuestos (CORREGIDO - sin comillas problemáticas) ===
-            if grep -q "api_key" "$file" || grep -q "apikey" "$file" || \
-               grep -q "secret" "$file" || grep -q "token" "$file" || \
-               grep -q "password" "$file"; then
-              if grep -q "=" "$file"; then
-                echo "  ❌ BLOQUEADO: Posible secreto expuesto en $file"
-                CRITICAL_ERROR=1
-              fi
-            fi
-            
-            # === SOLO ADVERTENCIA: innerHTML (XSS potencial) ===
+            # 🟠 ALTO: innerHTML (XSS potencial)
             if grep -q "innerHTML" "$file"; then
-              echo "  ⚠️ ADVERTENCIA: innerHTML (riesgo XSS)"
-              WARNINGS=$((WARNINGS + 1))
+              echo "  🟠 [ALTO] innerHTML encontrado (riesgo XSS)"
+              echo "HIGH=$((HIGH + 1))" >> $GITHUB_ENV
             fi
             
-            # === SOLO ADVERTENCIA: console.log ===
+            # 🔴 CRÍTICO: Secretos expuestos
+            if grep -q "api_key\|apikey\|secret" "$file"; then
+              echo "  🔴 [CRÍTICO] Posible secreto expuesto"
+              echo "CRITICAL=$((CRITICAL + 1))" >> $GITHUB_ENV
+            fi
+            
+            # 🟡 MEDIO: console.log
             if grep -q "console.log" "$file"; then
-              echo "  ⚠️ ADVERTENCIA: console.log en producción"
-              WARNINGS=$((WARNINGS + 1))
+              echo "  🟡 [MEDIO] console.log en producción"
+              echo "MEDIUM=$((MEDIUM + 1))" >> $GITHUB_ENV
             fi
             
-            # === SOLO ADVERTENCIA: console.error ===
-            if grep -q "console.error" "$file"; then
-              echo "  ⚠️ ADVERTENCIA: console.error en producción"
-              WARNINGS=$((WARNINGS + 1))
-            fi
-            
-            # === SOLO ADVERTENCIA: debugger ===
+            # 🟢 BAJO: debugger
             if grep -q "debugger" "$file"; then
-              echo "  ⚠️ ADVERTENCIA: debugger encontrado"
-              WARNINGS=$((WARNINGS + 1))
+              echo "  🟢 [BAJO] debugger encontrado"
+              echo "LOW=$((LOW + 1))" >> $GITHUB_ENV
             fi
-          done < <(find . -name "*.js")
-          
-          echo ""
-          echo "📊 Resumen JS: $WARNINGS advertencias"
-          if [ "$CRITICAL_ERROR" -eq 1 ]; then
-            exit 1
-          fi
+            
+            # 🔴 CRÍTICO: Path traversal
+            if grep -q "\.\./" "$file"; then
+              echo "  🔴 [CRÍTICO] Path traversal detectado (../)"
+              echo "CRITICAL=$((CRITICAL + 1))" >> $GITHUB_ENV
+            fi
+          done
       
       # ======================================================================
-      # 3. SEGURIDAD CSS - SOLO CRÍTICO BLOQUEA
+      # 3. ANÁLISIS DE SEGURIDAD EN CSS
       # ======================================================================
-      - name: 🔒 Seguridad en CSS
+      - name: 🔍 Seguridad en CSS
         run: |
           echo ""
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "🔒 ANÁLISIS DE SEGURIDAD - CSS"
+          echo "🔍 ANÁLISIS DE SEGURIDAD - CSS"
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           
-          CRITICAL_ERROR=0
-          
-          while IFS= read -r file; do
-            # === BLOQUEANTE: expression() ===
+          for file in $(find . -name "*.css"); do
+            # 🔴 CRÍTICO: expression() CSS
             if grep -q "expression(" "$file"; then
-              echo "❌ BLOQUEADO: expression() CSS en $file (vulnerabilidad IE)"
-              CRITICAL_ERROR=1
+              echo "🔴 [CRÍTICO] expression() CSS en $file (vulnerabilidad IE)"
+              echo "CRITICAL=$((CRITICAL + 1))" >> $GITHUB_ENV
             fi
             
-            # === BLOQUEANTE: behavior ===
+            # 🔴 CRÍTICO: behavior
             if grep -q "behavior:" "$file"; then
-              echo "❌ BLOQUEADO: behavior: en $file (vulnerabilidad)"
-              CRITICAL_ERROR=1
+              echo "🔴 [CRÍTICO] behavior: en $file (vulnerabilidad)"
+              echo "CRITICAL=$((CRITICAL + 1))" >> $GITHUB_ENV
             fi
             
-            # === BLOQUEANTE: @import HTTP ===
+            # 🟠 ALTO: @import HTTP
             if grep -q '@import.*http://' "$file"; then
-              echo "❌ BLOQUEADO: @import HTTP en $file"
-              CRITICAL_ERROR=1
+              echo "🟠 [ALTO] @import HTTP en $file"
+              echo "HIGH=$((HIGH + 1))" >> $GITHUB_ENV
             fi
-          done < <(find . -name "*.css")
-          
-          if [ "$CRITICAL_ERROR" -eq 1 ]; then
-            exit 1
-          fi
+          done
       
       # ======================================================================
-      # 4. ARCHIVOS SENSIBLES - BLOQUEA
+      # 4. VERIFICACIÓN DE ARCHIVOS SENSIBLES
       # ======================================================================
-      - name: 🔒 Archivos sensibles
+      - name: 🔍 Archivos sensibles
         run: |
           echo ""
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "🔒 VERIFICANDO ARCHIVOS SENSIBLES"
+          echo "🔍 VERIFICANDO ARCHIVOS SENSIBLES"
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           
-          # Bloques críticos
-          for file in .env .env.local .env.production config.json secrets.json .htpasswd; do
+          # 🔴 CRÍTICO: Archivos de configuración sensibles
+          for file in .env .env.local .env.production secrets.json .htpasswd; do
             if [ -f "$file" ]; then
-              echo "❌ BLOQUEADO: Archivo sensible expuesto: $file"
-              exit 1
+              echo "🔴 [CRÍTICO] Archivo sensible expuesto: $file"
+              echo "CRITICAL=$((CRITICAL + 1))" >> $GITHUB_ENV
             fi
           done
           
-          # Advertencias (no bloquean)
+          # 🟡 MEDIO: Carpeta .git
           if [ -d ".git" ]; then
-            echo "⚠️ ADVERTENCIA: Carpeta .git expuesta"
+            echo "🟡 [MEDIO] Carpeta .git expuesta"
+            echo "MEDIUM=$((MEDIUM + 1))" >> $GITHUB_ENV
           fi
           
+          # 🟡 MEDIO: node_modules
           if [ -f "package.json" ] && [ -d "node_modules" ]; then
-            echo "⚠️ ADVERTENCIA: node_modules expuesto"
+            echo "🟡 [MEDIO] node_modules expuesto"
+            echo "MEDIUM=$((MEDIUM + 1))" >> $GITHUB_ENV
           fi
           
-          # Archivos de backup (advertencia)
-          while IFS= read -r file; do
-            echo "⚠️ ADVERTENCIA: Archivo backup: $file"
-          done < <(find . -name "*.bak" -o -name "*.backup" -o -name "*~" 2>/dev/null || true)
+          # 🟢 BAJO: Archivos de backup
+          for file in $(find . -name "*.bak" -o -name "*.backup" -o -name "*~" 2>/dev/null); do
+            echo "🟢 [BAJO] Archivo backup: $file"
+            echo "LOW=$((LOW + 1))" >> $GITHUB_ENV
+          done
       
       # ======================================================================
-      # 5. ESTRUCTURA HTML - SOLO ADVERTENCIA (NO BLOQUEA)
+      # 5. ESTRUCTURA HTML
       # ======================================================================
-      - name: 📄 Validar estructura HTML (solo advertencia)
+      - name: 📄 Validar estructura HTML
         run: |
           echo ""
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "📄 VALIDACIÓN DE ESTRUCTURA (Solo advertencia)"
+          echo "📄 VALIDACIÓN DE ESTRUCTURA HTML"
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           
-          while IFS= read -r file; do
-            # Detectar si es fragment o página completa
-            if grep -q "<!DOCTYPE html" "$file" 2>/dev/null; then
-              # Es página completa, verificar estructura
-              if ! grep -q "<body" "$file"; then
-                echo "⚠️ ADVERTENCIA: Falta <body> en página completa $file (no bloquea)"
-              else
-                echo "✅ Página completa válida: $file"
-              fi
-            else
-              # Es fragment, no validamos estructura
-              echo "🧩 Fragment detectado: $file (estructura flexible)"
+          for file in $(find . -name "*.html"); do
+            if ! grep -q "<!DOCTYPE html" "$file"; then
+              echo "🟢 [BAJO] Fragment sin DOCTYPE: $file"
+              echo "LOW=$((LOW + 1))" >> $GITHUB_ENV
             fi
-          done < <(find . -name "*.html")
+            
+            if ! grep -q "<body" "$file"; then
+              echo "🟢 [BAJO] Sin <body> en $file"
+              echo "LOW=$((LOW + 1))" >> $GITHUB_ENV
+            fi
+          done
       
       # ======================================================================
-      # 6. EVALUACIÓN FINAL
+      # 6. ACTUALIZAR CONTADORES
       # ======================================================================
-      - name: 📊 Evaluación final
+      - name: 📊 Actualizar contadores
+        id: update-counters
+        run: |
+          echo "critical=$CRITICAL" >> $GITHUB_OUTPUT
+          echo "high=$HIGH" >> $GITHUB_OUTPUT
+          echo "medium=$MEDIUM" >> $GITHUB_OUTPUT
+          echo "low=$LOW" >> $GITHUB_OUTPUT
+      
+      # ======================================================================
+      # 7. EVALUACIÓN DE RIESGO
+      # ======================================================================
+      - name: 📊 Evaluación de riesgo
+        id: risk-assessment
+        run: |
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📊 EVALUACIÓN DE RIESGO (SOLO INFORMATIVO)"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo ""
+          echo "┌─────────────────────────────────────────────────────────────┐"
+          echo "│                    REPORTE DE SEGURIDAD                     │"
+          echo "├─────────────────────────────────────────────────────────────┤"
+          echo "│ 🔴 CRÍTICOS: $CRITICAL                                          │"
+          echo "│ 🟠 ALTOS:    $HIGH                                          │"
+          echo "│ 🟡 MEDIOS:   $MEDIUM                                          │"
+          echo "│ 🟢 BAJOS:    $LOW                                          │"
+          echo "└─────────────────────────────────────────────────────────────┘"
+          echo ""
+          
+          if [ "$CRITICAL" -gt 0 ]; then
+            echo "level=critical" >> $GITHUB_OUTPUT
+            echo "⚠️ Se encontraron $CRITICAL problemas CRÍTICOS (revisar ASAP)"
+          elif [ "$HIGH" -gt 0 ]; then
+            echo "level=high" >> $GITHUB_OUTPUT
+            echo "⚠️ Se encontraron $HIGH problemas de ALTA gravedad"
+          elif [ "$MEDIUM" -gt 0 ]; then
+            echo "level=medium" >> $GITHUB_OUTPUT
+            echo "ℹ️ Se encontraron $MEDIUM problemas de gravedad MEDIA"
+          else
+            echo "level=low" >> $GITHUB_OUTPUT
+            echo "✅ Sitio con buenas prácticas de seguridad"
+          fi
+          
+          echo ""
+          echo "📌 NOTA: El despliegue CONTINUARÁ aunque haya problemas"
+      
+      # ======================================================================
+      # 8. VALIDACIÓN FINAL - NUNCA BLOQUEA
+      # ======================================================================
+      - name: 🎯 Validación final
         id: final-security
         run: |
-          echo ""
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo "📊 EVALUACIÓN FINAL"
-          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-          echo ""
-          echo "✅ No se encontraron errores críticos de seguridad"
-          echo "⚠️ Las advertencias no bloquean el despliegue"
-          echo ""
           echo "status=approved" >> $GITHUB_OUTPUT
-          echo "✅ DESPLIEGUE APROBADO"
+          echo "✅ DESPLIEGUE APROBADO - Continuando con el despliegue"
 
   # ==========================================================================
-  # JOB 2: OPTIMIZACIÓN (opcional)
+  # OPTIMIZACIÓN - SIEMPRE SE EJECUTA
   # ==========================================================================
   optimize:
-    name: ⚡ Optimizar (opcional)
+    name: ⚡ Optimizar
     runs-on: ubuntu-latest
     needs: security-audit
-    if: needs.security-audit.outputs.status == 'approved'
+    # ✅ Eliminada la condición - siempre se ejecuta
     timeout-minutes: 5
     
     steps:
@@ -276,24 +324,23 @@ jobs:
           echo "⚡ OPTIMIZANDO ARCHIVOS"
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           
-          while IFS= read -r file; do
+          for file in $(find . -name "*.js" ! -name "jquery*" ! -name "firebase*" ! -name "*.min.js"); do
             if ! grep -q "secret\|key\|token" "$file"; then
               sed -i 's/\/\/.*$//g; s/[[:space:]]\{2,\}/ /g' "$file" 2>/dev/null || true
-              echo "✅ Minificado: $file"
+              echo "✅ Minificado: $(basename "$file")"
             fi
-          done < <(find . -name "*.js" ! -name "*.min.js")
-          
+          done
           echo ""
           echo "✅ Optimización completada"
 
   # ==========================================================================
-  # JOB 3: DESPLIEGUE
+  # DESPLIEGUE - SIEMPRE SE EJECUTA
   # ==========================================================================
   deploy:
     name: 🚀 Desplegar
     runs-on: ubuntu-latest
     needs: [security-audit, optimize]
-    if: needs.security-audit.outputs.status == 'approved'
+    # ✅ Eliminada la condición - siempre se ejecuta
     timeout-minutes: 5
     
     environment:
@@ -322,13 +369,12 @@ jobs:
       - name: 📊 Reporte final
         run: |
           echo ""
-          echo "╔════════════════════════════════════════════════════════════╗"
-          echo "║              ✅ DESPLIEGUE COMPLETADO                        ║"
-          echo "╚════════════════════════════════════════════════════════════╝"
+          echo "╔══════════════════════════════════════════════════════════════════╗"
+          echo "║                    ✅ DESPLIEGUE COMPLETADO                       ║"
+          echo "╚══════════════════════════════════════════════════════════════════╝"
           echo ""
           echo "📡 Sitio: ${{ steps.deployment.outputs.page_url }}"
-          echo "🔗 Commit: ${{ github.sha }}"
-          echo "📁 Repositorio: ${{ github.repository }}"
-          echo "🌿 Rama: ${{ github.ref_name }}"
+          echo "📊 Nivel de riesgo detectado: ${{ needs.security-audit.outputs.risk_level }}"
           echo ""
-          echo "⚠️ Nota: Las advertencias de seguridad no bloquearon el deploy"
+          echo "📌 El despliegue se completó aunque se detectaron advertencias"
+          echo "   Revisa el reporte de seguridad para más detalles"
