@@ -1,25 +1,40 @@
-name: Deploy
+# Para repositorios con HTML/CSS/JS estático (sin build process)
+# Útil para: grouvex.github.io, records.grouvex.github.io (si es estático)
 
-on: 
+name: Deploy Static Site
+
+on:
   push:
     branches: [ main, master ]
+  workflow_dispatch:
 
-concurrency: 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
   group: "github-pages-deployments"
   cancel-in-progress: false
 
 jobs:
   deploy:
-    permissions:
-      contents: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./  # Publica la raíz del repositorio
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'  # Publica toda la raíz del repositorio
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
