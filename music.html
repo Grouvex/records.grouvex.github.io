@@ -1196,6 +1196,7 @@
     background: rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     border: 1px solid var(--glass-border);
+    overflow: hidden;
 }
 
 .gmx-platforms-title {
@@ -4428,27 +4429,37 @@ function createIframeCarousel(iframesData) {
     
     const carouselId = 'carousel_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
     
-    // Determinar altura óptima
-    let defaultHeight = 152;
-    if (iframesData.some(f => f.platform === 'YouTube')) defaultHeight = 360;
-    if (iframesData.some(f => f.platform === 'Apple Music')) defaultHeight = 450;
-    if (iframesData.some(f => f.platform === 'Amazon Music')) defaultHeight = 355;
     const html = `
         <div class="iframe-carousel-container">
             <div class="row-wrapper" id="${carouselId}_wrapper">
-                ${iframesData.map((iframe, idx) => `
-                    <div class="carousel-item" data-index="${idx}" data-carousel="${carouselId}">
-                        <iframe 
-                            src="${iframe.src}"
-                            title="${iframe.title}"
-                            frameborder="0"
-                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                            loading="lazy"
-                            style="width:100%; height:${defaultHeight}px; border-radius:16px;">
-                        </iframe>
-                        <div>${iframe.platform}</div>
-                    </div>
-                `).join('')}
+                ${iframesData.map((iframe, idx) => {
+                    let iframeElement = '';
+                    
+                    // Seleccionar y configurar el iframe oficial según la plataforma
+                    switch (iframe.platform) {
+                        case 'Spotify':
+                            iframeElement = `<iframe id="gmxEmbedIframeSpotify_${idx}" data-testid="embed-iframe" src="${iframe.src}" style="border-radius:12px; width:100%; height:152px;" width="100%" height="152" frameborder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>`;
+                            break;
+                        case 'YouTube':
+                            iframeElement = `<iframe id="gmxEmbedIframeYouTube_${idx}" width="100%" height="315" src="${iframe.src}" title="${iframe.title || 'YouTube video player'}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+                            break;
+                        case 'Apple Music':
+                            iframeElement = `<iframe id="gmxEmbedIframeAppleMusic_${idx}" src="${iframe.src}" allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" frameborder="0" height="450" style="width:100%;max-width:660px;overflow:hidden;border-radius:10px;" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"></iframe>`;
+                            break;
+                        case 'Amazon Music':
+                            iframeElement = `<iframe id="gmxEmbedIframeAmazonMusic_${idx}" src="${iframe.src}" width='100%' height='352px' frameBorder='0' style='border-radius:20px;max-width:'></iframe>`;
+                            break;
+                        default:
+                            iframeElement = `<iframe src="${iframe.src}" width="100%" height="350px" frameborder="0" allowfullscreen></iframe>`;
+                    }
+
+                    return `
+                        <div class="carousel-item" data-index="${idx}" data-carousel="${carouselId}">
+                            ${iframeElement}
+                            <div>${iframe.platform}</div>
+                        </div>
+                    `;
+                }).join('')}
             </div>
             ${iframesData.length > 1 ? `
             <div class="carousel-nav">
@@ -4460,7 +4471,13 @@ function createIframeCarousel(iframesData) {
         </div>
     `;
     
-    initCarousel(carouselId, iframesData.length);
+    // Asegúrate de que initCarousel maneje correctamente los elementos generados
+    setTimeout(() => {
+        if (typeof initCarousel === 'function') {
+            initCarousel(carouselId, iframesData.length);
+        }
+    }, 0);
+
     return html;
 }
 
