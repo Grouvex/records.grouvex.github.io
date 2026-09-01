@@ -2489,13 +2489,6 @@ input:checked + .gmx-toggle-slider .icon-on {
       El ❓, avisos de teclado y otros no se pueden ver o usar en Full Screen (🖥/'f')
     </p>
   </div>
-  <div class="gmx-embed-player" id="gmxEmbedPlayer" style="display: none;">
-    <div class="gmx-embed-header"><span>Reproduciendo en Spotify/YouTube</span><button class="gmx-embed-close-btn" onclick="gmxCloseEmbed()">✕</button></div>
-    <iframe  id="gmxEmbedIframeSpotify" data-testid="embed-iframe" style="border-radius:12px; display:none" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-    <iframe id="gmxEmbedIframeYouTube" style="display:none" width="560" height="315" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    <iframe id="gmxEmbedIframeAppleMusic" allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" frameborder="0" height="450" style="width:100%;max-width:660px;overflow:hidden;border-radius:10px;display:none" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"></iframe>
-    <iframe id='gmxEmbedIframeAmazonMusic' width='100%' height='352px' frameBorder='0' style='border-radius:20px;max-width:'></iframe>
-  </div>
 <details style="word-wrap: break-word; overflow-wrap: break-word; white-space: normal; max-width: 100%; background: rgba(0, 0, 0, 0.7); border-radius: 12px; padding: 12px 16px; margin: 15px 0; border-left: 3px solid var(--primary-color, #667eea);">
     <summary style="text-align: left; direction: ltr; font-weight: bold; cursor: pointer; color: var(--primary-color):">¿Cómo funciona este reproductor?</summary>
     
@@ -2651,21 +2644,35 @@ input:checked + .gmx-toggle-slider .icon-on {
 </main>
 
 <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
-    authDomain: "grouvex-studios.firebaseapp.com",
-    databaseURL: "https://grouvex-studios-default-rtdb.firebaseio.com",
-    projectId: "grouvex-studios",
-    storageBucket: "grouvex-studios.appspot.com",
-    messagingSenderId: "1070842606062",
-    appId: "1:1070842606062:web:5d887863048fd100b49eff",
-    measurementId: "G-75BR8D2CR3"
-  };
+  
+  // Definir firebaseConfig si no existe
+  if (typeof firebaseConfig === 'undefined') {
+      var firebaseConfig = {
+          apiKey: "AIzaSyAgoQ_Px3hHVrevUsyct_FBeXWMDKXpPSw",
+          authDomain: "grouvex-studios.firebaseapp.com",
+          databaseURL: "https://grouvex-studios-default-rtdb.firebaseio.com",
+          projectId: "grouvex-studios",
+          storageBucket: "grouvex-studios.appspot.com",
+          messagingSenderId: "1070842606062",
+          appId: "1:1070842606062:web:5d887863048fd100b49eff",
+          measurementId: "G-75BR8D2CR3"
+      };
+  }
 
-  // ✅ Inicialización correcta para Firebase 8.x
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  const database = firebase.database();
+  // Inicializar Firebase solo si no hay apps
+  if (typeof firebase !== 'undefined' && firebase.apps.length === 0) {
+      firebase.initializeApp(firebaseConfig);
+  }
+
+  // Definir auth solo si no existe
+  if (typeof auth === 'undefined' && typeof firebase !== 'undefined') {
+      var auth = firebase.auth();
+  }
+
+  // Definir database solo si no existe
+  if (typeof database === 'undefined' && typeof firebase !== 'undefined') {
+      var database = firebase.database();
+  }
   
   // Verificar si Firebase se inicializó correctamente
   console.log('Firebase inicializado:', firebase.apps.length > 0 ? '✅' : '❌');
@@ -3163,35 +3170,56 @@ async function getSongState(filename) {
     await gmxRenderPlaylist();
   }
   
-  async function gmxFetchMusicFiles() {
-      // Intentar obtener del caché primero
-      const cached = localStorage.getItem('gmx_playlist_cache');
-      const cacheTime = localStorage.getItem('gmx_playlist_cache_time');
-      const ONE_HOUR = 60 * 60 * 1000;
-      
-      if (cached && cacheTime && (Date.now() - parseInt(cacheTime)) < ONE_HOUR) {
-          return JSON.parse(cached);
-      }
-      
-      try {
-          const repoUrl = 'https://api.github.com/repos/Grouvex/records.grouvex.github.io/contents/priv/arch/sonido/musica';
-          const response = await fetch(repoUrl);
-          if (!response.ok) throw new Error(`Error: ${response.status}`);
-          const files = await response.json();
-          const mp3Files = files.filter(file => file.name.toLowerCase().endsWith('.mp3')).map(file => file.name);
-          
-          // Guardar en caché
-          localStorage.setItem('gmx_playlist_cache', JSON.stringify(mp3Files));
-          localStorage.setItem('gmx_playlist_cache_time', Date.now().toString());
-          
-          return mp3Files;
-      } catch (error) {
-          console.error('Error:', error);
-          // Si falla, intentar usar caché antiguo
-          if (cached) return JSON.parse(cached);
-          return [];
-      }
-  }
+const memoryCache = new Map();
+
+async function gmxFetchMusicFiles() {
+    const CACHE_KEY = 'gmx_playlist_cache';
+    const TIME_KEY = 'gmx_playlist_cache_time';
+    const ONE_HOUR = 3600000;
+    const now = Date.now();
+
+    // Caché en memoria usando Map para evitar accesos repetitivos a localStorage y JSON.parse
+    if (memoryCache.has('files') && (now - memoryCache.get('time')) < ONE_HOUR) {
+        return memoryCache.get('files');
+    }
+
+    const cached = localStorage.getItem(CACHE_KEY);
+    const cacheTime = localStorage.getItem(TIME_KEY);
+
+    if (cached && cacheTime && (now - parseInt(cacheTime, 10)) < ONE_HOUR) {
+        const parsed = JSON.parse(cached);
+        memoryCache.set('files', parsed);
+        memoryCache.set('time', parseInt(cacheTime, 10));
+        return parsed;
+    }
+
+    try {
+        const response = await fetch('https://api.github.com/repos/Grouvex/records.grouvex.github.io/contents/priv/arch/sonido/musica');
+        if (!response.ok) throw new Error(`Error: ${response.status}`);
+        
+        const files = await response.json();
+        
+        // Optimización: Un solo recorrido con reduce en lugar de filter + map encadenados
+        const mp3Files = files.reduce((acc, file) => {
+            if (file.name.toLowerCase().endsWith('.mp3')) {
+                acc.push(file.name);
+            }
+            return acc;
+        }, []);
+
+        localStorage.setItem(CACHE_KEY, JSON.stringify(mp3Files));
+        localStorage.setItem(TIME_KEY, now.toString());
+        
+        memoryCache.set('files', mp3Files);
+        memoryCache.set('time', now);
+
+        return mp3Files;
+    } catch (error) {
+        console.error('Error:', error);
+        if (cached) return JSON.parse(cached);
+        return [];
+    }
+}
   
   function gmxFormatSongName(filename) { return filename.replace('.mp3', ''); }
   // Colocar después de gmxFormatSongName() (alrededor de línea 710)
@@ -3222,73 +3250,81 @@ async function gmxGetRealTitle(filename) {
     });
 }
 async function gmxLoadAllRealTitles() {
-    if (gmxSongTitleCache.size === gmxAllMusicFiles.length) return;
+    const CACHE_KEY = 'gmx_titles_cache';
+    const TIME_KEY = 'gmx_titles_cache_time';
+    const ONE_DAY = 24 * 60 * 60 * 1000;
+    const now = Date.now();
+
+    const cachedTitles = localStorage.getItem(CACHE_KEY);
+    const cacheTime = localStorage.getItem(TIME_KEY);
+
+    if (cachedTitles && cacheTime && (now - parseInt(cacheTime, 10)) < ONE_DAY) {
+        const titles = JSON.parse(cachedTitles);
+        for (const [song, title] of Object.entries(titles)) {
+            gmxSongTitleCache.set(song, title);
+        }
+    }
+
+    if (gmxSongTitleCache.size >= gmxAllMusicFiles.length) return;
     
     console.log("🔄 Cargando títulos de canciones...");
     
-    // Crear promesas para TODAS las canciones
-    const promises = gmxAllMusicFiles.map(async (song) => {
-        // Si ya está en caché, saltar
-        if (gmxSongTitleCache.has(song)) return;
-        
+    const pendingSongs = gmxAllMusicFiles.filter(song => !gmxSongTitleCache.has(song));
+
+    const promises = pendingSongs.map(song => {
         const upcIsrc = song.replace('.mp3', '');
         
-        return new Promise((resolve) => {
-            // Timeout de 5 segundos para no quedarse colgado
+        return new Promise(resolve => {
+            let isResolved = false;
+
             const timeout = setTimeout(() => {
-                gmxSongTitleCache.set(song, 'Sin Definir');
-                resolve();
-            }, 5000);
+                if (!isResolved) {
+                    isResolved = true;
+                    gmxSongTitleCache.set(song, 'No Encontrado');
+                    resolve();
+                }
+            }, 10000);
             
             google.script.run
-                .withSuccessHandler((songInfo) => {
+                .withSuccessHandler(songInfo => {
+                    if (isResolved) return;
+                    isResolved = true;
                     clearTimeout(timeout);
-                    let realTitle = gmxFormatSongName(song);
                     
-                    if (songInfo && songInfo.found && songInfo[`titulo${songInfo.trackNumber}`]) {
-                        realTitle = songInfo[`titulo${songInfo.trackNumber}`];
-                    } else if (songInfo && songInfo.found && songInfo.tituloAlbum) {
-                        // Fallback: usar título del álbum si no hay título de pista
-                        realTitle = songInfo.tituloAlbum;
+                    let realTitle = 'No Encontrado';
+                    
+                    if (songInfo?.found) {
+                        const trackKey = `titulo${songInfo.trackNumber}`;
+                        if (songInfo[trackKey]) {
+                            realTitle = songInfo[trackKey];
+                        } else if (songInfo.tituloAlbum) {
+                            realTitle = songInfo.tituloAlbum;
+                        }
                     }
                     
                     gmxSongTitleCache.set(song, realTitle);
                     resolve();
                 })
-                .withFailureHandler(() => {
+                .withFailureHandler(err => {
+                    if (isResolved) return;
+                    isResolved = true;
                     clearTimeout(timeout);
-                    console.warn(`⚠️ No se pudo cargar título para: ${song}`);
-                    gmxSongTitleCache.set(song, 'Sin Definir');
+                    
+                    console.warn(`⚠️ Error al cargar título para ${song}:`, err);
+                    gmxSongTitleCache.set(song, 'No Encontrado');
                     resolve();
                 })
                 .getCurrentSongInfo(upcIsrc);
         });
     });
     
-    // Esperar a que TODAS las promesas se completen
     await Promise.all(promises);
     
     console.log(`✅ Títulos cargados: ${gmxSongTitleCache.size} canciones`);
-// Al final de gmxLoadAllRealTitles(), guardar en localStorage
-const cacheToSave = {};
-for (const [key, value] of gmxSongTitleCache.entries()) {
-    cacheToSave[key] = value;
-}
-localStorage.setItem('gmx_titles_cache', JSON.stringify(cacheToSave));
-localStorage.setItem('gmx_titles_cache_time', Date.now().toString());
 
-// Al inicio de la función, intentar cargar desde caché
-const cachedTitles = localStorage.getItem('gmx_titles_cache');
-const cacheTime = localStorage.getItem('gmx_titles_cache_time');
-const ONE_DAY = 24 * 60 * 60 * 1000;
-
-if (cachedTitles && cacheTime && (Date.now() - parseInt(cacheTime)) < ONE_DAY) {
-    const titles = JSON.parse(cachedTitles);
-    for (const [song, title] of Object.entries(titles)) {
-        gmxSongTitleCache.set(song, title);
-    }
-    return; // No necesita consultar la API
-}
+    const cacheToSave = Object.fromEntries(gmxSongTitleCache.entries());
+    localStorage.setItem(CACHE_KEY, JSON.stringify(cacheToSave));
+    localStorage.setItem(TIME_KEY, now.toString());
 }
     
   function gmxFormatTime(seconds) { if (isNaN(seconds)) return '0:00'; const mins = Math.floor(seconds / 60); const secs = Math.floor(seconds % 60); return `${mins}:${secs.toString().padStart(2, '0')}`; }
@@ -3553,129 +3589,144 @@ async function gmxLoadDurationsBatch() {
   const batchSize = 5;
   const pendingSongs = gmxCurrentPlaylist.filter(song => !gmxDurationCache.has(song));
   
-  // Añadir indicador visual
+  if (pendingSongs.length === 0) return;
+
+  const playlistContainer = document.getElementById('gmxPlaylistContent');
   const loadingIndicator = document.createElement('div');
   loadingIndicator.className = 'duration-loading';
-  loadingIndicator.textContent = '⏳ Cargando duraciones...';
+  loadingIndicator.textContent = `⏳ Cargando duraciones: ${gmxDurationCache.size}/${gmxCurrentPlaylist.length}`;
   
-  for (let i = 0; i < pendingSongs.length; i += batchSize) {
-    const batch = pendingSongs.slice(i, i + batchSize);
-    await Promise.all(batch.map(song => loadSingleDuration(song)));
-    
-    // Mostrar progreso
-    const loaded = gmxDurationCache.size;
-    const total = gmxCurrentPlaylist.length;
-    if (loadingIndicator.parentNode) {
-      loadingIndicator.textContent = `⏳ Cargando duraciones: ${loaded}/${total}`;
-    }
+  if (playlistContainer) {
+    playlistContainer.prepend(loadingIndicator);
   }
   
-  loadingIndicator.remove();
+  try {
+    for (let i = 0; i < pendingSongs.length; i += batchSize) {
+      const batch = pendingSongs.slice(i, i + batchSize);
+      await Promise.all(batch.map(song => loadSingleDuration(song)));
+      
+      const loaded = gmxDurationCache.size;
+      const total = gmxCurrentPlaylist.length;
+      if (loadingIndicator.parentNode) {
+        loadingIndicator.textContent = `⏳ Cargando duraciones: ${loaded}/${total}`;
+      }
+      
+      // Yield execution back to the browser environment to prevent execution timeouts/locks
+      await new Promise(resolve => setTimeout(resolve, 20));
+    }
+  } catch (error) {
+    console.error('Error cargando duraciones por lotes:', error);
+  } finally {
+    loadingIndicator.remove();
+  }
 }
 
-// Función para actualizar playlist desde cero (ignora caché)
 async function gmxRefreshPlaylist() {
     const refreshBtn = document.getElementById('gmxRefreshBtn');
-    const originalText = refreshBtn.innerHTML;
+    const originalText = refreshBtn ? refreshBtn.innerHTML : '';
     
-    // Mostrar estado de carga
-    refreshBtn.innerHTML = '⏳ Actualizando...';
-    refreshBtn.disabled = true;
-    refreshBtn.style.opacity = '0.7';
+    if (refreshBtn) {
+        refreshBtn.innerHTML = '⏳';
+        refreshBtn.disabled = true;
+        refreshBtn.style.opacity = '0.7';
+    }
     
     gmxShowToast('🔄 Actualizando playlist desde el servidor...', 2000);
     
     try {
-        // 1. LIMPIAR TODOS LOS CACHÉS
         localStorage.removeItem('gmx_playlist_cache');
         localStorage.removeItem('gmx_playlist_cache_time');
         localStorage.removeItem('gmx_titles_cache');
         localStorage.removeItem('gmx_titles_cache_time');
         localStorage.removeItem('gmx_last_cache_clean');
         
-        // Limpiar caché de títulos en memoria
-        gmxSongTitleCache.clear();
-        gmxDurationCache.clear();
-        songInfoCache.clear();
-        gmxSongUPCs.clear();
-        gmxGlobalLikes.clear();
-        gmxUserLikedStatus.clear();
-        gmxLikeCountsCache.clear();
+        if (typeof gmxSongTitleCache !== 'undefined') gmxSongTitleCache.clear();
+        if (typeof gmxDurationCache !== 'undefined') gmxDurationCache.clear();
+        if (typeof songInfoCache !== 'undefined') songInfoCache.clear();
+        if (typeof gmxSongUPCs !== 'undefined') gmxSongUPCs.clear();
+        if (typeof gmxGlobalLikes !== 'undefined') gmxGlobalLikes.clear();
+        if (typeof gmxUserLikedStatus !== 'undefined') gmxUserLikedStatus.clear();
+        if (typeof gmxLikeCountsCache !== 'undefined') gmxLikeCountsCache.clear();
         
-        // Limpiar duraciones almacenadas
         for (const key of Object.keys(localStorage)) {
-            if (key.startsWith('gmx_duration_')) {
-                localStorage.removeItem(key);
-            }
-            if (key.startsWith('gmx_song_state_')) {
+            if (key.startsWith('gmx_duration_') || key.startsWith('gmx_song_state_')) {
                 localStorage.removeItem(key);
             }
         }
-        
-        // 2. FORZAR RECARGA DE ARCHIVOS (usando GitHub API raw + proxy CORS si es necesario)
-        // Opción 1: Usar GitHub API con modo no-cors (limitado) o usar un proxy CORS
-        // Opción 2: Mantener una lista local de canciones (recomendado para evitar CORS)
-        
-        // Para evitar problemas CORS, vamos a usar un enfoque alternativo:
-        // Mantenemos la lista actual de canciones y solo forzamos recarga de títulos
         
         gmxShowToast('🔄 Recargando información de canciones...', 2000);
         
-        // Recargar estados de canciones (forzar desde API)
-        const songStates = [];
-        for (const song of gmxAllMusicFiles) {
-            try {
-                // Forzar recarga de estado (ignorar caché)
-                localStorage.removeItem(`gmx_song_state_${song}`);
-                localStorage.removeItem(`gmx_song_state_time_${song}`);
-                const state = await getSongState(song);
-                songStates.push(state);
-            } catch(e) {
-                console.warn(`Error cargando estado de ${song}:`, e);
-                songStates.push({ state: { isUpcoming: true, isPreview: false } });
-            }
+        const songStates = await Promise.all(
+            gmxAllMusicFiles.map(async (song) => {
+                try {
+                    localStorage.removeItem(`gmx_song_state_${song}`);
+                    localStorage.removeItem(`gmx_song_state_time_${song}`);
+                    return await getSongState(song);
+                } catch (e) {
+                    console.warn(`Error cargando estado de ${song}:`, e);
+                    return { state: { isUpcoming: true, isPreview: false } };
+                }
+            })
+        );
+
+        if (typeof songInfoCache !== 'undefined') {
+            songInfoCache.clear();
+            songStates.forEach((state, idx) => {
+                songInfoCache.set(gmxAllMusicFiles[idx], state);
+            });
         }
-        songInfoCache.clear();
-        songStates.forEach((state, idx) => {
-            songInfoCache.set(gmxAllMusicFiles[idx], state);
-        });
         
-        // Recargar likes globales
-        await gmxLoadAllGlobalLikes();
+        if (typeof gmxLoadAllGlobalLikes === 'function') {
+            await gmxLoadAllGlobalLikes();
+        }
         
-        // Actualizar playlist
         gmxCurrentPlaylist = [...gmxAllMusicFiles];
         gmxCurrentIndex = 0;
         
-        // Recargar likes del usuario
-        if (gmxIsLoggedIn && gmxCurrentUser) {
+        if (gmxIsLoggedIn && gmxCurrentUser && typeof gmxLoadUserLikeStatus === 'function') {
             try {
                 await gmxLoadUserLikeStatus();
-            } catch(e) {
+            } catch (e) {
                 console.warn("Error cargando likes del usuario:", e);
             }
         }
         
-        // Recargar títulos (forzando desde API)
-        gmxSongTitleCache.clear();
+        if (typeof gmxSongTitleCache !== 'undefined') {
+            gmxSongTitleCache.clear();
+        }
         
-        const titlePromises = gmxAllMusicFiles.map(async (song) => {
+        const titlePromises = gmxAllMusicFiles.map(song => {
             const upcIsrc = song.replace('.mp3', '');
-            return new Promise((resolve) => {
+            return new Promise(resolve => {
+                let isResolved = false;
+
                 const timeout = setTimeout(() => {
-                    resolve({ song, title: gmxFormatSongName(song) });
+                    if (!isResolved) {
+                        isResolved = true;
+                        resolve({ song, title: gmxFormatSongName(song) });
+                    }
                 }, 8000);
                 
                 google.script.run
-                    .withSuccessHandler((songInfo) => {
+                    .withSuccessHandler(songInfo => {
+                        if (isResolved) return;
+                        isResolved = true;
                         clearTimeout(timeout);
+                        
                         let realTitle = gmxFormatSongName(song);
-                        if (songInfo && songInfo.found && songInfo[`titulo${songInfo.trackNumber}`]) {
-                            realTitle = songInfo[`titulo${songInfo.trackNumber}`];
+                        if (songInfo?.found) {
+                            const trackKey = `titulo${songInfo.trackNumber}`;
+                            if (songInfo[trackKey]) {
+                                realTitle = songInfo[trackKey];
+                            } else if (songInfo.tituloAlbum) {
+                                realTitle = songInfo.tituloAlbum;
+                            }
                         }
                         resolve({ song, title: realTitle });
                     })
                     .withFailureHandler(() => {
+                        if (isResolved) return;
+                        isResolved = true;
                         clearTimeout(timeout);
                         resolve({ song, title: gmxFormatSongName(song) });
                     })
@@ -3684,20 +3735,21 @@ async function gmxRefreshPlaylist() {
         });
         
         const titleResults = await Promise.all(titlePromises);
+        const titlesObj = {};
+        
         for (const { song, title } of titleResults) {
-            gmxSongTitleCache.set(song, title);
+            if (typeof gmxSongTitleCache !== 'undefined') {
+                gmxSongTitleCache.set(song, title);
+            }
+            titlesObj[song] = title;
         }
         
-        // Guardar nuevos títulos en caché
-        const cacheToSave = {};
-        for (const [key, value] of gmxSongTitleCache.entries()) {
-            cacheToSave[key] = value;
-        }
-        localStorage.setItem('gmx_titles_cache', JSON.stringify(cacheToSave));
+        localStorage.setItem('gmx_titles_cache', JSON.stringify(titlesObj));
         localStorage.setItem('gmx_titles_cache_time', Date.now().toString());
         
-        // Renderizar playlist actualizada
-        await gmxRenderPlaylist();
+        if (typeof gmxRenderPlaylist === 'function') {
+            await gmxRenderPlaylist();
+        }
         
         gmxShowToast('✅ Playlist actualizada correctamente', 3000);
         
@@ -3705,12 +3757,12 @@ async function gmxRefreshPlaylist() {
         console.error('Error actualizando playlist:', error);
         gmxShowToast('❌ Error al actualizar playlist. Reintenta más tarde.', 4000);
     } finally {
-        // Restaurar botón
-        refreshBtn.innerHTML = originalText;
-        refreshBtn.disabled = false;
-        refreshBtn.style.opacity = '1';
+        if (refreshBtn) {
+            refreshBtn.innerHTML = originalText;
+            refreshBtn.disabled = false;
+            refreshBtn.style.opacity = '1';
+        }
         
-        // Scroll a la playlist
         const playlistContainer = document.getElementById('gmxPlaylistContent');
         if (playlistContainer) {
             playlistContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -4269,46 +4321,6 @@ function renderDetailedSongInfo(songInfo, trackInfo, ilustracionUrl, trackNumber
     return null;
   }
   
-/*  function renderSongInfo(songInfo, ilustracionUrl) {
-    const container = document.getElementById('songInfoContainer');
-    if (!container) return;
-    container.innerHTML = `
-      ${ilustracionUrl ? `<img src="${ilustracionUrl}" class="song-illustration" onerror="this.outerHTML='<div class=\\'song-illustration placeholder\\'>🎵</div>'">` : '<div class="song-illustration placeholder">🎵</div>'}
-      <div class="song-details-content">
-        <div class="song-album-title">${songInfo.tituloAlbum || 'Sin álbum'}</div>
-        <div class="song-artist-info">${songInfo.artista || 'Artista desconocido'}</div>
-        ${songInfo.otrosArtistas ? `<div class="song-other-artists">Con: ${songInfo.otrosArtistas}</div>` : ''}
-        ${songInfo.compositores ? `<div class="song-other-artists">Compositores: ${songInfo.compositores}</div>` : ''}
-        <div class="song-genres">${[songInfo.generoPrimario, songInfo.generoSecundario].filter(g => g).map(g => `<span class="genre-tag">${g}</span>`).join('')}</div>
-        <div class="song-details-grid">
-          <div class="detail-item"><div class="detail-label">Categoría del Lanzamiento</div><div>${songInfo.categoria || 'No especificado'}</div></div>
-          <div class="detail-item"><div class="detail-label">Información para colaboradores</div><div>${songInfo.infoColaboradores || 'No especificado'}</div></div>
-          <div class="detail-item"><div class="detail-label">Letristas</div><div>${songInfo.letristas || 'No especificado'}</div></div>
-          <div class="detail-item"><div class="detail-label">Contenido Explícito</div><div>${songInfo.explicit || 'No especificado'}</div></div>
-          <br><hr>
-          <details><summary>Fechas</summary>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;">
-            <div class="detail-item"><div class="detail-label">Lanzamiento Original</div><div>${songInfo.lanzamientoOriginal || 'No especificado'}</div></div>
-            <div class="detail-item"><div class="detail-label">Lanzamiento de Preventa</div><div>${songInfo.fechaPedidoAnticipado || 'No especificado'}</div></div>
-            <div class="detail-item"><div class="detail-label">Inicio de Ventas</div><div>${songInfo.fechaInicioVentas || 'No especificado'}</div></div>
-          </div>
-          </details>
-          <br><hr>
-          <details><summary>Derechos y Fuentes</summary>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 8px;">
-          <div class="detail-item"><div class="detail-label">Derechos Composición</div><div>${songInfo.derechosComposicion || 'No especificado'}</div></div>
-          <div class="detail-item"><div class="detail-label">Derechos Grabación</div><div>${songInfo.derechosGrabacion || 'No especificado'}</div></div>
-          <div class="detail-item"><div class="detail-label">Sello Discográfico</div><div>${songInfo.selloDiscografico || 'No especificado'}</div></div>
-          </div>
-          </details>
-        </div>
-      </div>`;
-    if (songInfo.artista) document.getElementById('gmxCurrentSongArtist').textContent = songInfo.artista;
-    if (ilustracionUrl) {
-        actualizarMediaSessionConImagen(ilustracionUrl, songInfo.tituloAlbum, songInfo.artista);
-    }
-  }*/
-  
 // ============================================
 // FUNCIONES DEL CARRUSEL EXACTO
 // ============================================
@@ -4465,25 +4477,12 @@ function renderPlatformLinks(songInfo) {
     const section = document.getElementById('gmxPlatformsSection');
     const container = document.getElementById('gmxPlatformsLinks');
     const titleSpan = document.getElementById('gmxPlatforms');
-    const embedPlayer = document.getElementById('gmxEmbedPlayer');
-    const spotifyIframe = document.getElementById('gmxEmbedIframeSpotify');
-    const youtubeIframe = document.getElementById('gmxEmbedIframeYouTube');
-    const appleMusicIframe = document.getElementById('gmxEmbedIframeAppleMusic');
-    const amazonMusicIframe = document.getElementById('gmxEmbedIframeAmazonMusic');
     
     if (!section || !container) return;
     
     titleSpan.innerHTML = songInfo.plataformas || 'Plataformas digitales';
     container.innerHTML = '';
-    
-    // Ocultar reproductor individual antiguo
-    if (embedPlayer) embedPlayer.style.display = 'none';
-    if (spotifyIframe) { spotifyIframe.src = ''; spotifyIframe.style.display = 'none'; }
-    if (youtubeIframe) { youtubeIframe.src = ''; youtubeIframe.style.display = 'none'; }
-    if (appleMusicIframe) { appleMusicIframe.src = ''; appleMusicIframe.style.display = 'none'; }
-    if (amazonMusicIframe) { amazonMusicIframe.src = ''; amazonMusicIframe.style.display = 'none'; }
-    // NOTA: Eliminé la referencia a deezerIframe que no existe
-    
+        
     // Recopilar todos los embeds disponibles
     const embedsList = [];
     
@@ -4526,7 +4525,15 @@ function renderPlatformLinks(songInfo) {
             height: 352 
         });
     }
-    
+
+    if (songInfo.deezerEmbed) {
+        embedsList.push({
+            src: songInfo.deezerEmbed,
+            title: 'Escuchar en Deezer',
+            platform: 'Deezer',
+            height: 352 
+        });
+    }
     // Enlaces externos (botones)
     const externalLinks = [];
     if (songInfo.spotifyLink) externalLinks.push({ url: songInfo.spotifyLink, name: 'Spotify', icon: 'fa-brands fa-spotify', class: 'spotify' });
@@ -4585,15 +4592,13 @@ function renderPlatformLinks(songInfo) {
     section.style.display = 'block';
 }
   
-  function gmxPlayEmbed(embedUrl,type){const ep=document.getElementById('gmxEmbedPlayer');const ifrSpot=document.getElementById('gmxEmbedIframeSpotify');const ifrYou=document.getElementById('gmxEmbedIframeYouTube');const ifrApple=document.getElementById('gmxEmbedIframeAppleMusic');const ifrAmaz=document.getElementById('gmxEmbedIframeAmazonMusic');if(type==='spotify'&&ifrSpot&&embedUrl){ifrSpot.src='';ifrSpot.src=embedUrl;ifrSpot.style.display='block';}if(type==='youtube'&&ifrYou&&embedUrl){ifrYou.src='';ifrYou.src=embedUrl;ifrYou.style.display='block';}if(type==='appleMusic'&&ifrApple&&embedUrl){ifrApple.src='';ifrApple.src=embedUrl;ifrApple.style.display='block';}if(type==='amazonMusic'&&ifrAmaz&&embedUrl){ifrAmaz.src='';ifrAmaz.src=embedUrl;ifrAmaz.style.display='block';}if(ep)ep.style.display='block';}
-  function gmxCloseEmbed(){const ep=document.getElementById('gmxEmbedPlayer');const ifrSpot=document.getElementById('gmxEmbedIframeSpotify');const ifrYou=document.getElementById('gmxEmbedIframeYouTube');if(ep)ep.style.display='none';if(ifrSpot){ifrSpot.src='';ifrSpot.style.display='none';}if(ifrYou){ifrYou.src='';ifrYou.style.display='none';}}
   function showSongInfoError(msg) { const c = document.getElementById('songInfoContainer'); if (c) { c.innerHTML = `<div class="song-info-error"><div class="error-icon">⚠️</div><div class="error-message">${msg}</div><div class="error-detail">Verifica tu conexión o intenta más tarde</div><button class="retry-button" onclick="gmxRetryLoadSong()">🔄 Reintentar</button></div>`; c.classList.add('show'); } }
   function gmxRetryLoadSong() {
     if (gmxCurrentPlaylist && gmxCurrentPlaylist[gmxCurrentIndex]) {
         loadDetailedSongInfo(gmxCurrentPlaylist[gmxCurrentIndex]);
         gmxShowToast('🔄 Reintentando cargar información...', 2000);
     }
-}
+  }
   function gmxTogglePlay(){const a=document.getElementById('gmxAudioPlayer'),s=gmxCurrentPlaylist[gmxCurrentIndex];if(!s){if(gmxCurrentPlaylist.length)gmxTryPlaySong(0);return;}getSongState(s).then(({state})=>{if(state.isUpcoming){document.getElementById('gmxCurrentSongTitle').textContent=gmxFormatSongName(s)+' (Próximamente - No disponible)';return;}if(!a.src)gmxTryPlaySong(gmxCurrentIndex);else if(gmxIsPlaying)a.pause();else a.play().catch(e=>console.log('Error:',e));});}
   function gmxNextSong() {if (gmxCurrentIndex + 1 < gmxCurrentPlaylist.length) {gmxTryPlaySong(gmxCurrentIndex + 1);} else if (gmxCurrentPlaylist.length) {gmxTryPlaySong(0);}}
   function gmxPreviousSong() {if (gmxCurrentIndex - 1 >= 0) {gmxTryPlaySong(gmxCurrentIndex - 1);} else if (gmxCurrentPlaylist.length) {gmxTryPlaySong(gmxCurrentPlaylist.length - 1);}}
