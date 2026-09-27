@@ -87,12 +87,186 @@
     publishable-key="pk_live_51RN9E64bAPF5b1EYXhYKHGGqgE6efOROmgu1567ZBIspT9sdH0SzB5DSdznOJywVx48wrNgdGRbviJuD17WPJt4Z00S1SCbdl4"
   >
   </stripe-buy-button>
-<!-- ESTILOS GLOBALES RESPONSIVOS -->
+<!-- ESTILOS GLOBALES RESPONSIVOS Y ANIMACIONES -->
 <style>
   /* Animación de Carga */
   @keyframes spin { 
     0% { transform: rotate(0deg); } 
     100% { transform: rotate(360deg); } 
+  }
+
+  /* --- ANIMACIÓN 1: ONDAS QUE NACEN EN UN PUNTO Y SE EXPANDEN (PRÓXIMOS LANZAMIENTOS) --- */
+  .pulse-future-block {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Onda expansiva radial que brota desde el punto inicial */
+  .pulse-future-block::before {
+    content: "";
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(8, 145, 178, 0.4);
+    animation: wave-radial-expand 2.5s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes wave-radial-expand {
+    0% {
+      transform: scale(0);
+      opacity: 0.9;
+      box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.8);
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(85);
+      opacity: 0;
+      box-shadow: 0 0 40px 20px rgba(8, 145, 178, 0);
+    }
+  }
+
+  /* Indicador del Punto de Radar */
+  .radar-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: #38bdf8;
+    border-radius: 50%;
+    margin-right: 6px;
+    animation: spin-glow 1.5s infinite alternate;
+  }
+  @keyframes spin-glow {
+    0% { opacity: 0.3; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1.3); }
+  }
+
+  /* --- ANIMACIÓN 2: NIEVE REALISTA MULTICOLOR ALEATORIA Y LENTA --- */
+  .snow-anniversary-block {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Caída suave con bamboleo lateral aleatorio */
+  @keyframes snow-fall-realistic-1 {
+    0% {
+      transform: translateY(-10px) translateX(0) rotate(0deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.9;
+    }
+    50% {
+      transform: translateY(50vh) translateX(25px) rotate(180deg);
+    }
+    90% {
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateY(105%) translateX(-15px) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  @keyframes snow-fall-realistic-2 {
+    0% {
+      transform: translateY(-10px) translateX(0) rotate(0deg);
+      opacity: 0;
+    }
+    15% {
+      opacity: 0.85;
+    }
+    60% {
+      transform: translateY(60vh) translateX(-30px) rotate(-180deg);
+    }
+    100% {
+      transform: translateY(105%) translateX(20px) rotate(-360deg);
+      opacity: 0;
+    }
+  }
+
+  /* Capas de copos distribuidas aleatoriamente */
+  .snow-anniversary-block::before,
+  .snow-anniversary-block::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* Capa 1 de copos (tamaños variados y colores orgánicos aleatorios) */
+  .snow-anniversary-block::before {
+    background-image: 
+      radial-gradient(circle, #f43f5e 3px, transparent 3.5px),
+      radial-gradient(circle, #38bdf8 2px, transparent 2.5px),
+      radial-gradient(circle, #a855f7 4px, transparent 4.5px),
+      radial-gradient(circle, #fde047 2px, transparent 2.5px),
+      radial-gradient(circle, #10b981 3px, transparent 3.5px),
+      radial-gradient(circle, #ec4899 2px, transparent 2.5px),
+      radial-gradient(circle, #3b82f6 4px, transparent 4.5px),
+      radial-gradient(circle, #f97316 3px, transparent 3.5px);
+    background-size: 
+      120px 300px, 180px 250px, 220px 350px, 150px 280px,
+      200px 320px, 160px 270px, 240px 380px, 190px 290px;
+    background-position: 
+      10% -20px, 28% -50px, 45% -10px, 62% -40px,
+      75% -15px, 88% -60px, 35% -30px, 95% -25px;
+    animation: snow-fall-realistic-1 9s linear infinite;
+  }
+
+  /* Capa 2 de copos (segundo grupo desfasado para cobertura natural) */
+  .snow-anniversary-block::after {
+    background-image: 
+      radial-gradient(circle, #06b6d4 3px, transparent 3.5px),
+      radial-gradient(circle, #eab308 2px, transparent 2.5px),
+      radial-gradient(circle, #8b5cf6 3px, transparent 3.5px),
+      radial-gradient(circle, #f472b6 4px, transparent 4.5px),
+      radial-gradient(circle, #38bdf8 2px, transparent 2.5px),
+      radial-gradient(circle, #10b981 3px, transparent 3.5px),
+      radial-gradient(circle, #f43f5e 2px, transparent 2.5px);
+    background-size: 
+      140px 310px, 210px 260px, 170px 340px, 230px 290px,
+      190px 330px, 130px 280px, 250px 360px;
+    background-position: 
+      5% -35px, 20% -15px, 52% -45px, 68% -20px,
+      82% -55px, 92% -10px, 40% -50px;
+    animation: snow-fall-realistic-2 12s linear infinite;
+    animation-delay: 4.5s;
+  }
+
+  /* Estilo para Botones de Plataformas con Solo Icono */
+  .platform-btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: #1e293b;
+    color: #ffffff;
+    margin: 4px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 20px;
+    border: 1px solid #3b82f6;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    transition: all 0.2s ease-in-out;
+  }
+
+  .platform-btn-icon:hover {
+    background: #2563eb;
+    transform: translateY(-3px) scale(1.05);
+    border-color: #60a5fa;
+    box-shadow: 0 6px 15px rgba(37, 99, 235, 0.5);
   }
 
   /* Ajustes de renderizado para iframe responsivo */
@@ -115,7 +289,16 @@
     border-radius: 10px;
   }
 
-  /* Media queries para ajustes finos en móvil */
+  .quick-event-card {
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+  .quick-event-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  }
+
+  /* Media queries para ajustes en móvil */
   @media (max-width: 600px) {
     .artist-summary-title {
       font-size: 16px !important;
@@ -123,11 +306,6 @@
     .artist-summary-badge {
       font-size: 11px !important;
       padding: 4px 8px !important;
-    }
-    .platform-btn {
-      width: 100% !important;
-      justify-content: center !important;
-      box-sizing: border-box !important;
     }
     .track-meta-box {
       font-size: 12px !important;
@@ -143,12 +321,22 @@
 </div>
 
 <!-- BARRA DE BÚSQUEDA GENERAL -->
-<div id="search-bar-container" style="display: none; max-width: 1200px; margin: 10px auto 20px auto; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; padding: 0 10px; box-sizing: border-box;">
+<div id="search-bar-container" style="display: none; max-width: 1200px; margin: 10px auto 15px auto; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; padding: 0 10px; box-sizing: border-box;">
   <div style="position: relative; width: 100%;">
     <span style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: #94a3b8; font-size: 16px;">
       <i class="fa-solid fa-magnifying-glass"></i>
     </span>
-    <input type="text" id="global-search-input" placeholder="Buscar por Artista, Álbum o Canción..." style="width: 100%; padding: 14px 16px 14px 45px; background-color: #0f172a; border: 2px solid #3b82f6; border-radius: 12px; color: #ffffff; font-size: 15px; font-weight: 600; outline: none; box-sizing: border-box; box-shadow: 0 6px 20px rgba(0,0,0,0.3); transition: all 0.3s;" onkeyup="filterCatalog()">
+    <input type="text" id="global-search-input" placeholder="Buscar por Artista, Álbum, Canción..." style="width: 100%; padding: 14px 16px 14px 45px; background-color: #0f172a; border: 2px solid #3b82f6; border-radius: 12px; color: #ffffff; font-size: 15px; font-weight: 600; outline: none; box-sizing: border-box; box-shadow: 0 6px 20px rgba(0,0,0,0.3); transition: all 0.3s;" onkeyup="filterCatalog()">
+  </div>
+</div>
+
+<!-- RESUMEN GENERAL DE EVENTOS (DESTACADOS) -->
+<div id="events-summary-container" style="display: none; max-width: 1200px; margin: 0 auto 20px auto; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; padding: 0 10px; box-sizing: border-box;">
+  <div style="background: #0f172a; border: 2px solid #a855f7; border-radius: 14px; padding: 16px; box-shadow: 0 8px 25px rgba(168, 85, 247, 0.2);">
+    <h3 style="margin: 0 0 12px 0; color: #f43f5e; font-size: 16px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 8px;">
+      <i class="fa-solid fa-bell" style="color: #f43f5e;"></i> Eventos y Destacados Activos
+    </h3>
+    <div id="events-summary-list" class="custom-scroll" style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 6px;"></div>
   </div>
 </div>
 
@@ -209,10 +397,84 @@
     return str;
   }
 
+  // --- FUNCIÓN DE EVALUACIÓN TEMPORAL ---
+  function checkReleaseStatus(song) {
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    var rawDateStr = song["Fecha de inicio de ventas"] || song["Lanzamiento original"] || song["Fecha de pedido anticipado"] || "";
+    if (!rawDateStr) return { type: null, label: "", detail: "", badgeColor: "", dateStr: "" };
+
+    var relDate = new Date(rawDateStr);
+    if (isNaN(relDate.getTime())) return { type: null, label: "", detail: "", badgeColor: "", dateStr: "" };
+
+    var relDateZero = new Date(relDate.getFullYear(), relDate.getMonth(), relDate.getDate());
+    var formattedDate = relDate.toLocaleDateString();
+
+    // 1. LANZAMIENTO FUTURO
+    if (relDateZero > today) {
+      var diffTime = relDateZero - today;
+      var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      var daysText = diffDays === 1 ? "¡Se estrena mañana!" : "Faltan " + diffDays + " días";
+
+      return {
+        type: "FUTURE",
+        label: "Próximo Lanzamiento",
+        detail: daysText,
+        badgeColor: "#0891b2",
+        bgColor: "rgba(6, 182, 212, 0.15)",
+        borderColor: "#0891b2",
+        dateStr: formattedDate,
+        animClass: "pulse-future-block"
+      };
+    }
+
+    // 2. ANIVERSARIO HOY
+    var isSameMonth = relDate.getMonth() === today.getMonth();
+    var isSameDay = relDate.getDate() === today.getDate();
+    var isPastYear = relDate.getFullYear() < today.getFullYear();
+
+    if (isSameMonth && isSameDay && isPastYear) {
+      var years = today.getFullYear() - relDate.getFullYear();
+      return {
+        type: "ANNIVERSARY",
+        label: "Aniversario Hoy",
+        detail: "Cumple " + years + " año" + (years > 1 ? "s" : "") + " hoy",
+        badgeColor: "#d97706",
+        bgColor: "rgba(245, 158, 11, 0.15)",
+        borderColor: "#d97706",
+        dateStr: formattedDate,
+        animClass: "snow-anniversary-block"
+      };
+    }
+
+    return { type: null, label: "", detail: "", badgeColor: "", dateStr: "" };
+  }
+
+  // --- NAVEGACIÓN DIRECTA AL LANZAMIENTO ---
+  function scrollToRelease(artistName, releaseId) {
+    var artistBlocks = document.querySelectorAll(".artist-details");
+    artistBlocks.forEach(function(details) {
+      if (details.dataset.artistName === artistName.toLowerCase()) {
+        details.open = true;
+        var targetCard = document.getElementById(releaseId);
+        if (targetCard) {
+          targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          targetCard.style.outline = "2px solid #38bdf8";
+          setTimeout(function() {
+            targetCard.style.outline = "none";
+          }, 2500);
+        }
+      }
+    });
+  }
+
   function renderCatalog(response) {
     var loadingDiv = document.getElementById("loading");
     var container = document.getElementById("catalog-container");
     var searchBar = document.getElementById("search-bar-container");
+    var eventsSummaryContainer = document.getElementById("events-summary-container");
+    var eventsSummaryList = document.getElementById("events-summary-list");
 
     if (response.error || !response.songsData || response.songsData.length === 0) {
       loadingDiv.innerHTML = '<p style="color: #ffffff; font-size: 16px;">No se encontraron lanzamientos disponibles.</p>';
@@ -247,6 +509,8 @@
     var linkKeys = ["Spotify", "YouTube", "Apple Music", "Amazon Music", "Deezer", "Tidal", "Instagram", "TikTok", "SoundCloud"];
 
     var artistsMap = {};
+    var globalEventsList = [];
+    var releaseCounter = 0;
 
     response.songsData.forEach(function(song) {
       var privacidadVal = (song["Mostrar Privacidad"] || song["Privacidad"] || "").toString().trim();
@@ -269,11 +533,53 @@
       if (!artistsMap[artistaName]) {
         artistsMap[artistaName] = [];
       }
-      artistsMap[artistaName].push({ data: song, allowed: allowedFields });
+
+      releaseCounter++;
+      var uniqueReleaseId = "release-card-" + releaseCounter;
+
+      var status = checkReleaseStatus(song);
+      if (status.type) {
+        globalEventsList.push({
+          artist: artistaName,
+          title: song["Título del álbum/sencillo/EP"] || "Lanzamiento sin título",
+          status: status,
+          targetId: uniqueReleaseId
+        });
+      }
+
+      artistsMap[artistaName].push({ data: song, allowed: allowedFields, cardId: uniqueReleaseId, status: status });
     });
+
+    // --- RENDERIZAR RESUMEN GENERAL SI EXISTEN EVENTOS ---
+    if (globalEventsList.length > 0) {
+      eventsSummaryList.innerHTML = "";
+      globalEventsList.forEach(function(item) {
+        var card = document.createElement("div");
+        card.className = "quick-event-card";
+        card.onclick = function() { scrollToRelease(item.artist, item.targetId); };
+        card.style.cssText = "flex: 0 0 260px; background: #1e293b; border-left: 4px solid " + item.status.badgeColor + "; border-radius: 8px; padding: 10px 12px; box-sizing: border-box;";
+        
+        var icon = item.status.type === "ANNIVERSARY" ? "fa-cake-candles" : "fa-rocket";
+        var prefixVisual = item.status.type === "FUTURE" ? '<span class="radar-dot"></span>' : '';
+
+        card.innerHTML = '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">' +
+                           '<span style="font-size:10px; font-weight:800; color:#ffffff; background:' + item.status.badgeColor + '; padding:2px 6px; border-radius:4px; text-transform:uppercase; display:inline-flex; align-items:center;">' + prefixVisual + '<i class="fa-solid ' + icon + '" style="margin-right:4px;"></i>' + escapeHtml(item.status.label) + '</span>' +
+                           '<span style="font-size:10px; color:#94a3b8;"><i class="fa-solid fa-arrow-right"></i></span>' +
+                         '</div>' +
+                         '<div style="font-size:14px; font-weight:800; color:#ffffff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">' + escapeHtml(item.title) + '</div>' +
+                         '<div style="font-size:12px; color:#38bdf8; font-weight:600;">' + escapeHtml(item.artist) + '</div>' +
+                         '<div style="font-size:11px; color:#fde047; font-weight:700; margin-top:2px;">' + escapeHtml(item.status.detail) + '</div>';
+
+        eventsSummaryList.appendChild(card);
+      });
+      eventsSummaryContainer.style.display = "block";
+    } else {
+      eventsSummaryContainer.style.display = "none";
+    }
 
     container.innerHTML = "";
 
+    // --- RENDERIZAR ARTISTAS ---
     Object.keys(artistsMap).forEach(function(artista) {
       var details = document.createElement("details");
       details.className = "artist-details";
@@ -282,34 +588,73 @@
 
       var summary = document.createElement("summary");
       summary.style.cssText = "font-weight: 800; font-size: 18px; padding: 16px 20px; background: #1e293b; cursor: pointer; color: #ffffff; outline: none; border-bottom: 1px solid #334155; display: flex; align-items: center; justify-content: space-between; gap: 10px;";
-      summary.innerHTML = '<span class="artist-summary-title" style="color:#ffffff; word-break: break-word;"><i class="fa-solid fa-microphone-lines" style="margin-right:8px; color:#38bdf8;"></i>' + escapeHtml(artista) + '</span><span class="artist-summary-badge" style="font-size: 13px; background: #2563eb; padding: 4px 12px; border-radius: 20px; color: #ffffff; font-weight:700; white-space: nowrap;">' + artistsMap[artista].length + ' Lanzamientos</span>';
+      summary.innerHTML = '<span class="artist-summary-title" style="color:#ffffff; word-break: break-word;"><i class="fa-solid fa-microphone-lines" style="margin-right:8px; color:#38bdf8;"></i>' + escapeHtml(artista) + '</span>' +
+                          '<span class="artist-summary-badge" style="font-size: 13px; background: #2563eb; padding: 4px 12px; border-radius: 20px; color: #ffffff; font-weight:700; white-space: nowrap;">' + artistsMap[artista].length + ' Lanzamientos</span>';
       details.appendChild(summary);
 
       var artistContent = document.createElement("div");
       artistContent.style.cssText = "padding: 15px; background-color: #0f172a;";
 
+      // --- BARRA DE EVENTOS PROPIOS DEL ARTISTA ---
+      var artistEvents = artistsMap[artista].filter(function(i) { return i.status.type !== null; });
+      if (artistEvents.length > 0) {
+        var artistNavBox = document.createElement("div");
+        artistNavBox.style.cssText = "background: #0b1120; border: 1px dashed #38bdf8; border-radius: 10px; padding: 10px 12px; margin-bottom: 15px;";
+        
+        var navHtml = '<div style="font-size: 12px; color: #38bdf8; font-weight: 800; text-transform: uppercase; margin-bottom: 8px;"><i class="fa-solid fa-star" style="margin-right: 6px;"></i>Accesos Rápidos a Destacados del Artista:</div>' +
+                       '<div style="display: flex; flex-wrap: wrap; gap: 8px;">';
+
+        artistEvents.forEach(function(ev) {
+          var btnIcon = ev.status.type === "ANNIVERSARY" ? "fa-cake-candles" : "fa-rocket";
+          navHtml += '<button onclick="scrollToRelease(\'' + escapeHtml(artista) + '\', \'' + ev.cardId + '\')" style="background: ' + ev.status.badgeColor + '; border: 0; color: #ffffff; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">' +
+                        '<i class="fa-solid ' + btnIcon + '"></i> ' + escapeHtml(ev.data["Título del álbum/sencillo/EP"] || "Lanzamiento") + ' (' + escapeHtml(ev.status.label) + ')' +
+                     '</button>';
+        });
+
+        navHtml += '</div>';
+        artistNavBox.innerHTML = navHtml;
+        artistContent.appendChild(artistNavBox);
+      }
+
+      // --- LISTADO DE LANZAMIENTOS DEL ARTISTA ---
       artistsMap[artista].forEach(function(item) {
         var song = item.data;
         var allowed = item.allowed;
 
         var releaseCard = document.createElement("div");
-        releaseCard.className = "release-card";
+        var eventStatus = item.status;
+        
+        releaseCard.className = "release-card " + (eventStatus.animClass || "");
+        releaseCard.id = item.cardId;
         
         var albumTitle = song["Título del álbum/sencillo/EP"] || "Lanzamiento sin título";
         var trackNames = [];
         for (var t = 1; t <= 15; t++) {
           if (song["Título " + t]) trackNames.push(song["Título " + t]);
         }
-        releaseCard.dataset.searchKeywords = (artista + " " + albumTitle + " " + trackNames.join(" ")).toLowerCase();
 
-        releaseCard.style.cssText = "border: 1px solid #334155; border-radius: 12px; padding: 15px; margin-bottom: 20px; background: #182234; box-sizing: border-box;";
+        var eventSearchTag = eventStatus.type ? (eventStatus.type === "ANNIVERSARY" ? "aniversario" : "proximo futuro presaved estreno") : "";
+
+        releaseCard.dataset.searchKeywords = (artista + " " + albumTitle + " " + trackNames.join(" ") + " " + eventSearchTag).toLowerCase();
+        releaseCard.style.cssText = "border: 1px solid #334155; border-radius: 12px; padding: 15px; margin-bottom: 20px; background: #182234; box-sizing: border-box; transition: outline 0.3s ease; position: relative;";
+
+        var htmlAlbum = "";
+
+        // BLOQUE DE NOTIFICACIÓN INTERNA SI TIENE EVENTO
+        if (eventStatus.type) {
+          var dotVisual = eventStatus.type === "FUTURE" ? '<span class="radar-dot"></span>' : '';
+          htmlAlbum += '<div style="background: ' + eventStatus.bgColor + '; border: 1px solid ' + eventStatus.borderColor + '; color: #ffffff; padding: 10px 14px; border-radius: 8px; margin-bottom: 12px; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; position: relative; z-index: 3;">' +
+                        '<span>' + dotVisual + '<i class="fa-solid ' + (eventStatus.type === "ANNIVERSARY" ? "fa-cake-candles" : "fa-rocket") + '" style="margin-right:8px; color:' + eventStatus.badgeColor + ';"></i><strong>' + escapeHtml(eventStatus.label) + ':</strong> ' + escapeHtml(eventStatus.detail) + '</span>' +
+                        '<span style="font-size: 11px; opacity: 0.8;">' + escapeHtml(eventStatus.dateStr) + '</span>' +
+                       '</div>';
+        }
 
         // --- INFORMACIÓN DEL ÁLBUM (GRID RESPONSIVO) ---
-        var htmlAlbum = '<div style="border-bottom: 2px solid #38bdf8; padding-bottom: 10px; margin-bottom: 15px;">' +
-                          '<h3 style="margin:0; color:#ffffff; font-size:20px; font-weight:800; word-break: break-word;"><i class="fa-solid fa-compact-disc" style="margin-right:8px; color:#c084fc;"></i>' + escapeHtml(albumTitle) + '</h3>' +
-                        '</div>';
+        htmlAlbum += '<div style="border-bottom: 2px solid #38bdf8; padding-bottom: 10px; margin-bottom: 15px; position: relative; z-index: 3;">' +
+                        '<h3 style="margin:0; color:#ffffff; font-size:20px; font-weight:800; word-break: break-word;"><i class="fa-solid fa-compact-disc" style="margin-right:8px; color:#c084fc;"></i>' + escapeHtml(albumTitle) + '</h3>' +
+                     '</div>';
         
-        htmlAlbum += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 15px;">';
+        htmlAlbum += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 15px; position: relative; z-index: 3;">';
         
         allowed.forEach(function(key) {
           var isTrackField = /^(Título|Artistas|Compositores|¿Contiene letras\?|Letristas|ISRC|Idioma|Preview Clip|Cover)\s\d+$/.test(key);
@@ -324,15 +669,15 @@
         });
         htmlAlbum += '</div>';
 
-        // --- PLATAFORMAS (BOTONES ICONOS, HR Y UN SOLO IFRAME VISIBLE) ---
+        // --- PLATAFORMAS (SOLO ICONOS CON FONT AWESOME) ---
         var embedsHtml = '';
         var linksHtml = '';
 
         linkKeys.forEach(function(key) {
           if (allowed.includes(key) && song[key]) {
             var iconClass = getPlatformIcon(key);
-            linksHtml += '<a href="' + escapeHtml(song[key]) + '" target="_blank" class="platform-btn" style="display:inline-flex; align-items:center; gap:8px; background: #2563eb; color:#ffffff; padding: 8px 14px; margin: 3px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 700; border: 1px solid #60a5fa; box-shadow: 0 4px 10px rgba(37,99,235,0.3);">' +
-                            '<i class="' + iconClass + '" style="font-size:15px;"></i> ' + escapeHtml(key) + ' <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:9px; margin-left:2px;"></i>' +
+            linksHtml += '<a href="' + escapeHtml(song[key]) + '" target="_blank" class="platform-btn-icon" title="' + escapeHtml(key) + '">' +
+                            '<i class="' + iconClass + '"></i>' +
                          '</a>';
           }
         });
@@ -351,11 +696,11 @@
         });
 
         if (linksHtml || embedsHtml) {
-          htmlAlbum += '<div style="margin-top: 20px; background: #0b1120; padding: 15px; border-radius: 12px; border: 1px solid #1e293b; box-sizing: border-box;">';
+          htmlAlbum += '<div style="margin-top: 20px; background: #0b1120; padding: 15px; border-radius: 12px; border: 1px solid #1e293b; box-sizing: border-box; position: relative; z-index: 3;">';
           htmlAlbum += '<h4 style="margin:0 0 12px 0; color:#38bdf8; font-size:15px; font-weight:800; text-transform:uppercase;"><i class="fa-solid fa-headphones" style="margin-right:8px;"></i>Plataformas y Reproductores</h4>';
           
           if (linksHtml) {
-            htmlAlbum += '<div style="margin-bottom: 10px; display:flex; flex-wrap:wrap; gap:4px;">' + linksHtml + '</div>';
+            htmlAlbum += '<div style="margin-bottom: 10px; display:flex; flex-wrap:wrap; gap:4px; align-items:center;">' + linksHtml + '</div>';
           }
 
           if (linksHtml && embedsHtml) {
@@ -375,7 +720,7 @@
 
         // --- CANCIONES DEL ÁLBUM (1 a 15) ---
         var tracksContainer = document.createElement("div");
-        tracksContainer.style.cssText = "margin-top: 15px; background: #0b1120; border-radius: 12px; padding: 15px; border: 1px solid #1e293b; box-sizing: border-box;";
+        tracksContainer.style.cssText = "margin-top: 15px; background: #0b1120; border-radius: 12px; padding: 15px; border: 1px solid #1e293b; box-sizing: border-box; position: relative; z-index: 3;";
         
         var tracksHtml = '<h4 style="margin-top:0; color:#c084fc; font-size:15px; font-weight:800; border-bottom:1px solid #334155; padding-bottom:8px; margin-bottom:12px; text-transform:uppercase;"><i class="fa-solid fa-music" style="margin-right:8px;"></i>Lista de Canciones</h4>';
         var hasTracks = false;
