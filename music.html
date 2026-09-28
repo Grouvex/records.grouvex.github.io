@@ -1,1546 +1,1390 @@
 <!DOCTYPE html>
 <html lang="es" data-theme="dark">
 <head>
-<meta charset="UTF-8">
-<title data-i18n="page_title">Catálogo del Sello - Grouvex Studios</title>
-<meta property="og:site_name" content="Grouvex Studios">
-<meta property="og:title" content="Catálogo del Sello - Grouvex Studios">
-<meta property="og:description" content="Catálogo de ©Grouvex Studios Records">
-<meta property="og:type" content="website">
-<meta property="og:image" href="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/priv/arch/imagen/isede/Grouvex%20Studios%20Records%20Banner.png">
-<meta property="og:url" content="https://records.grouvex.com/">
-<meta property="og:locale" content="es_ES">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="MobileOptimized" content="width">
-<meta name="author" content="Grouvex Studios">
-<meta name="copyright" content="Grouvex Studios">
-<meta name="theme-color" content="#0f172a">
-<link rel="icon" href="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/priv/arch/imagen/isede/Grouvex%20Studios%20Records%20Logo.png" type="image/x-icon">
-<link rel="canonical" href="https://records.grouvex.com/">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<script src="/google-script-simulator.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
-<script src="/jquery-3.5.1.min.js"></script>
-<script src="time.js"></script>
-<script src="index.js"></script>
-<script src="https://www.youtube.com/iframe_api" async></script>
+    <meta charset="UTF-8">
+    <title>Catálogo del Sello - Grouvex Studios</title>
+    <meta property="og:site_name" content="Grouvex Studios">
+    <meta property="og:title" content="Catálogo del Sello - Grouvex Studios">
+    <meta property="og:description" content="Catálogo de ©Grouvex Studios Records">
+    <meta property="og:type" content="website">
+    <meta property="og:image" href="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/priv/arch/imagen/isede/Grouvex%20Studios%20Records%20Banner.png">
+    <meta property="og:url" content="https://records.grouvex.com/">
+    <meta property="og:locale" content="es_ES">
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="temas.css">
+    <link rel="icon" href="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/priv/arch/imagen/isede/Grouvex%20Studios%20Records%20Logo.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="MobileOptimized" content="width">
+    <meta name="author" content="Grouvex Studios">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="copyright" content="Grouvex Studios">
+    <meta name="google-site-verification" content="54a46b8f7ec187ad80dd5a45fff8f43b">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Referrer-Policy" content="no-referrer">
+    <meta name="keywords" content="Grouvex, Música, Grouvex Studios, Grouvex's Projects">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="canonical" href="https://records.grouvex.com/">
+    <link rel="shortlink" href="https://records.grouvex.com/">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="HandheldFriendly" content="true">
+    
+    <script src="/google-script-simulator.js"></script>
+    <!-- FONT AWESOME 6.5.2 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- FIREBASE & JQUERY -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
+    <script src="/jquery-3.5.1.min.js"></script>
+    <meta name="google-adsense-account" content="ca-pub-1678920234395047">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            $("#menuG").load("menuG.html");
+            $("#menuE").load("menuE.html");
+            $("#menuT").load("menuT.html");
+            $("#menuU").load("menuU.html");
+            $("#footer").load("footer.html");
+            $("#news").load("news.html");
+            $("#tosypp").load("tosypp.html");
+        });
+    </script>
+    <script src="time.js"></script>
+    <script src="index.js"></script>
+    <script type="module" src="abc.js"></script>
 
-<style>
-/* ═════════════════════════════════════════════════════════════════
-   VARIABLES DE TEMA (claro / oscuro)
-   ═════════════════════════════════════════════════════════════════ */
-:root, [data-theme="dark"] {
-  --bg-primary: #0f172a;
-  --bg-secondary: #182234;
-  --bg-tertiary: #0b1120;
-  --card-bg: #1e293b;
-  --border-color: #334155;
-  --text-primary: #ffffff;
-  --text-secondary: #94a3b8;
-  --accent-blue: #38bdf8;
-  --accent-purple: #a855f7;
-  --accent-yellow: #fde047;
-  --accent-pink: #f43f5e;
-  --shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
-}
-[data-theme="light"] {
-  --bg-primary: #f8fafc;
-  --bg-secondary: #ffffff;
-  --bg-tertiary: #f1f5f9;
-  --card-bg: #ffffff;
-  --border-color: #cbd5e1;
-  --text-primary: #0f172a;
-  --text-secondary: #64748b;
-  --accent-blue: #0284c7;
-  --accent-purple: #9333ea;
-  --accent-yellow: #ca8a04;
-  --accent-pink: #e11d48;
-  --shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-}
+    <!-- ESTILOS AVANZADOS Y THEME ENGINE CON VARIABLES CSS -->
+    <style>
+      :root {
+        --bg-primary: #0f172a;
+        --bg-secondary: #182234;
+        --bg-card: #1e293b;
+        --bg-inner: #0b1120;
+        --text-primary: #ffffff;
+        --text-secondary: #94a3b8;
+        --accent-color: #38bdf8;
+        --accent-purple: #a855f7;
+        --border-color: #334155;
+        --card-border: #3b82f6;
+        --shadow-color: rgba(0, 0, 0, 0.5);
+        --modal-overlay: rgba(15, 23, 42, 0.95);
+        --lyric-inactive: rgba(255, 255, 255, 0.4);
+        --lyric-active: #38bdf8;
+        --badge-explicit: #ef4444;
+      }
 
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  background: var(--bg-primary);
-  color: var(--text-primary);
-  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  transition: background 0.3s, color 0.3s;
-}
+      [data-theme="light"] {
+        --bg-primary: #f8fafc;
+        --bg-secondary: #ffffff;
+        --bg-card: #f1f5f9;
+        --bg-inner: #e2e8f0;
+        --text-primary: #0f172a;
+        --text-secondary: #475569;
+        --accent-color: #0284c7;
+        --accent-purple: #7e22ce;
+        --border-color: #cbd5e1;
+        --card-border: #0284c7;
+        --shadow-color: rgba(0, 0, 0, 0.08);
+        --modal-overlay: rgba(255, 255, 255, 0.95);
+        --lyric-inactive: rgba(15, 23, 42, 0.4);
+        --lyric-active: #0284c7;
+      }
 
-/* ═════════════════════════════════════════════════════════════════
-   ANIMACIONES BASE (PRÓXIMOS Y ANIVERSARIOS)
-   ═════════════════════════════════════════════════════════════════ */
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+      body {
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
 
-.pulse-future-block { position: relative; overflow: hidden; }
-.pulse-future-block::before {
-  content: ""; position: absolute; top: 20px; left: 20px;
-  width: 10px; height: 10px; border-radius: 50%;
-  background: rgba(8, 145, 178, 0.4);
-  animation: wave-radial-expand 2.5s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
-  pointer-events: none; z-index: 1;
-}
-@keyframes wave-radial-expand {
-  0% { transform: scale(0); opacity: 0.9; box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.8); }
-  50% { opacity: 0.5; }
-  100% { transform: scale(85); opacity: 0; box-shadow: 0 0 40px 20px rgba(8, 145, 178, 0); }
-}
-.radar-dot {
-  display: inline-block; width: 8px; height: 8px; background-color: #38bdf8;
-  border-radius: 50%; margin-right: 6px; animation: spin-glow 1.5s infinite alternate;
-}
-@keyframes spin-glow {
-  0% { opacity: 0.3; transform: scale(0.8); }
-  100% { opacity: 1; transform: scale(1.3); }
-}
+      /* PANEL DE CONTROLES AVANZADOS (BARRA SUPERIOR DE HERRAMIENTAS) */
+      .toolbar-container {
+        max-width: 1200px;
+        margin: 15px auto;
+        padding: 15px;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 14px;
+        box-shadow: 0 8px 25px var(--shadow-color);
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        box-sizing: border-box;
+      }
 
-.snow-anniversary-block { position: relative; overflow: hidden; }
-@keyframes snow-fall-realistic-1 {
-  0% { transform: translateY(-10px) translateX(0) rotate(0deg); opacity: 0; }
-  10% { opacity: 0.9; }
-  50% { transform: translateY(50vh) translateX(25px) rotate(180deg); }
-  90% { opacity: 0.8; }
-  100% { transform: translateY(105%) translateX(-15px) rotate(360deg); opacity: 0; }
-}
-@keyframes snow-fall-realistic-2 {
-  0% { transform: translateY(-10px) translateX(0) rotate(0deg); opacity: 0; }
-  15% { opacity: 0.85; }
-  60% { transform: translateY(60vh) translateX(-30px) rotate(-180deg); }
-  100% { transform: translateY(105%) translateX(20px) rotate(-360deg); opacity: 0; }
-}
-.snow-anniversary-block::before, .snow-anniversary-block::after {
-  content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-  pointer-events: none; z-index: 2;
-}
-.snow-anniversary-block::before {
-  background-image:
-    radial-gradient(circle, #f43f5e 3px, transparent 3.5px),
-    radial-gradient(circle, #38bdf8 2px, transparent 2.5px),
-    radial-gradient(circle, #a855f7 4px, transparent 4.5px),
-    radial-gradient(circle, #fde047 2px, transparent 2.5px),
-    radial-gradient(circle, #10b981 3px, transparent 3.5px),
-    radial-gradient(circle, #ec4899 2px, transparent 2.5px);
-  background-size: 120px 300px, 180px 250px, 220px 350px, 150px 280px, 200px 320px, 160px 270px;
-  background-position: 10% -20px, 28% -50px, 45% -10px, 62% -40px, 75% -15px, 88% -60px;
-  animation: snow-fall-realistic-1 9s linear infinite;
-}
-.snow-anniversary-block::after {
-  background-image:
-    radial-gradient(circle, #06b6d4 3px, transparent 3.5px),
-    radial-gradient(circle, #eab308 2px, transparent 2.5px),
-    radial-gradient(circle, #8b5cf6 3px, transparent 3.5px),
-    radial-gradient(circle, #f472b6 4px, transparent 4.5px);
-  background-size: 140px 310px, 210px 260px, 170px 340px, 230px 290px;
-  background-position: 5% -35px, 20% -15px, 52% -45px, 68% -20px;
-  animation: snow-fall-realistic-2 12s linear infinite;
-  animation-delay: 4.5s;
-}
+      .toolbar-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
 
-/* ═════════════════════════════════════════════════════════════════
-   BARRA SUPERIOR
-   ═════════════════════════════════════════════════════════════════ */
-.top-controls {
-  position: fixed; top: 12px; right: 12px; z-index: 9999;
-  display: flex; gap: 8px;
-}
-.ctrl-btn {
-  background: var(--card-bg); color: var(--text-primary);
-  border: 1px solid var(--border-color); border-radius: 10px;
-  padding: 8px 12px; cursor: pointer; font-weight: 700;
-  display: inline-flex; align-items: center; gap: 6px;
-  transition: all 0.2s; box-shadow: var(--shadow);
-}
-.ctrl-btn:hover { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue); }
+      .search-box {
+        position: relative;
+        flex: 1 1 300px;
+      }
 
-/* ═════════════════════════════════════════════════════════════════
-   BARRA DE FILTROS
-   ═════════════════════════════════════════════════════════════════ */
-.filter-controls {
-  max-width: 1200px; margin: 20px auto; padding: 18px;
-  background: var(--card-bg); border: 1px solid var(--border-color);
-  border-radius: 14px; box-shadow: var(--shadow);
-}
-.filter-row { display: flex; flex-wrap: wrap; gap: 20px; align-items: center; margin-bottom: 14px; }
-.filter-group { display: flex; align-items: center; gap: 8px; }
-.filter-label {
-  font-size: 12px; font-weight: 800; text-transform: uppercase;
-  color: var(--accent-yellow); letter-spacing: 0.5px;
-}
-.filter-select {
-  background: var(--bg-tertiary); color: var(--text-primary);
-  border: 1px solid var(--border-color); border-radius: 8px;
-  padding: 8px 12px; font-weight: 600; cursor: pointer; outline: none;
-}
-.view-toggle { display: inline-flex; border: 1px solid var(--border-color); border-radius: 8px; overflow: hidden; }
-.view-btn {
-  background: var(--bg-tertiary); color: var(--text-primary); border: 0;
-  padding: 8px 14px; cursor: pointer; transition: all 0.2s;
-}
-.view-btn.active { background: var(--accent-blue); color: #fff; }
+      .search-box i {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-secondary);
+      }
 
-.switch { position: relative; display: inline-block; width: 46px; height: 24px; }
-.switch input { opacity: 0; width: 0; height: 0; }
-.slider {
-  position: absolute; cursor: pointer; inset: 0;
-  background: var(--border-color); border-radius: 34px; transition: .3s;
-}
-.slider:before {
-  content: ""; position: absolute; height: 18px; width: 18px;
-  left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: .3s;
-}
-input:checked + .slider { background: var(--accent-blue); }
-input:checked + .slider:before { transform: translateX(22px); }
+      .search-box input {
+        width: 100%;
+        padding: 12px 16px 12px 42px;
+        background: var(--bg-primary);
+        border: 2px solid var(--card-border);
+        border-radius: 10px;
+        color: var(--text-primary);
+        font-size: 14px;
+        font-weight: 600;
+        outline: none;
+        box-sizing: border-box;
+        transition: all 0.3s ease;
+      }
 
-.chips-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; }
-.chip {
-  background: var(--bg-tertiary); color: var(--text-primary);
-  border: 1px solid var(--border-color); border-radius: 20px;
-  padding: 6px 14px; font-size: 12px; font-weight: 700; cursor: pointer;
-  transition: all 0.2s;
-}
-.chip:hover { border-color: var(--accent-blue); }
-.chip.active { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue); }
+      .control-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
 
-/* ═════════════════════════════════════════════════════════════════
-   MODALES
-   ═════════════════════════════════════════════════════════════════ */
-.modal-overlay {
-  position: fixed; inset: 0; background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(6px); z-index: 10000;
-  display: flex; align-items: center; justify-content: center;
-  padding: 16px; opacity: 0; pointer-events: none;
-  transition: opacity 0.25s ease;
-}
-.modal-overlay.open { opacity: 1; pointer-events: auto; }
-.modal-content {
-  background: var(--bg-secondary); color: var(--text-primary);
-  border: 1px solid var(--accent-blue); border-radius: 18px;
-  width: 100%; max-width: 720px; max-height: 92vh;
-  display: flex; flex-direction: column;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
-  position: relative; transform: scale(0.95);
-  transition: transform 0.25s ease;
-}
-.modal-overlay.open .modal-content { transform: scale(1); }
-.modal-close {
-  position: absolute; top: 12px; right: 12px;
-  background: var(--accent-pink); color: #fff; border: 0;
-  width: 38px; height: 38px; border-radius: 50%;
-  cursor: pointer; font-size: 16px; z-index: 5;
-  display: flex; align-items: center; justify-content: center;
-}
-.modal-close:hover { opacity: 0.85; }
+      .btn-tool {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        padding: 9px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s ease;
+      }
 
-.karaoke-header { padding: 20px 60px 12px 20px; border-bottom: 1px solid var(--border-color); }
-.modal-title { margin: 0; font-size: 20px; font-weight: 800; }
-.modal-subtitle { margin: 4px 0 0 0; color: var(--accent-blue); font-weight: 600; font-size: 14px; }
-.karaoke-lyrics {
-  flex: 1; overflow-y: auto; padding: 30px 20px;
-  scroll-behavior: smooth; max-height: 55vh;
-  display: flex; flex-direction: column; gap: 8px;
-}
-.lyric-line {
-  padding: 10px 14px; border-radius: 10px;
-  font-size: 18px; font-weight: 600; line-height: 1.4;
-  color: var(--text-secondary); cursor: pointer;
-  transition: all 0.3s ease; border-left: 3px solid transparent;
-}
-.lyric-line:hover { background: var(--bg-tertiary); color: var(--text-primary); }
-.lyric-line.active {
-  color: #fff;
-  background: linear-gradient(90deg, var(--accent-purple), var(--accent-blue));
-  border-left-color: var(--accent-yellow);
-  box-shadow: 0 0 20px rgba(168, 85, 247, 0.6), 0 0 40px rgba(56, 189, 248, 0.4);
-  transform: scale(1.02);
-  text-shadow: 0 0 12px rgba(255, 255, 255, 0.7);
-}
-.karaoke-empty { text-align: center; color: var(--text-secondary); font-style: italic; padding: 40px 20px; }
-.karaoke-controls {
-  display: flex; align-items: center; justify-content: center; gap: 16px;
-  padding: 12px; border-top: 1px solid var(--border-color);
-}
-.ctrl-btn-round {
-  background: var(--accent-blue); color: #fff; border: 0;
-  width: 44px; height: 44px; border-radius: 50%;
-  cursor: pointer; font-size: 16px; transition: transform 0.2s;
-}
-.ctrl-btn-round:hover { transform: scale(1.1); }
-.karaoke-time { font-family: monospace; font-weight: 700; color: var(--text-secondary); }
+      .btn-tool:hover, .btn-tool.active {
+        background: var(--accent-color);
+        color: #ffffff;
+        border-color: var(--accent-color);
+      }
 
-/* Smartlink */
-.smartlink-content { padding: 30px 24px; text-align: center; max-width: 460px; }
-.sl-cover {
-  width: 180px; height: 180px; border-radius: 16px;
-  object-fit: cover; margin: 0 auto 16px; display: block;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
-}
-.sl-title { font-size: 22px; font-weight: 800; margin: 0 0 4px 0; }
-.sl-artist { font-size: 15px; color: var(--accent-blue); font-weight: 700; margin: 0 0 20px 0; }
-.sl-links { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
-.sl-link {
-  display: flex; align-items: center; justify-content: center; gap: 12px;
-  padding: 14px; border-radius: 12px; background: var(--bg-tertiary);
-  color: var(--text-primary); text-decoration: none; font-weight: 700;
-  border: 1px solid var(--border-color); transition: all 0.2s;
-}
-.sl-link:hover { background: var(--accent-blue); color: #fff; transform: translateY(-2px); }
-.sl-copy {
-  margin-top: 16px; background: var(--accent-purple); color: #fff;
-  border: 0; padding: 12px 20px; border-radius: 10px;
-  font-weight: 700; cursor: pointer; width: 100%; font-size: 14px;
-}
+      .select-tool {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        padding: 9px 12px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+        outline: none;
+        cursor: pointer;
+      }
 
-/* Countdown */
-.countdown-box {
-  display: flex; gap: 10px; justify-content: center; margin: 10px 0;
-  font-family: monospace; flex-wrap: wrap;
-}
-.countdown-seg {
-  background: var(--bg-tertiary); border: 1px solid var(--accent-blue);
-  border-radius: 8px; padding: 8px 12px; min-width: 55px; text-align: center;
-}
-.countdown-num { display: block; font-size: 22px; font-weight: 900; color: var(--accent-yellow); }
-.countdown-lbl { font-size: 10px; color: var(--text-secondary); text-transform: uppercase; }
+      /* SWITCH TOGGLE PARA CONTENIDO EXPLÍCITO */
+      .switch-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        color: var(--text-primary);
+        background: var(--bg-card);
+        padding: 6px 12px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+      }
 
-/* Grid view */
-#catalog-container.grid-view .release-card {
-  display: inline-block; width: calc(33.333% - 14px);
-  margin: 6px; vertical-align: top; min-width: 260px;
-}
-#catalog-container.grid-view .artist-details { margin-bottom: 14px; }
-@media (max-width: 900px) { #catalog-container.grid-view .release-card { width: calc(50% - 14px); } }
-@media (max-width: 600px) { #catalog-container.grid-view .release-card { width: 100%; margin: 6px 0; } }
+      .switch-label input { display: none; }
 
-.release-card.is-explicit.hidden-explicit { display: none !important; }
-.release-card { transition: outline 0.3s ease; }
+      .switch-slider {
+        width: 34px;
+        height: 18px;
+        background-color: var(--border-color);
+        border-radius: 20px;
+        position: relative;
+        transition: 0.3s;
+      }
 
-.release-actions {
-  position: absolute; top: 12px; right: 12px;
-  display: flex; gap: 6px; z-index: 6;
-}
-.act-btn {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: var(--bg-tertiary); color: var(--text-primary);
-  border: 1px solid var(--accent-blue); cursor: pointer;
-  display: inline-flex; align-items: center; justify-content: center;
-  transition: all 0.2s;
-}
-.act-btn:hover { background: var(--accent-blue); color: #fff; transform: scale(1.1); }
-.act-btn.mic { border-color: var(--accent-purple); }
-.act-btn.mic:hover { background: var(--accent-purple); }
-.act-btn.track-mic { width: 30px; height: 30px; font-size: 12px; }
+      .switch-slider::before {
+        content: "";
+        position: absolute;
+        width: 14px;
+        height: 14px;
+        left: 2px;
+        top: 2px;
+        background-color: white;
+        border-radius: 50%;
+        transition: 0.3s;
+      }
 
-/* Badges de contenido */
-.explicit-badge {
-  display: inline-block; background: #000; color: #fff;
-  font-size: 10px; font-weight: 900; padding: 2px 6px;
-  border-radius: 3px; margin-left: 8px; vertical-align: middle;
-}
-.clean-badge {
-  display: inline-block; background: #10b981; color: #fff;
-  font-size: 10px; font-weight: 900; padding: 2px 6px;
-  border-radius: 3px; margin-left: 8px; vertical-align: middle;
-}
-.nonexplicit-badge {
-  display: inline-block; background: #64748b; color: #fff;
-  font-size: 10px; font-weight: 900; padding: 2px 6px;
-  border-radius: 3px; margin-left: 8px; vertical-align: middle;
-}
+      .switch-label input:checked + .switch-slider {
+        background-color: var(--badge-explicit);
+      }
 
-/* Plataformas */
-.platform-btn-icon {
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 44px; height: 44px; background: var(--card-bg); color: var(--text-primary);
-  margin: 4px; border-radius: 10px; text-decoration: none;
-  font-size: 20px; border: 1px solid var(--accent-blue);
-  box-shadow: var(--shadow); transition: all 0.2s ease-in-out;
-}
-.platform-btn-icon:hover {
-  background: #2563eb; color: #fff;
-  transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 6px 15px rgba(37, 99, 235, 0.5);
-}
-.embed-wrapper iframe { width: 100% !important; border-radius: 12px; border: 0; }
+      .switch-label input:checked + .switch-slider::before {
+        transform: translateX(16px);
+      }
 
-.custom-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
-.custom-scroll::-webkit-scrollbar-track { background: var(--bg-tertiary); border-radius: 10px; }
-.custom-scroll::-webkit-scrollbar-thumb { background: var(--accent-blue); border-radius: 10px; }
+      /* FILTROS POR CATEGORÍAS Y GÉNEROS (CHIPS/PILLS) */
+      .chips-container {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
 
-.quick-event-card { transition: all 0.2s ease; cursor: pointer; }
-.quick-event-card:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); }
+      .chip {
+        padding: 6px 14px;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text-secondary);
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.2s;
+      }
 
-/* Media queries */
-@media (max-width: 600px) {
-  .artist-summary-title { font-size: 16px !important; }
-  .artist-summary-badge { font-size: 11px !important; padding: 4px 8px !important; }
-  .track-meta-box { font-size: 12px !important; padding: 4px 8px !important; }
-  .top-controls { top: 8px; right: 8px; }
-  .ctrl-btn { padding: 6px 10px; font-size: 12px; }
-}
-</style>
+      .chip:hover, .chip.active {
+        background: var(--accent-purple);
+        color: #ffffff;
+        border-color: var(--accent-purple);
+      }
+
+      /* MODOS DE VISTA: GRID VS LISTA */
+      .catalog-grid {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 20px;
+      }
+
+      .catalog-grid .artist-details {
+        margin-bottom: 0 !important;
+      }
+
+      /* TARJETAS Y ANIMACIONES */
+      @keyframes spin { 
+        0% { transform: rotate(0deg); } 
+        100% { transform: rotate(360deg); } 
+      }
+
+      .pulse-future-block::before {
+        content: "";
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(8, 145, 178, 0.4);
+        animation: wave-radial-expand 2.5s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      @keyframes wave-radial-expand {
+        0% { transform: scale(0); opacity: 0.9; box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.8); }
+        50% { opacity: 0.5; }
+        100% { transform: scale(85); opacity: 0; box-shadow: 0 0 40px 20px rgba(8, 145, 178, 0); }
+      }
+
+      .radar-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background-color: var(--accent-color);
+        border-radius: 50%;
+        margin-right: 6px;
+        animation: spin-glow 1.5s infinite alternate;
+      }
+
+      @keyframes spin-glow {
+        0% { opacity: 0.3; transform: scale(0.8); }
+        100% { opacity: 1; transform: scale(1.3); }
+      }
+
+      .platform-btn-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        background: var(--bg-card);
+        color: var(--text-primary);
+        margin: 4px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-size: 18px;
+        border: 1px solid var(--border-color);
+        box-shadow: 0 4px 10px var(--shadow-color);
+        transition: all 0.2s ease-in-out;
+      }
+
+      .platform-btn-icon:hover {
+        background: var(--accent-color);
+        color: #ffffff;
+        transform: translateY(-3px) scale(1.05);
+        border-color: var(--accent-color);
+      }
+
+      .btn-action-icon {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        color: var(--text-primary);
+        width: 36px;
+        height: 36px;
+        border-radius: 8px;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+      }
+
+      .btn-action-icon:hover {
+        background: var(--accent-purple);
+        color: #ffffff;
+        border-color: var(--accent-purple);
+      }
+
+      .badge-explicit {
+        background-color: var(--badge-explicit);
+        color: #ffffff;
+        font-size: 10px;
+        font-weight: 900;
+        padding: 2px 6px;
+        border-radius: 4px;
+        text-transform: uppercase;
+        margin-left: 6px;
+        display: inline-block;
+      }
+
+      /* ESTILOS DE MODALES (KARAOKE Y SMARTLINK) */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: var(--modal-overlay);
+        backdrop-filter: blur(12px);
+        z-index: 10000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+
+      .modal-overlay.active {
+        display: flex;
+        animation: fadeIn 0.25s ease-out;
+      }
+
+      @keyframes fadeIn {
+        from { opacity: 0; transform: scale(0.98); }
+        to { opacity: 1; transform: scale(1); }
+      }
+
+      .modal-container {
+        background: var(--bg-secondary);
+        border: 2px solid var(--card-border);
+        border-radius: 20px;
+        width: 100%;
+        max-width: 650px;
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 20px 50px var(--shadow-color);
+        overflow: hidden;
+        position: relative;
+      }
+
+      .modal-header {
+        padding: 18px 24px;
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--bg-card);
+      }
+
+      .modal-header h3 {
+        margin: 0;
+        font-size: 18px;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .modal-close {
+        background: transparent;
+        border: none;
+        color: var(--text-secondary);
+        font-size: 22px;
+        cursor: pointer;
+        transition: color 0.2s;
+      }
+
+      .modal-close:hover { color: var(--badge-explicit); }
+
+      .modal-body {
+        padding: 24px;
+        overflow-y: auto;
+        flex: 1;
+      }
+
+      /* COMPONENTE KARAOKE SYNC */
+      .karaoke-player-box {
+        width: 100%;
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 20px;
+        background: #000;
+        aspect-ratio: 16/9;
+      }
+
+      .karaoke-lyrics-container {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+        padding: 30px 10px;
+      }
+
+      .karaoke-line {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--lyric-inactive);
+        cursor: pointer;
+        transition: all 0.3s ease;
+        padding: 8px 12px;
+        border-radius: 8px;
+      }
+
+      .karaoke-line:hover {
+        color: var(--text-primary);
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      .karaoke-line.active {
+        font-size: 23px;
+        color: var(--lyric-active);
+        text-shadow: 0 0 15px var(--lyric-active);
+        transform: scale(1.05);
+        background: rgba(56, 189, 248, 0.08);
+      }
+
+      /* SMARTLINK / LINKTREE CARD */
+      .smartlink-card {
+        text-align: center;
+      }
+
+      .smartlink-cover {
+        width: 180px;
+        height: 180px;
+        border-radius: 16px;
+        object-fit: cover;
+        box-shadow: 0 10px 30px var(--shadow-color);
+        margin-bottom: 15px;
+        border: 2px solid var(--card-border);
+      }
+
+      .smartlink-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .smartlink-btn {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 20px;
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-radius: 12px;
+        color: var(--text-primary);
+        text-decoration: none;
+        font-weight: 700;
+        transition: all 0.2s;
+      }
+
+      .smartlink-btn:hover {
+        background: var(--accent-color);
+        color: #ffffff;
+        border-color: var(--accent-color);
+      }
+
+      /* SCROLLBAR PERSONALIZADO */
+      .custom-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
+      .custom-scroll::-webkit-scrollbar-track { background: var(--bg-primary); border-radius: 10px; }
+      .custom-scroll::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 10px; }
+
+      .embed-wrapper iframe { width: 100% !important; border-radius: 12px; border: 0; }
+    </style>
 </head>
 <body>
 
-<!-- ═══════════════════ BARRA SUPERIOR DE CONTROLES ═══════════════════ -->
-<div class="top-controls">
-  <button id="lang-toggle" class="ctrl-btn" title="Idioma / Language">
-    <i class="fa-solid fa-language"></i> <span id="lang-label">ES</span>
-  </button>
-  <button id="theme-toggle" class="ctrl-btn" title="Claro/Oscuro">
-    <i class="fa-solid fa-moon"></i>
-  </button>
-</div>
+  <header>
+      <a href="https://records.grouvex.github.io/">
+          <div class="img-container"></div>
+      </a>
+      <span style="font-family: Times New Roman; color:white; box-shadow: 0 0 10px gold; width:100%">
+          <span id="menuG"></span>
+          <span id="menuT"></span>
+          <span id="menuU"></span> 
+      </span>
+  </header>
 
-<header>
-  <a href="https://records.grouvex.github.io/"><div class="img-container"></div></a>
-  <span style="font-family: Times New Roman; color: white; box-shadow: 0 0 10px gold; width: 100%;">
-    <span id="menuG"></span>
-    <span id="menuT"></span>
-    <span id="menuU"></span>
-  </span>
-</header>
-
-<div id="news"></div>
+  <div id="news"></div>
 
 <main>
-  <!-- Publicado por -->
+  <!-- PUBLICADO POR -->
   <div class="tarjetas">
-    <div class="tarjeta">
-      <img id="imgTIGS" src="" alt="Imagen de Usuario">
-      <div>
-        <h2 style="margin: 2px; font-size: 7.5px;">Publicado por:</h2>
-        <h2><span tigsID="GS-vTGoeRy3HqhZkwNCraRaFCDHgtf2"></span></h2>
-        <hr>
-        <span class="insignias-container"></span>
-        <p><span id="ActualizadoDATE"></span></p>
+      <div class="tarjeta">
+          <img id="imgTIGS" src="" alt="Imagen de Usuario">
+          <div>
+            <h2 style="margin:2px; font-size: 7.5px; height:auto">Publicado por:</h2>
+            <h2><span tigsID="GS-vTGoeRy3HqhZkwNCraRaFCDHgtf2"></span></h2>
+            <hr>
+            <span class="insignias-container"></span>
+            <p><span id="ActualizadoDATE"></span></p>
+          </div>
       </div>
-    </div>
   </div>
   <script>const uTActualizado = 1776603013; actualizarFechas(uTActualizado, "ActualizadoDATE");</script>
 
   <script async src="https://js.stripe.com/v3/buy-button.js"></script>
-  <stripe-buy-button buy-button-id="buy_btn_1TNwyb4bAPF5b1EYQWlQOdj6"
+  <stripe-buy-button
+    buy-button-id="buy_btn_1TNwyb4bAPF5b1EYQWlQOdj6"
     publishable-key="pk_live_51RN9E64bAPF5b1EYXhYKHGGqgE6efOROmgu1567ZBIspT9sdH0SzB5DSdznOJywVx48wrNgdGRbviJuD17WPJt4Z00S1SCbdl4">
   </stripe-buy-button>
 
-  <!-- Cargando -->
-  <div id="loading" style="text-align: center; padding: 40px 15px; background: var(--bg-tertiary); border-radius: 16px; margin: 10px auto; max-width: 1200px; color: var(--text-primary); box-shadow: var(--shadow);">
-    <div style="border: 4px solid rgba(255, 255, 255, 0.1); border-top: 4px solid #a855f7; border-right: 4px solid #06b6d4; border-radius: 50%; width: 45px; height: 45px; animation: spin 0.8s linear infinite; margin: 0 auto 15px auto;"></div>
-    <p style="color: var(--text-primary); font-size: 16px; font-weight: 700; margin: 0;" data-i18n="loading">Cargando catálogo musical...</p>
+  <!-- BLOQUE DE CARGA -->
+  <div id="loading" style="text-align: center; padding: 40px 15px; background: var(--bg-secondary); border-radius: 16px; margin: 15px auto; max-width: 1200px; color: var(--text-primary); box-shadow: 0 10px 30px var(--shadow-color); box-sizing: border-box;">
+    <div style="border: 4px solid rgba(255, 255, 255, 0.1); border-top: 4px solid var(--accent-purple); border-right: 4px solid var(--accent-color); border-radius: 50%; width: 45px; height: 45px; animation: spin 0.8s linear infinite; margin: 0 auto 15px auto;"></div>
+    <p id="loading-text" style="font-size: 16px; font-weight: 700; margin: 0;" data-i18n="loading">Cargando catálogo musical...</p>
   </div>
 
-  <!-- Buscador -->
-  <div id="search-bar-container" style="display: none; max-width: 1200px; margin: 10px auto 15px auto; padding: 0 10px;">
-    <div style="position: relative; width: 100%;">
-      <span style="position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-secondary); font-size: 16px;">
+  <!-- BARRA DE HERRAMIENTAS Y CONTROLES AVANZADOS -->
+  <div id="toolbar-container" class="toolbar-container" style="display: none;">
+    <div class="toolbar-row">
+      <!-- BÚSQUEDA GENERAL -->
+      <div class="search-box">
         <i class="fa-solid fa-magnifying-glass"></i>
-      </span>
-      <input type="text" id="global-search-input" data-i18n-placeholder="search_placeholder"
-        placeholder="Buscar por Artista, Álbum, Canción..."
-        style="width: 100%; padding: 14px 16px 14px 45px; background-color: var(--bg-tertiary); border: 2px solid var(--accent-blue); border-radius: 12px; color: var(--text-primary); font-size: 15px; font-weight: 600; outline: none; box-shadow: var(--shadow); transition: all 0.3s;"
-        onkeyup="filterCatalog()">
-    </div>
-  </div>
+        <input type="text" id="global-search-input" placeholder="Buscar por artista, álbum, canción..." onkeyup="applyAllFilters()" data-i18n-ph="searchPlaceholder">
+      </div>
 
-  <!-- Filtros -->
-  <div id="filter-controls" class="filter-controls" style="display: none;">
-    <div class="filter-row">
-      <div class="filter-group">
-        <label class="filter-label" data-i18n="sort">Ordenar</label>
-        <select id="sort-select" class="filter-select">
-          <option value="recent" data-i18n="sort_recent">Más recientes primero</option>
-          <option value="az" data-i18n="sort_az">Título (A-Z)</option>
-          <option value="za" data-i18n="sort_za">Título (Z-A)</option>
-          <option value="artist" data-i18n="sort_artist">Artista (A-Z)</option>
+      <!-- CONTROLES SECUNDARIOS -->
+      <div class="control-group">
+        <!-- SELECCIÓN DE ORDENAMIENTO -->
+        <select id="sort-select" class="select-tool" onchange="applyAllFilters()">
+          <option value="recent" data-i18n="sortRecent">Más recientes primero</option>
+          <option value="title-asc" data-i18n="sortTitleAsc">Título (A-Z)</option>
+          <option value="title-desc" data-i18n="sortTitleDesc">Título (Z-A)</option>
+          <option value="artist-asc" data-i18n="sortArtistAsc">Artista (A-Z)</option>
         </select>
-      </div>
 
-      <div class="filter-group">
-        <label class="filter-label" data-i18n="view">Vista</label>
-        <div class="view-toggle">
-          <button class="view-btn active" data-view="list" title="Lista"><i class="fa-solid fa-list"></i></button>
-          <button class="view-btn" data-view="grid" title="Cuadrícula"><i class="fa-solid fa-table-cells-large"></i></button>
-        </div>
-      </div>
+        <!-- MODO DE VISTA GRID / LISTA -->
+        <button id="view-list-btn" class="btn-tool active" onclick="setViewMode('list')" title="Vista en Lista">
+          <i class="fa-solid fa-list"></i>
+        </button>
+        <button id="view-grid-btn" class="btn-tool" onclick="setViewMode('grid')" title="Vista en Cuadrícula">
+          <i class="fa-solid fa-table-cells"></i>
+        </button>
 
-      <div class="filter-group">
-        <label class="filter-label" data-i18n="hide_explicit">Ocultar explícito</label>
-        <label class="switch">
-          <input type="checkbox" id="explicit-toggle">
-          <span class="slider"></span>
+        <!-- THEME TOGGLE (MODO CLARO / OSCURO) -->
+        <button class="btn-tool" onclick="toggleTheme()" id="theme-btn" title="Alternar Modo Claro/Oscuro">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+
+        <!-- SELECTOR DE IDIOMA -->
+        <button class="btn-tool" onclick="toggleLanguage()" id="lang-btn">
+          <i class="fa-solid fa-globe"></i> ES
+        </button>
+
+        <!-- SWITCH DE CONTENIDO EXPLÍCITO -->
+        <label class="switch-label" title="Ocultar contenido explícito">
+          <i class="fa-solid fa-triangle-exclamation" style="color: var(--badge-explicit);"></i>
+          <span data-i18n="hideExplicit">Ocultar Explícito</span>
+          <input type="checkbox" id="explicit-toggle" onchange="applyAllFilters()">
+          <span class="switch-slider"></span>
         </label>
       </div>
     </div>
 
-    <div class="chips-row" id="chips-category">
-      <span class="filter-label" data-i18n="category">Categoría:</span>
-      <button class="chip active" data-filter-cat="all" data-i18n="all">Todos</button>
-      <button class="chip" data-filter-cat="single">Single</button>
-      <button class="chip" data-filter-cat="ep">EP</button>
-      <button class="chip" data-filter-cat="album">Álbum</button>
-    </div>
-
-    <div class="chips-row" id="chips-status">
-      <span class="filter-label" data-i18n="status">Estado:</span>
-      <button class="chip active" data-filter-status="all" data-i18n="all">Todos</button>
-      <button class="chip" data-filter-status="FUTURE" data-i18n="upcoming">Próximos</button>
-      <button class="chip" data-filter-status="ANNIVERSARY" data-i18n="anniversary">Aniversarios</button>
-    </div>
-
-    <div class="chips-row" id="chips-explicit">
-      <span class="filter-label" data-i18n="content_type">Contenido:</span>
-      <button class="chip active" data-filter-explicit="all" data-i18n="all">Todos</button>
-      <button class="chip" data-filter-explicit="explicit" data-i18n="explicit_only">Explícito</button>
-      <button class="chip" data-filter-explicit="clean" data-i18n="clean_only">Limpio</button>
-      <button class="chip" data-filter-explicit="nonexplicit" data-i18n="nonexplicit_only">No Explícito</button>
-    </div>
-
-    <div class="chips-row" id="chips-genre">
-      <span class="filter-label" data-i18n="genre">Género:</span>
-      <button class="chip active" data-filter-genre="all" data-i18n="all">Todos</button>
+    <!-- FILTRO RÁPIDO DE ETIQUETAS Y CATEGORÍAS (CHIPS) -->
+    <div class="chips-container custom-scroll" id="chips-filter-container">
+      <div class="chip active" onclick="setChipFilter('ALL', this)" data-i18n="filterAll">Todos</div>
+      <div class="chip" onclick="setChipFilter('Single', this)">Singles</div>
+      <div class="chip" onclick="setChipFilter('EP', this)">EPs</div>
+      <div class="chip" onclick="setChipFilter('Álbum', this)">Álbumes</div>
+      <div class="chip" onclick="setChipFilter('FUTURE', this)" data-i18n="filterFuture">Próximos Estrenos</div>
+      <div class="chip" onclick="setChipFilter('ANNIVERSARY', this)" data-i18n="filterAnniversary">Aniversarios</div>
     </div>
   </div>
 
-  <!-- Eventos destacados -->
-  <div id="events-summary-container" style="display: none; max-width: 1200px; margin: 0 auto 20px auto; padding: 0 10px;">
-    <div style="background: var(--bg-tertiary); border: 2px solid var(--accent-purple); border-radius: 14px; padding: 16px; box-shadow: 0 8px 25px rgba(168, 85, 247, 0.2);">
-      <h3 style="margin: 0 0 12px 0; color: var(--accent-pink); font-size: 16px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 8px;">
-        <i class="fa-solid fa-bell"></i> <span data-i18n="events_active">Eventos y Destacados Activos</span>
+  <!-- RESUMEN GENERAL DE EVENTOS (DESTACADOS) -->
+  <div id="events-summary-container" style="display: none; max-width: 1200px; margin: 0 auto 20px auto; padding: 0 10px; box-sizing: border-box;">
+    <div style="background: var(--bg-secondary); border: 2px solid var(--accent-purple); border-radius: 14px; padding: 16px; box-shadow: 0 8px 25px var(--shadow-color);">
+      <h3 style="margin: 0 0 12px 0; color: #f43f5e; font-size: 16px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 8px;">
+        <i class="fa-solid fa-bell"></i> <span data-i18n="activeEvents">Eventos y Destacados Activos</span>
       </h3>
       <div id="events-summary-list" class="custom-scroll" style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 6px;"></div>
     </div>
   </div>
 
-  <!-- Contenedor catálogo -->
-  <div id="catalog-container" style="display: none; max-width: 1200px; margin: 0 auto; padding: 0 10px;"></div>
+  <!-- CONTENEDOR PRINCIPAL DEL CATÁLOGO -->
+  <div id="catalog-container" style="display: none; max-width: 1200px; margin: 0 auto; padding: 0 10px; box-sizing: border-box;"></div>
+
+  <!-- MODAL DE KARAOKE SINCRONIZADO -->
+  <div id="karaoke-modal" class="modal-overlay">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-microphone-lines" style="color: var(--accent-color);"></i> <span id="karaoke-title">Letra Sincronizada</span></h3>
+        <button class="modal-close" onclick="closeKaraokeModal()">&times;</button>
+      </div>
+      <div class="modal-body custom-scroll">
+        <div id="karaoke-player-wrapper" class="karaoke-player-box">
+          <div id="yt-player-target"></div>
+        </div>
+        <div id="karaoke-lyrics" class="karaoke-lyrics-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL DE SMARTLINK (LANDING PAGE DE COMPARTIR) -->
+  <div id="smartlink-modal" class="modal-overlay">
+    <div class="modal-container" style="max-width: 480px;">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-share-nodes" style="color: var(--accent-purple);"></i> SmartLink</h3>
+        <button class="modal-close" onclick="closeSmartLinkModal()">&times;</button>
+      </div>
+      <div class="modal-body custom-scroll">
+        <div class="smartlink-card">
+          <img id="smartlink-img" class="smartlink-cover" src="" alt="Portada">
+          <h2 id="smartlink-song-title" style="margin: 5px 0; font-size: 20px; color: var(--text-primary);"></h2>
+          <p id="smartlink-artist-name" style="margin: 0; color: var(--accent-color); font-weight: 700;"></p>
+          
+          <div id="smartlink-platforms" class="smartlink-buttons"></div>
+
+          <button class="btn-tool" style="width: 100%; margin-top: 20px; justify-content: center; padding: 12px;" onclick="copySmartLinkToClipboard()">
+            <i class="fa-solid fa-copy"></i> <span data-i18n="copyLink">Copiar Enlace Directo</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </main>
-
-<!-- ═══════════════════ MODAL KARAOKE ═══════════════════ -->
-<div id="karaoke-modal" class="modal-overlay" aria-hidden="true">
-  <div class="modal-content karaoke-content">
-    <button class="modal-close" data-close="karaoke-modal" title="Cerrar"><i class="fa-solid fa-xmark"></i></button>
-    <div class="karaoke-header">
-      <h2 id="karaoke-title" class="modal-title">—</h2>
-      <p id="karaoke-artist" class="modal-subtitle">—</p>
-    </div>
-    <div style="position: absolute; width: 0; height: 0; overflow: hidden; opacity: 0; pointer-events: none;">
-      <div id="yt-player"></div>
-    </div>
-    <div id="karaoke-lyrics" class="karaoke-lyrics custom-scroll">
-      <p class="karaoke-empty" data-i18n="no_lyrics">🎤 Letra no disponible para esta canción.</p>
-    </div>
-    <div class="karaoke-controls">
-      <button id="karaoke-play-pause" class="ctrl-btn-round" title="Play/Pause"><i class="fa-solid fa-play"></i></button>
-      <span id="karaoke-time" class="karaoke-time">00:00 / 00:00</span>
-    </div>
-  </div>
-</div>
-
-<!-- ═══════════════════ MODAL SMARTLINK ═══════════════════ -->
-<div id="smartlink-modal" class="modal-overlay" aria-hidden="true">
-  <div class="modal-content smartlink-content">
-    <button class="modal-close" data-close="smartlink-modal" title="Cerrar"><i class="fa-solid fa-xmark"></i></button>
-    <div id="smartlink-body"></div>
-  </div>
-</div>
 
 <div id="footer"></div>
 
+<!-- LÓGICA CORE DE JAVASCRIPT RESTRUCTURADA -->
 <script>
-/* ═════════════════════════════════════════════════════════════════
-   1. DICCIONARIO i18n
-   ═════════════════════════════════════════════════════════════════ */
-const I18N = {
-  es: {
-    page_title: "Catálogo del Sello - Grouvex Studios",
-    loading: "Cargando catálogo musical...",
-    search_placeholder: "Buscar por Artista, Álbum, Canción...",
-    events_active: "Eventos y Destacados Activos",
-    sort: "Ordenar", sort_recent: "Más recientes primero", sort_az: "Título (A-Z)",
-    sort_za: "Título (Z-A)", sort_artist: "Artista (A-Z)",
-    view: "Vista", hide_explicit: "Ocultar explícito",
-    category: "Categoría:", status: "Estado:", genre: "Género:",
-    content_type: "Contenido:", all: "Todos",
-    upcoming: "Próximos", anniversary: "Aniversarios",
-    explicit_only: "Explícito", clean_only: "Limpio", nonexplicit_only: "No Explícito",
-    no_lyrics: "🎤 Letra no disponible para esta canción.",
-    share: "Compartir SmartLink", karaoke: "Letra Sincronizada",
-    copy_link: "Copiar enlace", copied: "¡Enlace copiado!",
-    listen_on: "Escuchar en:", day: "Días", hour: "Horas",
-    min: "Min", sec: "Seg", available_now: "¡Ya disponible!",
-    next_release: "Próximo Lanzamiento", anniv_today: "Aniversario Hoy",
-    releases: "Lanzamientos", quick_access: "Accesos Rápidos a Destacados:",
-    platforms_title: "Plataformas y Reproductores",
-    tracks_title: "Lista de Canciones", no_results: "No se encontraron resultados.",
-    tomorrow: "¡Se estrena mañana!", days_left: "Faltan {n} días",
-    years_today: "Cumple {n} año(s) hoy"
-  },
-  en: {
-    page_title: "Label Catalog - Grouvex Studios",
-    loading: "Loading music catalog...",
-    search_placeholder: "Search by Artist, Album, Song...",
-    events_active: "Active Events & Featured",
-    sort: "Sort", sort_recent: "Most recent first", sort_az: "Title (A-Z)",
-    sort_za: "Title (Z-A)", sort_artist: "Artist (A-Z)",
-    view: "View", hide_explicit: "Hide explicit",
-    category: "Category:", status: "Status:", genre: "Genre:",
-    content_type: "Content:", all: "All",
-    upcoming: "Upcoming", anniversary: "Anniversaries",
-    explicit_only: "Explicit", clean_only: "Clean", nonexplicit_only: "Not Explicit",
-    no_lyrics: "🎤 Lyrics not available for this song.",
-    share: "Share SmartLink", karaoke: "Synced Lyrics",
-    copy_link: "Copy link", copied: "Link copied!",
-    listen_on: "Listen on:", day: "Days", hour: "Hours",
-    min: "Min", sec: "Sec", available_now: "Available now!",
-    next_release: "Upcoming Release", anniv_today: "Anniversary Today",
-    releases: "Releases", quick_access: "Quick Access to Featured:",
-    platforms_title: "Platforms & Players",
-    tracks_title: "Tracklist", no_results: "No results found.",
-    tomorrow: "Releasing tomorrow!", days_left: "{n} days left",
-    years_today: "Turns {n} year(s) today"
-  }
-};
+  /* --- ESTADO GLOBAL DE LA APLICACIÓN --- */
+  var rawSongsList = [];
+  var parsedCatalog = [];
+  var currentLang = 'es';
+  var currentTheme = localStorage.getItem('theme') || 'dark';
+  var activeChipFilter = 'ALL';
+  var currentViewMode = 'list';
+  var activeSmartLinkUrl = '';
 
-let currentLang = localStorage.getItem("lang") || "es";
-let currentTheme = localStorage.getItem("theme") || "dark";
+  // ESTADO YOUTUBE KARAOKE
+  var ytPlayer = null;
+  var karaokeParsedLyrics = [];
+  var karaokeSyncInterval = null;
+  var currentActiveLyricIndex = -1;
 
-function t(key, vars) {
-  let str = (I18N[currentLang] && I18N[currentLang][key]) || key;
-  if (vars) Object.keys(vars).forEach(k => { str = str.replace(`{${k}}`, vars[k]); });
-  return str;
-}
-
-/* ═════════════════════════════════════════════════════════════════
-   2. ESTADO GLOBAL
-   ═════════════════════════════════════════════════════════════════ */
-const AppState = {
-  songsData: [],
-  artistsMap: {},
-  sortBy: "recent",
-  viewMode: "list",
-  hideExplicit: false,
-  filterCat: "all",
-  filterStatus: "all",
-  filterGenre: "all",
-  filterExplicit: "all",
-  ytPlayer: null,
-  ytReady: false,
-  ytVideoId: null,
-  karaoke: { lyrics: [], activeIdx: -1, rafId: null }
-};
-
-/* ═════════════════════════════════════════════════════════════════
-   3. UTILIDADES
-   ═════════════════════════════════════════════════════════════════ */
-function escapeHtml(text) {
-  if (text === null || text === undefined) return '';
-  return String(text)
-    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-}
-
-function getYouTubeVideoId(url) {
-  if (!url) return null;
-  const m = String(url).match(/(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{11})/);
-  return m ? m[1] : null;
-}
-
-function getPlatformIcon(platform) {
-  const icons = {
-    "Spotify": "fa-brands fa-spotify",
-    "YouTube": "fa-brands fa-youtube",
-    "Apple Music": "fa-brands fa-apple",
-    "Amazon Music": "fa-brands fa-amazon",
-    "Deezer": "fa-brands fa-deezer",
-    "Tidal": "fa-solid fa-compact-disc",
-    "Instagram": "fa-brands fa-instagram",
-    "TikTok": "fa-brands fa-tiktok",
-    "SoundCloud": "fa-brands fa-soundcloud"
-  };
-  return icons[platform] || "fa-solid fa-link";
-}
-
-/* Normaliza "Explicit Content" a: 'explicit' | 'clean' | 'nonexplicit' | 'unknown' */
-function normalizeExplicit(value) {
-  if (!value) return "unknown";
-  const v = String(value).toLowerCase().trim();
-  if (v.includes("limpia") || v.includes("clean")) return "clean";
-  if (v.includes("no expl") || v.includes("not expl") || v === "no" || v === "false") return "nonexplicit";
-  if (v.includes("expl") || v === "sí" || v === "si" || v === "yes" || v === "true") return "explicit";
-  return "unknown";
-}
-
-function explicitBadgeHTML(type) {
-  if (type === "explicit") return `<span class="explicit-badge" title="Explícito">E</span>`;
-  if (type === "clean") return `<span class="clean-badge" title="Versión Limpia">L</span>`;
-  if (type === "nonexplicit") return `<span class="nonexplicit-badge" title="No Explícito">NE</span>`;
-  return "";
-}
-
-/* ═════════════════════════════════════════════════════════════════
-   4. LRC PARSER
-   ═════════════════════════════════════════════════════════════════ */
-function parseLRC(lrcText) {
-  if (!lrcText) return [];
-  const lines = String(lrcText).split(/\r?\n/);
-  const result = [];
-  const timeTagRe = /\[(\d{1,2}):(\d{2})(?:\.(\d{1,3}))?\]/g;
-  lines.forEach(line => {
-    const tags = [...line.matchAll(timeTagRe)];
-    if (tags.length === 0) return;
-    const text = line.replace(timeTagRe, "").trim();
-    tags.forEach(tag => {
-      const min = parseInt(tag[1], 10);
-      const sec = parseInt(tag[2], 10);
-      const frac = tag[3] ? parseInt(tag[3].padEnd(3, "0"), 10) / 1000 : 0;
-      result.push({ time: min * 60 + sec + frac, text });
-    });
-  });
-  return result.sort((a, b) => a.time - b.time);
-}
-
-/* ═════════════════════════════════════════════════════════════════
-   5. TEMA CLARO/OSCURO + IDIOMA
-   ═════════════════════════════════════════════════════════════════ */
-function applyTheme() {
-  document.documentElement.setAttribute("data-theme", currentTheme);
-  const icon = document.querySelector("#theme-toggle i");
-  if (icon) icon.className = currentTheme === "dark" ? "fa-solid fa-moon" : "fa-solid fa-sun";
-  localStorage.setItem("theme", currentTheme);
-}
-
-function applyLang() {
-  document.documentElement.lang = currentLang;
-  document.querySelectorAll("[data-i18n]").forEach(el => {
-    el.textContent = t(el.getAttribute("data-i18n"));
-  });
-  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
-    el.placeholder = t(el.getAttribute("data-i18n-placeholder"));
-  });
-  const langLabel = document.getElementById("lang-label");
-  if (langLabel) langLabel.textContent = currentLang.toUpperCase();
-  document.title = t("page_title");
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-  applyTheme();
-  applyLang();
-
-  document.getElementById("theme-toggle").addEventListener("click", () => {
-    currentTheme = currentTheme === "dark" ? "light" : "dark";
-    applyTheme();
-  });
-
-  document.getElementById("lang-toggle").addEventListener("click", () => {
-    currentLang = currentLang === "es" ? "en" : "es";
-    localStorage.setItem("lang", currentLang);
-    applyLang();
-    if (AppState.songsData.length) {
-      buildCatalog();
-      applyFilters();
+  /* --- DICCIONARIO INTERNO I18N (SOPORTE MULTI-IDIOMA) --- */
+  var i18n = {
+    es: {
+      loading: "Cargando catálogo musical...",
+      searchPlaceholder: "Buscar por artista, álbum, canción...",
+      sortRecent: "Más recientes primero",
+      sortTitleAsc: "Título (A-Z)",
+      sortTitleDesc: "Título (Z-A)",
+      sortArtistAsc: "Artista (A-Z)",
+      hideExplicit: "Ocultar Explícito",
+      filterAll: "Todos",
+      filterFuture: "Próximos Estrenos",
+      filterAnniversary: "Aniversarios",
+      activeEvents: "Eventos y Destacados Activos",
+      releasesCount: "Lanzamientos",
+      quickAccess: "Accesos Rápidos del Artista:",
+      platformsTitle: "Plataformas y Reproductores",
+      trackListTitle: "Lista de Canciones",
+      copyLink: "Copiar Enlace Directo",
+      linkCopied: "¡Enlace copiado al portapapeles!",
+      explicitBadge: "EXPLÍCITO",
+      noLyrics: "Letra sincronizada no disponible para este tema.",
+      nowAvailable: "¡Ya disponible!",
+      days: "días",
+      hours: "hs",
+      mins: "min",
+      secs: "seg"
+    },
+    en: {
+      loading: "Loading music catalog...",
+      searchPlaceholder: "Search by artist, album, song...",
+      sortRecent: "Newest first",
+      sortTitleAsc: "Title (A-Z)",
+      sortTitleDesc: "Title (Z-A)",
+      sortArtistAsc: "Artist (A-Z)",
+      hideExplicit: "Hide Explicit",
+      filterAll: "All",
+      filterFuture: "Upcoming Releases",
+      filterAnniversary: "Anniversaries",
+      activeEvents: "Active Highlights & Events",
+      releasesCount: "Releases",
+      quickAccess: "Artist Quick Access:",
+      platformsTitle: "Platforms & Players",
+      trackListTitle: "Tracklist",
+      copyLink: "Copy Direct Link",
+      linkCopied: "Link copied to clipboard!",
+      explicitBadge: "EXPLICIT",
+      noLyrics: "Synchronized lyrics not available for this track.",
+      nowAvailable: "Now Available!",
+      days: "days",
+      hours: "hrs",
+      mins: "mins",
+      secs: "secs"
     }
-  });
+  };
 
-  // Carga de catálogo
-  if (typeof google !== "undefined" && google.script && google.script.run) {
+  /* --- INICIALIZACIÓN --- */
+  document.addEventListener("DOMContentLoaded", function() {
+    applyTheme(currentTheme);
+    loadYouTubeIframeAPI();
+
+    // Cierre de modales con ESC o click fuera
+    document.addEventListener("keydown", function(e) {
+      if (e.key === "Escape") {
+        closeKaraokeModal();
+        closeSmartLinkModal();
+      }
+    });
+
     google.script.run
-      .withSuccessHandler(renderCatalog)
+      .withSuccessHandler(initCatalogData)
       .withFailureHandler(handleError)
       .getAllSongs();
-  } else {
-    // Modo demo local: si no hay Google Scripts, mostrar mensaje
-    document.getElementById("loading").innerHTML =
-      '<p style="color: var(--text-primary);">⚠️ No se detectó Google Apps Script. Ejecuta desde el entorno real.</p>';
-  }
-});
+  });
 
-function handleError(error) {
-  const loadingDiv = document.getElementById("loading");
-  if (loadingDiv) {
-    loadingDiv.innerHTML = '<p style="color: #ff6b6b; font-weight: bold; font-size: 16px;">⚠️ Error al cargar el catálogo: ' + escapeHtml(error.message) + '</p>';
-  }
-}
-
-/* ═════════════════════════════════════════════════════════════════
-   6. ESTADO DE LANZAMIENTO
-   ═════════════════════════════════════════════════════════════════ */
-function checkReleaseStatus(song) {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  const rawDate = song["Fecha de inicio de ventas"] || song["Lanzamiento original"] || song["Fecha de pedido anticipado"] || "";
-  if (!rawDate) return { type: null };
-
-  const relDate = new Date(rawDate);
-  if (isNaN(relDate.getTime())) return { type: null };
-
-  const relDateZero = new Date(relDate.getFullYear(), relDate.getMonth(), relDate.getDate());
-  const formattedDate = relDate.toLocaleDateString(currentLang === "es" ? "es-ES" : "en-US");
-
-  if (relDateZero > today) {
-    const diffDays = Math.ceil((relDateZero - today) / 86400000);
-    return {
-      type: "FUTURE",
-      label: t("next_release"),
-      detail: diffDays === 1 ? t("tomorrow") : t("days_left", { n: diffDays }),
-      badgeColor: "#0891b2",
-      bgColor: "rgba(6, 182, 212, 0.15)",
-      borderColor: "#0891b2",
-      dateStr: formattedDate,
-      animClass: "pulse-future-block",
-      targetTime: relDate.getTime()
-    };
+  function handleError(error) {
+    var loadingDiv = document.getElementById("loading");
+    if (loadingDiv) {
+      loadingDiv.innerHTML = '<p style="color: var(--badge-explicit); font-weight: bold; font-size: 16px;">⚠️ Error: ' + error.message + '</p>';
+    }
   }
 
-  const isSameMonth = relDate.getMonth() === today.getMonth();
-  const isSameDay = relDate.getDate() === today.getDate();
-  if (isSameMonth && isSameDay && relDate.getFullYear() < today.getFullYear()) {
-    const years = today.getFullYear() - relDate.getFullYear();
-    return {
-      type: "ANNIVERSARY",
-      label: t("anniv_today"),
-      detail: t("years_today", { n: years }),
-      badgeColor: "#d97706",
-      bgColor: "rgba(245, 158, 11, 0.15)",
-      borderColor: "#d97706",
-      dateStr: formattedDate,
-      animClass: "snow-anniversary-block"
-    };
-  }
-  return { type: null };
-}
-
-/* ═════════════════════════════════════════════════════════════════
-   7. RENDER PRINCIPAL
-   ═════════════════════════════════════════════════════════════════ */
-function renderCatalog(response) {
-  const loadingDiv = document.getElementById("loading");
-  const container = document.getElementById("catalog-container");
-  const searchBar = document.getElementById("search-bar-container");
-  const filters = document.getElementById("filter-controls");
-
-  if (response.error || !response.songsData || response.songsData.length === 0) {
-    loadingDiv.innerHTML = '<p style="color: var(--text-primary); font-size: 16px;">' + t("no_results") + '</p>';
-    return;
+  /* --- MODO CLARO / OSCURO --- */
+  function applyTheme(theme) {
+    currentTheme = theme;
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    var icon = document.getElementById("theme-btn") ? document.getElementById("theme-btn").querySelector("i") : null;
+    if (icon) {
+      icon.className = theme === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+    }
   }
 
-  AppState.songsData = response.songsData;
-  buildCatalog();
-
-  loadingDiv.style.display = "none";
-  searchBar.style.display = "block";
-  container.style.display = "block";
-  filters.style.display = "block";
-
-  setupControls();
-  applyFilters();
-}
-
-function buildCatalog() {
-  const container = document.getElementById("catalog-container");
-  const eventsList = document.getElementById("events-summary-list");
-  const eventsContainer = document.getElementById("events-summary-container");
-
-  const forbiddenFields = [
-    "Grouvex Studios UserID","Marca temporal","Estado del Contrato","Razón",
-    "¿Se Puede Modificar el Lanzamiento?"
-  ];
-
-  const defaultFields = [
-    "Artista","Título del álbum/sencillo/EP","Idioma del álbum","Versión del Lanzamiento","Cover?",
-    "Álbum Recopilatorio","Otros Artistas Álbum","Compositores del álbum","Letristas del álbum",
-    "Información para colaboradores","Género primario","Género secundario","Derechos de autor de la composición",
-    "Derechos de autor de grabación de sonido","Nombre del sello discográfico","Lanzamiento original",
-    "Fecha de pedido anticipado","Fecha de inicio de ventas","Agregar una hora","Elegir zona horaria | Agregar una hora",
-    "Entrar en vivo | Agregar una hora","Explicit Content","Plataformas de Lanzamiento","Spotify","Spotify Embed",
-    "YouTube","YouTube Embed","Apple Music","Apple Music Embed","Amazon Music","Amazon Music Embed",
-    "Deezer","Deezer Embed","Tidal","Instagram","TikTok","SoundCloud","Territorios donde:","Territorios:",
-    "Likes","Categoría del Lanzamiento","Tipo"
-  ];
-  for (let i = 1; i <= 15; i++) {
-    defaultFields.push(
-      "Título " + i,"Artistas " + i,"Compositores " + i,"¿Contiene letras? " + i,
-      "Letristas " + i,"Idioma " + i,"Preview Clip " + i,"Cover " + i
-    );
+  function toggleTheme() {
+    applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
   }
 
-  const embedKeys = ["Spotify Embed","YouTube Embed","Apple Music Embed","Amazon Music Embed","Deezer Embed"];
-  const linkKeys = ["Spotify","YouTube","Apple Music","Amazon Music","Deezer","Tidal","Instagram","TikTok","SoundCloud","Push"];
+  /* --- MULTI-IDIOMA --- */
+  function toggleLanguage() {
+    currentLang = currentLang === 'es' ? 'en' : 'es';
+    document.getElementById("lang-btn").innerHTML = '<i class="fa-solid fa-globe"></i> ' + currentLang.toUpperCase();
+    
+    // Actualizar elementos estáticos
+    document.querySelectorAll("[data-i18n]").forEach(function(el) {
+      var key = el.getAttribute("data-i18n");
+      if (i18n[currentLang][key]) el.textContent = i18n[currentLang][key];
+    });
 
-  const artistsMap = {};
-  const globalEvents = [];
-  let counter = 0;
-  const genreSet = new Set();
+    document.querySelectorAll("[data-i18n-ph]").forEach(function(el) {
+      var key = el.getAttribute("data-i18n-ph");
+      if (i18n[currentLang][key]) el.placeholder = i18n[currentLang][key];
+    });
 
-  AppState.songsData.forEach(song => {
-    const priv = (song["Mostrar Privacidad"] || song["Privacidad"] || "").toString().trim();
-    if (priv.toLowerCase() === "privado" || priv === "") return;
+    renderCatalogUI();
+  }
 
-    let allowed;
-    if (priv.toLowerCase() === "público" || priv.toLowerCase() === "publico") {
-      allowed = [...defaultFields];
+  /* --- CAMBIO DE VISTA (LISTA / GRID) --- */
+  function setViewMode(mode) {
+    currentViewMode = mode;
+    var container = document.getElementById("catalog-container");
+    var btnList = document.getElementById("view-list-btn");
+    var btnGrid = document.getElementById("view-grid-btn");
+
+    if (mode === 'grid') {
+      container.classList.add("catalog-grid");
+      btnGrid.classList.add("active");
+      btnList.classList.remove("active");
     } else {
-      allowed = priv.split(",").map(s => s.trim());
-    }
-    allowed = allowed.filter(f => !forbiddenFields.includes(f));
-
-    const artista = song["Artista"] || "Artista Desconocido";
-    if (!artistsMap[artista]) artistsMap[artista] = [];
-
-    counter++;
-    const cardId = "release-card-" + counter;
-    const status = checkReleaseStatus(song);
-    const explicitType = normalizeExplicit(song["Explicit Content"]);
-
-    if (song["Género primario"]) genreSet.add(song["Género primario"]);
-    if (song["Género secundario"]) genreSet.add(song["Género secundario"]);
-
-    if (status.type) {
-      globalEvents.push({
-        artist: artista,
-        title: song["Título del álbum/sencillo/EP"] || "Lanzamiento",
-        status, targetId: cardId
-      });
-    }
-
-    artistsMap[artista].push({
-      data: song, allowed, cardId, status, explicitType,
-      genre: `${song["Género primario"] || ""}|${song["Género secundario"] || ""}`,
-      category: (song["Categoría del Lanzamiento"] || song["Tipo"] || "").toLowerCase(),
-      date: new Date(song["Lanzamiento original"] || song["Fecha de inicio de ventas"] || 0).getTime() || 0
-    });
-  });
-
-  AppState.artistsMap = artistsMap;
-
-  // Géneros dinámicos
-  const genreRow = document.getElementById("chips-genre");
-  if (genreRow) {
-    genreRow.querySelectorAll(".chip[data-filter-genre]:not([data-filter-genre='all'])").forEach(c => c.remove());
-    [...genreSet].sort().forEach(g => {
-      const btn = document.createElement("button");
-      btn.className = "chip";
-      btn.dataset.filterGenre = g;
-      btn.textContent = g;
-      genreRow.appendChild(btn);
-    });
-  }
-
-  // Eventos destacados
-  eventsList.innerHTML = "";
-  if (globalEvents.length > 0) {
-    globalEvents.forEach(item => {
-      const card = document.createElement("div");
-      card.className = "quick-event-card";
-      card.onclick = () => scrollToRelease(item.artist, item.targetId);
-      card.style.cssText = `flex: 0 0 260px; background: var(--card-bg); border-left: 4px solid ${item.status.badgeColor}; border-radius: 8px; padding: 10px 12px;`;
-      const icon = item.status.type === "ANNIVERSARY" ? "fa-cake-candles" : "fa-rocket";
-      const prefixVisual = item.status.type === "FUTURE" ? '<span class="radar-dot"></span>' : '';
-      card.innerHTML = `
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
-          <span style="font-size: 10px; font-weight: 800; color: #fff; background: ${item.status.badgeColor}; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; display: inline-flex; align-items: center;">
-            ${prefixVisual}<i class="fa-solid ${icon}" style="margin-right: 4px;"></i>${escapeHtml(item.status.label)}
-          </span>
-        </div>
-        <div style="font-size: 14px; font-weight: 800; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${escapeHtml(item.title)}</div>
-        <div style="font-size: 12px; color: var(--accent-blue); font-weight: 600;">${escapeHtml(item.artist)}</div>
-        <div style="font-size: 11px; color: var(--accent-yellow); font-weight: 700; margin-top: 2px;">${escapeHtml(item.status.detail)}</div>`;
-      eventsList.appendChild(card);
-    });
-    eventsContainer.style.display = "block";
-  } else {
-    eventsContainer.style.display = "none";
-  }
-
-  // Artistas
-  container.innerHTML = "";
-  Object.keys(artistsMap).sort().forEach(artista => {
-    const details = document.createElement("details");
-    details.className = "artist-details";
-    details.dataset.artistName = artista.toLowerCase();
-    details.style.cssText = "background: var(--bg-primary); border: 2px solid var(--accent-blue); border-radius: 14px; margin-bottom: 20px; overflow: hidden; box-shadow: var(--shadow);";
-
-    const summary = document.createElement("summary");
-    summary.style.cssText = "font-weight: 800; font-size: 18px; padding: 16px 20px; background: var(--card-bg); cursor: pointer; color: var(--text-primary); outline: none; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; gap: 10px;";
-    summary.innerHTML = '<span class="artist-summary-title" style="word-break: break-word;"><i class="fa-solid fa-microphone-lines" style="margin-right: 8px; color: var(--accent-blue);"></i>' + escapeHtml(artista) + '</span>' +
-      '<span class="artist-summary-badge" style="font-size: 13px; background: #2563eb; padding: 4px 12px; border-radius: 20px; color: #fff; font-weight: 700; white-space: nowrap;">' + artistsMap[artista].length + ' ' + t("releases") + '</span>';
-    details.appendChild(summary);
-
-    const artistContent = document.createElement("div");
-    artistContent.style.cssText = "padding: 15px; background: var(--bg-primary);";
-
-    // Accesos rápidos a eventos
-    const evs = artistsMap[artista].filter(i => i.status.type);
-    if (evs.length > 0) {
-      const nav = document.createElement("div");
-      nav.style.cssText = "background: var(--bg-tertiary); border: 1px dashed var(--accent-blue); border-radius: 10px; padding: 10px 12px; margin-bottom: 15px;";
-      let navHtml = '<div style="font-size: 12px; color: var(--accent-blue); font-weight: 800; text-transform: uppercase; margin-bottom: 8px;"><i class="fa-solid fa-star" style="margin-right: 6px;"></i>' + t("quick_access") + '</div><div style="display: flex; flex-wrap: wrap; gap: 8px;">';
-      evs.forEach(ev => {
-        const ic = ev.status.type === "ANNIVERSARY" ? "fa-cake-candles" : "fa-rocket";
-        navHtml += `<button onclick="scrollToRelease('${escapeHtml(artista).replace(/'/g, "\\'")}','${ev.cardId}')" style="background: ${ev.status.badgeColor}; border: 0; color: #fff; padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 700; cursor: pointer;"><i class="fa-solid ${ic}"></i> ${escapeHtml(ev.data["Título del álbum/sencillo/EP"] || "Lanzamiento")}</button>`;
-      });
-      navHtml += '</div>';
-      nav.innerHTML = navHtml;
-      artistContent.appendChild(nav);
-    }
-
-    // Tarjetas
-    artistsMap[artista].forEach(item => {
-      artistContent.appendChild(buildReleaseCard(item, artista, embedKeys, linkKeys));
-    });
-
-    details.appendChild(artistContent);
-    container.appendChild(details);
-  });
-}
-
-/* ═════════════════════════════════════════════════════════════════
-   8. TARJETA DE LANZAMIENTO
-   ═════════════════════════════════════════════════════════════════ */
-function buildReleaseCard(item, artista, embedKeys, linkKeys) {
-  const song = item.data;
-  const allowed = item.allowed;
-  const status = item.status;
-  const explicitType = item.explicitType;
-
-  const card = document.createElement("div");
-  card.className = "release-card " + (status.animClass || "");
-  card.id = item.cardId;
-  card.dataset.explicit = explicitType;
-  card.dataset.genre = item.genre.toLowerCase();
-  card.dataset.category = item.category;
-  card.dataset.status = status.type || "";
-  card.dataset.date = item.date;
-  card.dataset.title = (song["Título del álbum/sencillo/EP"] || "").toLowerCase();
-  card.dataset.artist = artista.toLowerCase();
-
-  const albumTitle = song["Título del álbum/sencillo/EP"] || "Lanzamiento sin título";
-  const trackNames = [];
-  for (let t = 1; t <= 15; t++) if (song[`Título ${t}`]) trackNames.push(song[`Título ${t}`]);
-
-  const eventSearchTag = status.type === "ANNIVERSARY" ? "aniversario" : status.type === "FUTURE" ? "proximo futuro estreno" : "";
-  card.dataset.searchKeywords = (artista + " " + albumTitle + " " + trackNames.join(" ") + " " + eventSearchTag).toLowerCase();
-  card.style.cssText = "border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; margin-bottom: 20px; background: var(--bg-secondary); position: relative;";
-
-  // Botones de acción
-  const actions = document.createElement("div");
-  actions.className = "release-actions";
-  actions.innerHTML =
-    `<button class="act-btn mic" title="${t('karaoke')}"><i class="fa-solid fa-microphone"></i></button>
-     <button class="act-btn share" title="${t('share')}"><i class="fa-solid fa-share-nodes"></i></button>`;
-  card.appendChild(actions);
-
-  // Contenido
-  let html = "";
-
-  if (status.type) {
-    const dotVisual = status.type === "FUTURE" ? '<span class="radar-dot"></span>' : '';
-    html += `<div style="background: ${status.bgColor}; border: 1px solid ${status.borderColor}; color: var(--text-primary); padding: 10px 14px; border-radius: 8px; margin-bottom: 12px; font-size: 13px; font-weight: 600; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; position: relative; z-index: 3;">
-      <span>${dotVisual}<i class="fa-solid ${status.type === "ANNIVERSARY" ? "fa-cake-candles" : "fa-rocket"}" style="margin-right: 8px; color: ${status.badgeColor};"></i><strong>${escapeHtml(status.label)}:</strong> ${escapeHtml(status.detail)}</span>
-      <span style="font-size: 11px; opacity: 0.8;">${escapeHtml(status.dateStr)}</span>
-    </div>`;
-
-    if (status.type === "FUTURE" && status.targetTime) {
-      html += `<div class="countdown-box" data-countdown="${status.targetTime}"></div>`;
+      container.classList.remove("catalog-grid");
+      btnList.classList.add("active");
+      btnGrid.classList.remove("active");
     }
   }
 
-  html += `<div style="border-bottom: 2px solid var(--accent-blue); padding-bottom: 10px; margin-bottom: 15px; position: relative; z-index: 3;">
-    <h3 style="margin: 0; color: var(--text-primary); font-size: 20px; font-weight: 800; word-break: break-word;">
-      <i class="fa-solid fa-compact-disc" style="margin-right: 8px; color: var(--accent-purple);"></i>${escapeHtml(albumTitle)}${explicitBadgeHTML(explicitType)}
-    </h3>
-  </div>`;
-
-  // Grid de info
-  html += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin-bottom: 15px; position: relative; z-index: 3;">';
-  allowed.forEach(key => {
-    const isTrackField = /^(Título|Artistas|Compositores|¿Contiene letras\?|Letristas|ISRC|Idioma|Preview Clip|Cover)\s\d+$/.test(key);
-    const isPlatform = embedKeys.includes(key) || linkKeys.includes(key);
-    if (!isTrackField && !isPlatform && song[key] !== undefined && song[key] !== "") {
-      html += `<div style="background: var(--bg-tertiary); padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); word-break: break-word;">
-        <strong style="color: var(--accent-yellow); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 2px;">${escapeHtml(key)}</strong>
-        <span style="color: var(--text-primary); font-size: 14px; font-weight: 600;">${escapeHtml(song[key])}</span>
-      </div>`;
-    }
-  });
-  html += '</div>';
-
-  // Plataformas (iconos)
-  let linksHtml = "";
-  linkKeys.forEach(key => {
-    if (allowed.includes(key) && song[key]) {
-      linksHtml += `<a href="${escapeHtml(song[key])}" target="_blank" class="platform-btn-icon" title="${escapeHtml(key)}"><i class="${getPlatformIcon(key)}"></i></a>`;
-    }
-  });
-
-  card.innerHTML = html;
-  card.appendChild(actions);
-
-  if (linksHtml) {
-    const platBox = document.createElement("div");
-    platBox.style.cssText = "margin-top: 20px; background: var(--bg-tertiary); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); position: relative; z-index: 3;";
-    platBox.innerHTML = `<h4 style="margin: 0 0 12px 0; color: var(--accent-blue); font-size: 15px; font-weight: 800; text-transform: uppercase;"><i class="fa-solid fa-headphones" style="margin-right: 8px;"></i>${t("platforms_title")}</h4>
-      <div style="display: flex; flex-wrap: wrap; gap: 4px;">${linksHtml}</div>`;
-    card.appendChild(platBox);
+  /* --- FILTRADO DE CHIPS --- */
+  function setChipFilter(category, chipEl) {
+    activeChipFilter = category;
+    document.querySelectorAll(".chip").forEach(function(c) { c.classList.remove("active"); });
+    chipEl.classList.add("active");
+    applyAllFilters();
   }
 
-  // Canciones
-  const tracksBox = document.createElement("div");
-  tracksBox.style.cssText = "margin-top: 15px; background: var(--bg-tertiary); border-radius: 12px; padding: 15px; border: 1px solid var(--border-color); position: relative; z-index: 3;";
-  let tracksHtml = `<h4 style="margin-top: 0; color: var(--accent-purple); font-size: 15px; font-weight: 800; border-bottom: 1px solid var(--border-color); padding-bottom: 8px; margin-bottom: 12px; text-transform: uppercase;"><i class="fa-solid fa-music" style="margin-right: 8px;"></i>${t("tracks_title")}</h4>`;
-  let hasTracks = false;
-
-  for (let tr = 1; tr <= 15; tr++) {
-    if (song[`Título ${tr}`]) {
-      hasTracks = true;
-      const hasLyrics = song[`¿Contiene letras? ${tr}`];
-      const showMic = hasLyrics && String(hasLyrics).toLowerCase().includes("s");
-      tracksHtml += `<div style="margin-bottom: 10px; padding: 10px 12px; background: var(--bg-secondary); border-left: 4px solid var(--accent-purple); border-radius: 0 8px 8px 0;">
-        <div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;">
-          <strong style="font-size: 15px; color: var(--text-primary); word-break: break-word;">${tr}. ${escapeHtml(song[`Título ${tr}`])}</strong>
-          ${showMic ? `<button class="act-btn track-mic" data-track="${tr}" title="${t('karaoke')}"><i class="fa-solid fa-microphone"></i></button>` : ''}
-        </div>
-        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; font-size: 13px;">`;
-
-      ["Artistas","Compositores","¿Contiene letras?","Letristas","ISRC","Idioma"].forEach(prop => {
-        const k = `${prop} ${tr}`;
-        if (allowed.includes(k) && song[k] !== undefined && song[k] !== "") {
-          tracksHtml += `<div class="track-meta-box" style="background: var(--bg-tertiary); padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border-color);">
-            <span style="color: var(--accent-yellow); font-weight: 700;">${escapeHtml(prop)}:</span>
-            <span style="color: var(--text-primary); font-weight: 500;">${escapeHtml(song[k])}</span>
-          </div>`;
-        }
-      });
-
-      tracksHtml += '</div></div>';
-    }
-  }
-  if (hasTracks) {
-    tracksBox.innerHTML = tracksHtml;
-    card.appendChild(tracksBox);
-  }
-
-  // Listeners
-  actions.querySelector(".mic").addEventListener("click", e => {
-    e.stopPropagation();
-    openKaraoke(song, albumTitle, artista, 1);
-  });
-  actions.querySelector(".share").addEventListener("click", e => {
-    e.stopPropagation();
-    openSmartlink(song, albumTitle, artista, linkKeys);
-  });
-  card.querySelectorAll(".track-mic").forEach(btn => {
-    btn.addEventListener("click", e => {
-      e.stopPropagation();
-      const n = parseInt(btn.dataset.track);
-      openKaraoke(song, albumTitle + " — " + song[`Título ${n}`], artista, n);
-    });
-  });
-
-  return card;
-}
-
-/* ═════════════════════════════════════════════════════════════════
-   9. KARAOKE MODAL
-   ═════════════════════════════════════════════════════════════════ */
-function openKaraoke(song, title, artist, trackNum) {
-  const modal = document.getElementById("karaoke-modal");
-  const lyricsBox = document.getElementById("karaoke-lyrics");
-  document.getElementById("karaoke-title").textContent = title;
-  document.getElementById("karaoke-artist").textContent = artist;
-
-  // Buscar letra LRC — probamos muchas claves posibles
-  const lrcKeys = [
-    `Letra Sincronizada (LRC) ${trackNum}`, `Letra sincronizada (LRC) ${trackNum}`,
-    `LRC ${trackNum}`, `Letra ${trackNum}`,
-    "Letra Sincronizada (LRC)", "Letra sincronizada (LRC)", "LRC", "Letra"
-  ];
-  let lrcText = "";
-  for (const k of lrcKeys) {
-    if (song[k]) { lrcText = song[k]; break; }
-  }
-
-  const parsed = parseLRC(lrcText);
-  AppState.karaoke.lyrics = parsed;
-  AppState.karaoke.activeIdx = -1;
-
-  if (!parsed.length) {
-    lyricsBox.innerHTML = `<p class="karaoke-empty">${t("no_lyrics")}</p>`;
-  } else {
-    lyricsBox.innerHTML = "";
-    parsed.forEach((line, i) => {
-      const div = document.createElement("div");
-      div.className = "lyric-line";
-      div.dataset.time = line.time;
-      div.dataset.idx = i;
-      div.textContent = line.text || "♪";
-      div.addEventListener("click", () => {
-        if (AppState.ytPlayer && typeof AppState.ytPlayer.seekTo === "function") {
-          AppState.ytPlayer.seekTo(line.time, true);
-        }
-      });
-      lyricsBox.appendChild(div);
-    });
-  }
-
-  modal.classList.add("open");
-  modal.setAttribute("aria-hidden", "false");
-
-  // Cargar YouTube
-  const ytUrl = song["YouTube"] || song["YouTube Embed"] || "";
-  const videoId = getYouTubeVideoId(ytUrl);
-  initYouTubePlayer(videoId);
-}
-
-function initYouTubePlayer(videoId) {
-  if (AppState.ytPlayer && AppState.ytPlayer.destroy) {
-    try { AppState.ytPlayer.destroy(); } catch (e) {}
-    AppState.ytPlayer = null;
-  }
-  AppState.ytVideoId = videoId;
-  if (!videoId) return;
-
-  const createPlayer = () => {
-    AppState.ytPlayer = new YT.Player("yt-player", {
-      videoId,
-      playerVars: { controls: 0, disablekb: 1, modestbranding: 1, rel: 0 },
-      events: {
-        onReady: () => { AppState.ytReady = true; startKaraokeLoop(); },
-        onStateChange: onYTStateChange
-      }
-    });
-  };
-
-  if (window.YT && window.YT.Player) {
-    createPlayer();
-  } else {
-    // El callback global solo se ejecuta una vez
-    window.onYouTubeIframeAPIReady = createPlayer;
-  }
-}
-
-function onYTStateChange(e) {
-  const btn = document.getElementById("karaoke-play-pause");
-  if (!btn) return;
-  if (e.data === YT.PlayerState.PLAYING) {
-    btn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-    startKaraokeLoop();
-  } else {
-    btn.innerHTML = '<i class="fa-solid fa-play"></i>';
-  }
-}
-
-function startKaraokeLoop() {
-  if (AppState.karaoke.rafId) cancelAnimationFrame(AppState.karaoke.rafId);
-  const tick = () => {
-    const p = AppState.ytPlayer;
-    if (p && p.getCurrentTime && p.getPlayerState) {
-      const st = p.getPlayerState();
-      if (st === YT.PlayerState.PLAYING) {
-        updateKaraoke(p.getCurrentTime(), p.getDuration());
-      }
-    }
-    AppState.karaoke.rafId = requestAnimationFrame(tick);
-  };
-  tick();
-}
-
-function updateKaraoke(time, duration) {
-  const lyrics = AppState.karaoke.lyrics;
-  if (!lyrics.length) return;
-
-  let idx = -1;
-  for (let i = 0; i < lyrics.length; i++) {
-    if (time >= lyrics[i].time) idx = i;
-    else break;
-  }
-
-  if (idx !== AppState.karaoke.activeIdx) {
-    const lines = document.querySelectorAll("#karaoke-lyrics .lyric-line");
-    lines.forEach(l => l.classList.remove("active"));
-    if (idx >= 0 && lines[idx]) {
-      lines[idx].classList.add("active");
-      lines[idx].scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-    AppState.karaoke.activeIdx = idx;
-  }
-
-  const timeEl = document.getElementById("karaoke-time");
-  if (timeEl) {
-    const fmt = s => {
-      s = Math.max(0, Math.floor(s || 0));
-      return String(Math.floor(s / 60)).padStart(2, "0") + ":" + String(s % 60).padStart(2, "0");
-    };
-    timeEl.textContent = fmt(time) + " / " + fmt(duration);
-  }
-}
-
-document.getElementById("karaoke-play-pause").addEventListener("click", () => {
-  const p = AppState.ytPlayer;
-  if (!p || !p.getPlayerState) return;
-  if (p.getPlayerState() === YT.PlayerState.PLAYING) p.pauseVideo();
-  else p.playVideo();
-});
-
-/* ═════════════════════════════════════════════════════════════════
-   10. SMARTLINK MODAL
-   ═════════════════════════════════════════════════════════════════ */
-function openSmartlink(song, title, artist, linkKeys) {
-  const modal = document.getElementById("smartlink-modal");
-  const body = document.getElementById("smartlink-body");
-  const cover = song["Cover"] || song["Cover 1"] ||
-    "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/priv/arch/imagen/isede/Grouvex%20Studios%20Records%20Logo.png";
-  const shareUrl = `${location.origin}${location.pathname}?release=${encodeURIComponent(title)}`;
-
-  let linksHtml = "";
-  linkKeys.forEach(k => {
-    if (song[k]) {
-      linksHtml += `<a href="${escapeHtml(song[k])}" target="_blank" rel="noopener" class="sl-link">
-        <i class="${getPlatformIcon(k)}"></i> ${escapeHtml(k)}</a>`;
-    }
-  });
-
-  body.innerHTML = `
-    <img class="sl-cover" src="${escapeHtml(cover)}" alt="${escapeHtml(title)}" onerror="this.src='https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/priv/arch/imagen/isede/Grouvex%20Studios%20Records%20Logo.png'">
-    <h2 class="sl-title">${escapeHtml(title)}</h2>
-    <p class="sl-artist">${escapeHtml(artist)}</p>
-    <p style="font-size: 12px; color: var(--text-secondary); text-transform: uppercase; font-weight: 800;">${t("listen_on")}</p>
-    <div class="sl-links">${linksHtml || '<p style="color: var(--text-secondary);">—</p>'}</div>
-    <button class="sl-copy" id="sl-copy-btn"><i class="fa-solid fa-link"></i> ${t("copy_link")}</button>`;
-
-  document.getElementById("sl-copy-btn").addEventListener("click", async () => {
-    try {
-      await navigator.clipboard.writeText(shareUrl);
-      const btn = document.getElementById("sl-copy-btn");
-      btn.innerHTML = `<i class="fa-solid fa-check"></i> ${t("copied")}`;
-      setTimeout(() => { btn.innerHTML = `<i class="fa-solid fa-link"></i> ${t("copy_link")}`; }, 2000);
-    } catch (e) { alert(shareUrl); }
-  });
-
-  modal.classList.add("open");
-  modal.setAttribute("aria-hidden", "false");
-}
-
-/* ═════════════════════════════════════════════════════════════════
-   11. CIERRE DE MODALES
-   ═════════════════════════════════════════════════════════════════ */
-document.addEventListener("click", e => {
-  if (e.target.classList.contains("modal-overlay")) closeModal(e.target.id);
-  if (e.target.closest("[data-close]")) closeModal(e.target.closest("[data-close]").dataset.close);
-});
-
-document.addEventListener("keydown", e => {
-  if (e.key === "Escape") {
-    document.querySelectorAll(".modal-overlay.open").forEach(m => closeModal(m.id));
-  }
-});
-
-function closeModal(id) {
-  const modal = document.getElementById(id);
-  if (!modal) return;
-  modal.classList.remove("open");
-  modal.setAttribute("aria-hidden", "true");
-  if (id === "karaoke-modal") {
-    if (AppState.karaoke.rafId) cancelAnimationFrame(AppState.karaoke.rafId);
-    AppState.karaoke.rafId = null;
-    if (AppState.ytPlayer && AppState.ytPlayer.pauseVideo) {
-      try { AppState.ytPlayer.pauseVideo(); } catch (e) {}
-    }
-  }
-}
-
-/* ═════════════════════════════════════════════════════════════════
-   12. CONTROLES (filtros, vista, orden, explicit)
-   ═════════════════════════════════════════════════════════════════ */
-function setupControls() {
-  document.getElementById("sort-select").addEventListener("change", e => {
-    AppState.sortBy = e.target.value;
-    applyFilters();
-  });
-
-  document.querySelectorAll(".view-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".view-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      AppState.viewMode = btn.dataset.view;
-      document.getElementById("catalog-container").classList.toggle("grid-view", AppState.viewMode === "grid");
-    });
-  });
-
-  document.getElementById("explicit-toggle").addEventListener("change", e => {
-    AppState.hideExplicit = e.target.checked;
-    applyFilters();
-  });
-
-  document.querySelectorAll("[data-filter-cat]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll("[data-filter-cat]").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      AppState.filterCat = btn.dataset.filterCat;
-      applyFilters();
-    });
-  });
-
-  document.querySelectorAll("[data-filter-status]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll("[data-filter-status]").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      AppState.filterStatus = btn.dataset.filterStatus;
-      applyFilters();
-    });
-  });
-
-  document.querySelectorAll("[data-filter-explicit]").forEach(btn => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll("[data-filter-explicit]").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      AppState.filterExplicit = btn.dataset.filterExplicit;
-      applyFilters();
-    });
-  });
-
-  document.getElementById("chips-genre").addEventListener("click", e => {
-    if (!e.target.matches("[data-filter-genre]")) return;
-    document.querySelectorAll("[data-filter-genre]").forEach(b => b.classList.remove("active"));
-    e.target.classList.add("active");
-    AppState.filterGenre = e.target.dataset.filterGenre;
-    applyFilters();
-  });
-}
-
-function applyFilters() {
-  const query = (document.getElementById("global-search-input").value || "").toLowerCase().trim();
-  const artistBlocks = document.querySelectorAll(".artist-details");
-
-  artistBlocks.forEach(details => {
-    let visibleCount = 0;
-    details.querySelectorAll(".release-card").forEach(card => {
-      let show = true;
-
-      // Búsqueda
-      if (query && !card.dataset.searchKeywords.includes(query)) show = false;
-
-      // Ocultar explícito (switch)
-      if (show && AppState.hideExplicit && card.dataset.explicit === "explicit") show = false;
-
-      // Filtro por tipo de contenido
-      if (show && AppState.filterExplicit !== "all") {
-        if (card.dataset.explicit !== AppState.filterExplicit) show = false;
-      }
-
-      // Categoría
-      if (show && AppState.filterCat !== "all") {
-        const cat = card.dataset.category;
-        const f = AppState.filterCat.toLowerCase();
-        if (f === "album" && !(cat.includes("album") || cat.includes("álbum"))) show = false;
-        else if (f !== "album" && !cat.includes(f)) show = false;
-      }
-
-      // Estado
-      if (show && AppState.filterStatus !== "all") {
-        if (card.dataset.status !== AppState.filterStatus) show = false;
-      }
-
-      // Género
-      if (show && AppState.filterGenre !== "all") {
-        if (!card.dataset.genre.includes(AppState.filterGenre.toLowerCase())) show = false;
-      }
-
-      card.style.display = show ? "" : "none";
-      if (show) visibleCount++;
-    });
-
-    details.style.display = visibleCount ? "" : "none";
-    if (query && visibleCount) details.open = true;
-  });
-
-  applySort();
-}
-
-function applySort() {
-  const container = document.getElementById("catalog-container");
-  const artistBlocks = [...container.querySelectorAll(".artist-details")];
-  const sort = AppState.sortBy;
-
-  if (sort === "artist" || sort === "az" || sort === "za") {
-    artistBlocks.sort((a, b) => {
-      const na = a.dataset.artistName, nb = b.dataset.artistName;
-      return sort === "za" ? nb.localeCompare(na) : na.localeCompare(nb);
-    });
-    artistBlocks.forEach(b => container.appendChild(b));
-  }
-
-  artistBlocks.forEach(block => {
-    const cards = [...block.querySelectorAll(".release-card")];
-    cards.sort((a, b) => {
-      if (sort === "recent") return (parseInt(b.dataset.date) || 0) - (parseInt(a.dataset.date) || 0);
-      if (sort === "az") return a.dataset.title.localeCompare(b.dataset.title);
-      if (sort === "za") return b.dataset.title.localeCompare(a.dataset.title);
-      return 0;
-    });
-    cards.forEach(c => c.parentNode && c.parentNode.appendChild(c));
-  });
-}
-
-function filterCatalog() { applyFilters(); }
-
-/* ═════════════════════════════════════════════════════════════════
-   13. SCROLL A LANZAMIENTO
-   ═════════════════════════════════════════════════════════════════ */
-function scrollToRelease(artistName, releaseId) {
-  document.querySelectorAll(".artist-details").forEach(details => {
-    if (details.dataset.artistName === artistName.toLowerCase()) {
-      details.open = true;
-      const target = document.getElementById(releaseId);
-      if (target) {
-        target.scrollIntoView({ behavior: "smooth", block: "center" });
-        target.style.outline = "2px solid #38bdf8";
-        setTimeout(() => { target.style.outline = "none"; }, 2500);
-      }
-    }
-  });
-}
-
-/* ═════════════════════════════════════════════════════════════════
-   14. COUNTDOWN EN TIEMPO REAL
-   ═════════════════════════════════════════════════════════════════ */
-setInterval(() => {
-  document.querySelectorAll("[data-countdown]").forEach(el => {
-    const target = parseInt(el.dataset.countdown, 10);
-    const diff = target - Date.now();
-    if (diff <= 0) {
-      el.innerHTML = `<span style="color: var(--accent-yellow); font-weight: 800; font-size: 14px;">🎉 ${t("available_now")}</span>`;
+  /* --- LÓGICA DE PROCESAMIENTO DEL CATÁLOGO --- */
+  function initCatalogData(response) {
+    if (response.error || !response.songsData || response.songsData.length === 0) {
+      document.getElementById("loading").innerHTML = '<p style="color: var(--text-primary);">No se encontraron lanzamientos.</p>';
       return;
     }
-    const d = Math.floor(diff / 86400000);
-    const h = Math.floor((diff % 86400000) / 3600000);
-    const m = Math.floor((diff % 3600000) / 60000);
-    const s = Math.floor((diff % 60000) / 1000);
-    el.innerHTML = `
-      <div class="countdown-seg"><span class="countdown-num">${String(d).padStart(2, "0")}</span><span class="countdown-lbl">${t("day")}</span></div>
-      <div class="countdown-seg"><span class="countdown-num">${String(h).padStart(2, "0")}</span><span class="countdown-lbl">${t("hour")}</span></div>
-      <div class="countdown-seg"><span class="countdown-num">${String(m).padStart(2, "0")}</span><span class="countdown-lbl">${t("min")}</span></div>
-      <div class="countdown-seg"><span class="countdown-num">${String(s).padStart(2, "0")}</span><span class="countdown-lbl">${t("sec")}</span></div>`;
-  });
-}, 1000);
 
-/* ═════════════════════════════════════════════════════════════════
-   15. CARGA DE MENÚS / FOOTER (los originales)
-   ═════════════════════════════════════════════════════════════════ */
-document.addEventListener("DOMContentLoaded", function () {
-  if (window.jQuery) {
-    $("#menuG").load("menuG.html");
-    $("#menuE").load("menuE.html");
-    $("#menuT").load("menuT.html");
-    $("#menuU").load("menuU.html");
-    $("#footer").load("footer.html");
-    $("#news").load("news.html");
-    $("#tosypp").load("tosypp.html");
+    rawSongsList = response.songsData;
+    processSongsData();
+    
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("toolbar-container").style.display = "flex";
+    document.getElementById("catalog-container").style.display = "block";
+
+    renderCatalogUI();
   }
-});
+
+  function processSongsData() {
+    parsedCatalog = [];
+    var counter = 0;
+
+    var forbiddenFields = ["Grouvex Studios UserID", "Marca temporal", "Estado del Contrato", "Razón", "¿Se Puede Modificar el Lanzamiento?"];
+    var defaultFields = [
+      "Artista", "Título del álbum/sencillo/EP", "Idioma del álbum", "Versión del Lanzamiento", "Cover?", 
+      "Álbum Recopilatorio", "Otros Artistas Álbum", "Compositores del álbum", "Letristas del álbum", 
+      "Información para colaboradores", "Género primario", "Género secundario", "Derechos de autor de la composición", 
+      "Derechos de autor de grabación de sonido", "Nombre del sello discográfico", "Lanzamiento original", 
+      "Fecha de pedido anticipado", "Fecha de inicio de ventas", "Explicit Content", "Categoría del Lanzamiento"
+    ];
+    for (var i = 1; i <= 15; i++) {
+      defaultFields.push("Título " + i, "Artistas " + i, "Compositores " + i, "¿Contiene letras? " + i, "Letristas " + i, "Preview Clip " + i, "Cover " + i);
+    }
+
+    rawSongsList.forEach(function(song) {
+      var priv = (song["Mostrar Privacidad"] || song["Privacidad"] || "").toString().trim().toLowerCase();
+      if (priv === "privado" || priv === "") return;
+
+      counter++;
+      var status = checkReleaseStatus(song);
+      var category = song["Categoría del Lanzamiento"] || "Single";
+      var explicit = (song["Explicit Content"] || "").toString().toLowerCase() === "sí" || (song["Explicit Content"] || "").toString().toLowerCase() === "true";
+
+      parsedCatalog.push({
+        id: "release-card-" + counter,
+        artist: song["Artista"] || "Artista Desconocido",
+        title: song["Título del álbum/sencillo/EP"] || "Lanzamiento sin título",
+        category: category,
+        explicit: explicit,
+        status: status,
+        rawDate: song["Fecha de inicio de ventas"] || song["Lanzamiento original"] || "",
+        songData: song,
+        allowedFields: defaultFields
+      });
+    });
+  }
+
+  /* --- EVALUACIÓN TEMPORAL Y COUNTDOWN --- */
+  function checkReleaseStatus(song) {
+    var today = new Date();
+    var rawDateStr = song["Fecha de inicio de ventas"] || song["Lanzamiento original"] || song["Fecha de pedido anticipado"] || "";
+    if (!rawDateStr) return { type: null, label: "", detail: "", badgeColor: "" };
+
+    var relDate = new Date(rawDateStr);
+    if (isNaN(relDate.getTime())) return { type: null, label: "", detail: "", badgeColor: "" };
+
+    if (relDate > today) {
+      return {
+        type: "FUTURE",
+        label: i18n[currentLang].filterFuture,
+        targetDate: relDate,
+        badgeColor: "#0891b2",
+        bgColor: "rgba(6, 182, 212, 0.15)",
+        borderColor: "#0891b2",
+        animClass: "pulse-future-block"
+      };
+    }
+
+    var isSameMonth = relDate.getMonth() === today.getMonth();
+    var isSameDay = relDate.getDate() === today.getDate();
+    var isPastYear = relDate.getFullYear() < today.getFullYear();
+
+    if (isSameMonth && isSameDay && isPastYear) {
+      var years = today.getFullYear() - relDate.getFullYear();
+      return {
+        type: "ANNIVERSARY",
+        label: i18n[currentLang].filterAnniversary,
+        detail: "Cumple " + years + " año" + (years > 1 ? "s" : "") + " hoy",
+        badgeColor: "#d97706",
+        bgColor: "rgba(245, 158, 11, 0.15)",
+        borderColor: "#d97706",
+        animClass: "snow-anniversary-block"
+      };
+    }
+
+    return { type: null, label: "", detail: "", badgeColor: "" };
+  }
+
+  /* --- RENDERIZADO REACTIVO DEL CATÁLOGO --- */
+  function renderCatalogUI() {
+    var container = document.getElementById("catalog-container");
+    var eventsSummaryContainer = document.getElementById("events-summary-container");
+    var eventsSummaryList = document.getElementById("events-summary-list");
+
+    var filtered = getFilteredAndSortedCatalog();
+    container.innerHTML = "";
+
+    // Agrupar por Artista
+    var artistsMap = {};
+    var globalEvents = [];
+
+    filtered.forEach(function(item) {
+      if (!artistsMap[item.artist]) artistsMap[item.artist] = [];
+      artistsMap[item.artist].push(item);
+
+      if (item.status.type) {
+        globalEvents.push(item);
+      }
+    });
+
+    // Eventos destacados
+    if (globalEvents.length > 0) {
+      eventsSummaryList.innerHTML = "";
+      globalEvents.forEach(function(item) {
+        var card = document.createElement("div");
+        card.style.cssText = "flex: 0 0 260px; background: var(--bg-card); border-left: 4px solid " + item.status.badgeColor + "; border-radius: 8px; padding: 10px 12px; cursor: pointer;";
+        card.onclick = function() { scrollToRelease(item.id); };
+        
+        card.innerHTML = '<div style="font-size:10px; font-weight:800; color:' + item.status.badgeColor + '; text-transform:uppercase;">' + escapeHtml(item.status.label) + '</div>' +
+                         '<div style="font-size:14px; font-weight:800; color:var(--text-primary); text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">' + escapeHtml(item.title) + '</div>' +
+                         '<div style="font-size:12px; color:var(--accent-color);">' + escapeHtml(item.artist) + '</div>';
+        eventsSummaryList.appendChild(card);
+      });
+      eventsSummaryContainer.style.display = "block";
+    } else {
+      eventsSummaryContainer.style.display = "none";
+    }
+
+    // Renderizar bloques por Artista
+    Object.keys(artistsMap).forEach(function(artistName) {
+      var details = document.createElement("details");
+      details.className = "artist-details";
+      details.open = true;
+      details.style.cssText = "background: var(--bg-secondary); border: 2px solid var(--card-border); border-radius: 14px; margin-bottom: 20px; overflow: hidden;";
+
+      var summary = document.createElement("summary");
+      summary.style.cssText = "font-weight: 800; font-size: 18px; padding: 16px 20px; background: var(--bg-card); cursor: pointer; color: var(--text-primary); display: flex; align-items: center; justify-content: space-between;";
+      summary.innerHTML = '<span><i class="fa-solid fa-microphone-lines" style="color:var(--accent-color); margin-right:8px;"></i>' + escapeHtml(artistName) + '</span>' +
+                          '<span style="font-size: 12px; background: var(--card-border); padding: 4px 10px; border-radius: 20px; color: #fff;">' + artistsMap[artistName].length + ' ' + i18n[currentLang].releasesCount + '</span>';
+      details.appendChild(summary);
+
+      var artistContent = document.createElement("div");
+      artistContent.style.padding = "15px";
+
+      artistsMap[artistName].forEach(function(item) {
+        artistContent.appendChild(createReleaseCardElement(item));
+      });
+
+      details.appendChild(artistContent);
+      container.appendChild(details);
+    });
+  }
+
+  /* --- CREADOR DE TARJETA DE LANZAMIENTO --- */
+  function createReleaseCardElement(item) {
+    var song = item.songData;
+    var releaseCard = document.createElement("div");
+    releaseCard.className = "release-card " + (item.status.animClass || "");
+    releaseCard.id = item.id;
+    releaseCard.style.cssText = "border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; margin-bottom: 20px; background: var(--bg-secondary); position: relative;";
+
+    var html = '';
+
+    // Status Banner / Countdown
+    if (item.status.type === 'FUTURE') {
+      html += '<div style="background:' + item.status.bgColor + '; border: 1px solid ' + item.status.borderColor + '; padding: 10px; border-radius: 8px; margin-bottom: 12px; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">' +
+                '<span><span class="radar-dot"></span><i class="fa-solid fa-rocket" style="margin-right:6px;"></i>' + escapeHtml(item.status.label) + '</span>' +
+                '<span id="countdown-' + item.id + '" style="color: var(--accent-color); font-family: monospace; font-size: 14px;"></span>' +
+              '</div>';
+      initCountdownTimer(item.id, item.status.targetDate);
+    } else if (item.status.type === 'ANNIVERSARY') {
+      html += '<div style="background:' + item.status.bgColor + '; border: 1px solid ' + item.status.borderColor + '; padding: 10px; border-radius: 8px; margin-bottom: 12px; font-size: 13px; font-weight: 700;">' +
+                '<i class="fa-solid fa-cake-candles" style="margin-right:6px;"></i>' + escapeHtml(item.status.label) + ': ' + escapeHtml(item.status.detail) +
+              '</div>';
+    }
+
+    // Encabezado
+    html += '<div style="display:flex; align-items:center; justify-content:space-between; border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 15px;">' +
+              '<h3 style="margin:0; font-size:20px; color:var(--text-primary); display:flex; align-items:center; gap:8px;">' +
+                '<i class="fa-solid fa-compact-disc" style="color:var(--accent-purple);"></i>' + escapeHtml(item.title) +
+                (item.explicit ? '<span class="badge-explicit">' + i18n[currentLang].explicitBadge + '</span>' : '') +
+              '</h3>' +
+              '<button class="btn-action-icon" title="Compartir SmartLink" onclick="openSmartLinkModal(\'' + item.id + '\')"><i class="fa-solid fa-share-nodes"></i></button>' +
+            '</div>';
+
+    // Grid de Metadatos
+    html += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 15px;">';
+    item.allowedFields.forEach(function(key) {
+      if (song[key] && !key.includes("Título ") && !key.includes("Embed") && !key.includes("Spotify") && !key.includes("YouTube")) {
+        html += '<div style="background: var(--bg-primary); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color);">' +
+                  '<strong style="color: var(--accent-color); font-size: 10px; display: block; text-transform: uppercase;">' + escapeHtml(key) + '</strong>' +
+                  '<span style="font-size: 13px; font-weight: 600;">' + escapeHtml(song[key]) + '</span>' +
+                '</div>';
+      }
+    });
+    html += '</div>';
+
+    // Reproductores / Enlaces
+    var embedsHtml = '';
+    var embedKeys = ["Spotify Embed", "YouTube Embed", "Apple Music Embed", "Amazon Music Embed", "Deezer Embed"];
+    embedKeys.forEach(function(k) {
+      if (song[k]) {
+        var src = formatEmbedContent(song[k]);
+        embedsHtml += '<div style="margin-bottom:10px;">' + src + '</div>';
+      }
+    });
+
+    if (embedsHtml) {
+      html += '<div style="background: var(--bg-inner); padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 15px;">' +
+                '<h4 style="margin:0 0 10px 0; font-size:13px; color:var(--accent-color); text-transform:uppercase;"><i class="fa-solid fa-headphones"></i> ' + i18n[currentLang].platformsTitle + '</h4>' +
+                embedsHtml +
+              '</div>';
+    }
+
+    // Tracklist con Karaoke Trigger
+    var tracksHtml = '';
+    for (var t = 1; t <= 15; t++) {
+      var trackTitle = song["Título " + t];
+      var lyricsText = song["Letra " + t] || song["Letra"] || ""; // Metadato LRC
+      var ytUrl = song["YouTube"] || song["YouTube Embed"] || "";
+
+      if (trackTitle) {
+        tracksHtml += '<div style="background: var(--bg-primary); padding: 10px; border-radius: 8px; margin-top: 8px; border-left: 3px solid var(--accent-purple); display:flex; align-items:center; justify-content:space-between;">' +
+                        '<div>' +
+                          '<strong style="font-size:14px; color:var(--text-primary);">' + t + '. ' + escapeHtml(trackTitle) + '</strong>' +
+                        '</div>' +
+                        '<div style="display:flex; gap:6px;">' +
+                          '<button class="btn-action-icon" title="Modo Karaoke Sincronizado" onclick="openKaraokeModal(\'' + escapeHtml(item.artist) + '\', \'' + escapeHtml(trackTitle) + '\', \'' + escapeHtml(ytUrl) + '\', \'' + escapeHtml(lyricsText) + '\')">' +
+                            '<i class="fa-solid fa-microphone"></i>' +
+                          '</button>' +
+                        '</div>' +
+                      '</div>';
+      }
+    }
+
+    if (tracksHtml) {
+      html += '<div style="background: var(--bg-inner); padding: 12px; border-radius: 10px; border: 1px solid var(--border-color);">' +
+                '<h4 style="margin:0 0 10px 0; font-size:13px; color:var(--accent-purple); text-transform:uppercase;"><i class="fa-solid fa-music"></i> ' + i18n[currentLang].trackListTitle + '</h4>' +
+                tracksHtml +
+              '</div>';
+    }
+
+    releaseCard.innerHTML = html;
+    return releaseCard;
+  }
+
+  /* --- COUNTDOWN INTERACTIVO --- */
+  function initCountdownTimer(elementId, targetDate) {
+    function update() {
+      var el = document.getElementById("countdown-" + elementId);
+      if (!el) return;
+
+      var now = new Date();
+      var diff = targetDate - now;
+
+      if (diff <= 0) {
+        el.innerHTML = i18n[currentLang].nowAvailable;
+        return;
+      }
+
+      var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      var mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      var secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+      el.innerHTML = days + "d " + hours + "h " + mins + "m " + secs + "s";
+    }
+    update();
+    setInterval(update, 1000);
+  }
+
+  /* --- FILTRADO Y ORDENAMIENTO DUAL --- */
+  function applyAllFilters() {
+    renderCatalogUI();
+  }
+
+  function getFilteredAndSortedCatalog() {
+    var searchQuery = document.getElementById("global-search-input").value.toLowerCase().trim();
+    var hideExplicit = document.getElementById("explicit-toggle").checked;
+    var sortMode = document.getElementById("sort-select").value;
+
+    return parsedCatalog.filter(function(item) {
+      // Filtro Explícito
+      if (hideExplicit && item.explicit) return false;
+
+      // Filtro Chips
+      if (activeChipFilter !== 'ALL') {
+        if (activeChipFilter === 'FUTURE' || activeChipFilter === 'ANNIVERSARY') {
+          if (item.status.type !== activeChipFilter) return false;
+        } else {
+          if (item.category.toLowerCase() !== activeChipFilter.toLowerCase()) return false;
+        }
+      }
+
+      // Búsqueda
+      if (searchQuery) {
+        var matchArtist = item.artist.toLowerCase().includes(searchQuery);
+        var matchTitle = item.title.toLowerCase().includes(searchQuery);
+        if (!matchArtist && !matchTitle) return false;
+      }
+
+      return true;
+    }).sort(function(a, b) {
+      if (sortMode === 'title-asc') return a.title.localeCompare(b.title);
+      if (sortMode === 'title-desc') return b.title.localeCompare(a.title);
+      if (sortMode === 'artist-asc') return a.artist.localeCompare(b.artist);
+      return new Date(b.rawDate) - new Date(a.rawDate); // recent
+    });
+  }
+
+  /* --- MÓDULO KARAOKE CON YOUTUBE IFRAME PLAYER API --- */
+  function loadYouTubeIframeAPI() {
+    if (window.YT) return;
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  }
+
+  // LRC Parser Regex
+  function parseLRC(lrcText) {
+    if (!lrcText) return [];
+    var lines = lrcText.split('\n');
+    var result = [];
+    var timeRegex = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/;
+
+    lines.forEach(function(line) {
+      var match = timeRegex.exec(line);
+      if (match) {
+        var minutes = parseFloat(match[1]);
+        var seconds = parseFloat(match[2]);
+        var millis = parseFloat(match[3]) / (match[3].length === 2 ? 100 : 1000);
+        var time = minutes * 60 + seconds + millis;
+        var text = line.replace(timeRegex, '').trim();
+        if (text) result.push({ time: time, text: text });
+      }
+    });
+
+    return result.sort(function(a, b) { return a.time - b.time; });
+  }
+
+  function extractYouTubeId(url) {
+    if (!url) return null;
+    var regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    var match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  }
+
+  function openKaraokeModal(artist, title, ytUrl, lrcRawText) {
+    var videoId = extractYouTubeId(ytUrl) || "L3wKzyIN1yk"; // ID Fallback demo
+    document.getElementById("karaoke-title").textContent = artist + " - " + title;
+
+    // Parsear letra
+    karaokeParsedLyrics = parseLRC(lrcRawText);
+    var lyricsContainer = document.getElementById("karaoke-lyrics");
+    lyricsContainer.innerHTML = "";
+
+    if (karaokeParsedLyrics.length === 0) {
+      lyricsContainer.innerHTML = '<p style="color:var(--text-secondary);">' + i18n[currentLang].noLyrics + '</p>';
+    } else {
+      karaokeParsedLyrics.forEach(function(lineObj, index) {
+        var lineEl = document.createElement("div");
+        lineEl.className = "karaoke-line";
+        lineEl.id = "lyric-line-" + index;
+        lineEl.textContent = lineObj.text;
+        lineEl.onclick = function() {
+          if (ytPlayer && ytPlayer.seekTo) {
+            ytPlayer.seekTo(lineObj.time, true);
+          }
+        };
+        lyricsContainer.appendChild(lineEl);
+      });
+    }
+
+    document.getElementById("karaoke-modal").classList.add("active");
+
+    // Inicializar Player
+    if (ytPlayer) {
+      ytPlayer.loadVideoById(videoId);
+    } else {
+      ytPlayer = new YT.Player('yt-player-target', {
+        height: '100%',
+        width: '100%',
+        videoId: videoId,
+        playerVars: { 'autoplay': 1, 'controls': 1 },
+        events: {
+          'onStateChange': onPlayerStateChange
+        }
+      });
+    }
+  }
+
+  function onPlayerStateChange(event) {
+    if (event.data === YT.PlayerState.PLAYING) {
+      startKaraokeSyncLoop();
+    } else {
+      stopKaraokeSyncLoop();
+    }
+  }
+
+  function startKaraokeSyncLoop() {
+    stopKaraokeSyncLoop();
+    karaokeSyncInterval = setInterval(function() {
+      if (!ytPlayer || !ytPlayer.getCurrentTime) return;
+      var currentTime = ytPlayer.getCurrentTime();
+
+      // Encontrar índice activo
+      var activeIndex = -1;
+      for (var i = 0; i < karaokeParsedLyrics.length; i++) {
+        if (currentTime >= karaokeParsedLyrics[i].time) {
+          activeIndex = i;
+        } else {
+          break;
+        }
+      }
+
+      if (activeIndex !== currentActiveLyricIndex && activeIndex !== -1) {
+        currentActiveLyricIndex = activeIndex;
+        updateKaraokeUI(activeIndex);
+      }
+    }, 250);
+  }
+
+  function stopKaraokeSyncLoop() {
+    if (karaokeSyncInterval) clearInterval(karaokeSyncInterval);
+  }
+
+  function updateKaraokeUI(activeIndex) {
+    document.querySelectorAll(".karaoke-line").forEach(function(el) { el.classList.remove("active"); });
+    var activeEl = document.getElementById("lyric-line-" + activeIndex);
+    if (activeEl) {
+      activeEl.classList.add("active");
+      activeEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
+
+  function closeKaraokeModal() {
+    document.getElementById("karaoke-modal").classList.remove("active");
+    stopKaraokeSyncLoop();
+    if (ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo();
+  }
+
+  /* --- MÓDULO SMARTLINK MODAL --- */
+  function openSmartLinkModal(releaseId) {
+    var item = parsedCatalog.find(function(i) { return i.id === releaseId; });
+    if (!item) return;
+
+    var song = item.songData;
+    document.getElementById("smartlink-song-title").textContent = item.title;
+    document.getElementById("smartlink-artist-name").textContent = item.artist;
+    document.getElementById("smartlink-img").src = song["Cover?"] || song["Cover 1"] || "https://via.placeholder.com/200";
+
+    activeSmartLinkUrl = window.location.origin + window.location.pathname + "#" + releaseId;
+
+    var platformsContainer = document.getElementById("smartlink-platforms");
+    platformsContainer.innerHTML = "";
+
+    var platformKeys = ["Spotify", "YouTube", "Apple Music", "Amazon Music", "Deezer", "Tidal"];
+    platformKeys.forEach(function(pKey) {
+      if (song[pKey]) {
+        var btn = document.createElement("a");
+        btn.className = "smartlink-btn";
+        btn.href = song[pKey];
+        btn.target = "_blank";
+        btn.innerHTML = '<span><i class="' + getPlatformIcon(pKey) + '"></i> ' + pKey + '</span> <i class="fa-solid fa-arrow-up-right-from-square"></i>';
+        platformsContainer.appendChild(btn);
+      }
+    });
+
+    document.getElementById("smartlink-modal").classList.add("active");
+  }
+
+  function closeSmartLinkModal() {
+    document.getElementById("smartlink-modal").classList.remove("active");
+  }
+
+  function copySmartLinkToClipboard() {
+    navigator.clipboard.writeText(activeSmartLinkUrl).then(function() {
+      alert(i18n[currentLang].linkCopied);
+    });
+  }
+
+  /* --- HELPER AUXILIARES --- */
+  function scrollToRelease(id) {
+    var el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.style.outline = "2px solid var(--accent-color)";
+      setTimeout(function() { el.style.outline = "none"; }, 2000);
+    }
+  }
+
+  function getPlatformIcon(platform) {
+    var icons = {
+      "Spotify": "fa-brands fa-spotify",
+      "YouTube": "fa-brands fa-youtube",
+      "Apple Music": "fa-brands fa-apple",
+      "Amazon Music": "fa-brands fa-amazon",
+      "Deezer": "fa-brands fa-deezer",
+      "Tidal": "fa-solid fa-compact-disc"
+    };
+    return icons[platform] || "fa-solid fa-link";
+  }
+
+  function formatEmbedContent(embedData) {
+    if (!embedData) return '';
+    var str = String(embedData).trim();
+    if (str.toLowerCase().includes("<iframe")) return str;
+
+    if (str.startsWith("http://") || str.startsWith("https://")) {
+      var srcUrl = str;
+      if (srcUrl.includes("youtube.com/watch?v=")) srcUrl = srcUrl.replace("watch?v=", "embed/");
+      else if (srcUrl.includes("youtu.be/")) srcUrl = srcUrl.replace("youtu.be/", "youtube.com/embed/");
+      return '<iframe src="' + escapeHtml(srcUrl) + '" height="150" allow="autoplay; encrypted-media"></iframe>';
+    }
+    return str;
+  }
+
+  function escapeHtml(text) {
+    if (!text) return '';
+    return String(text).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+  }
 </script>
 
 </body>
-          </html>
+</html>
