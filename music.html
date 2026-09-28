@@ -506,7 +506,7 @@
     }
 
     var embedKeys = ["Spotify Embed", "YouTube Embed", "Apple Music Embed", "Amazon Music Embed", "Deezer Embed"];
-    var linkKeys = ["Spotify", "YouTube", "Apple Music", "Amazon Music", "Deezer", "Tidal", "Instagram", "TikTok", "SoundCloud"];
+    var linkKeys = ["Spotify", "YouTube", "Apple Music", "Amazon Music", "Deezer", "Tidal", "Instagram", "TikTok", "SoundCloud", "Push"];
 
     var artistsMap = {};
     var globalEventsList = [];
@@ -515,10 +515,10 @@
     response.songsData.forEach(function(song) {
       var privacidadVal = (song["Mostrar Privacidad"] || song["Privacidad"] || "").toString().trim();
 
-      if (privacidadVal.toLowerCase() === "privado") return;
+      if (privacidadVal.toLowerCase() === "privado" || privacidadVal === "") return;
 
       var allowedFields = [];
-      if (privacidadVal.toLowerCase() === "público" || privacidadVal.toLowerCase() === "publico" || privacidadVal === "") {
+      if (privacidadVal.toLowerCase() === "público" || privacidadVal.toLowerCase() === "publico") {
         allowedFields = defaultFields;
       } else {
         allowedFields = privacidadVal.split(",").map(function(s) { return s.trim(); });
