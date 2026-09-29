@@ -407,6 +407,39 @@
         font-weight: 600;
       }
 
+    .platform-btn-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+      font-size: 16px;
+      text-decoration: none;
+      transition: transform 0.2s ease, background 0.2s ease,
+                  color 0.2s ease, border-color 0.2s ease;
+    }
+    
+    .platform-btn-icon:hover {
+      transform: translateY(-2px);
+      background: var(--accent-color);
+      color: #ffffff;
+      border-color: var(--accent-color);
+      box-shadow: 0 6px 15px rgba(56, 189, 248, 0.35);
+    }
+    
+    /* Hover con color de marca por plataforma */
+    .platform-btn-icon[title="Spotify"]:hover      { background:#1DB954; border-color:#1DB954; }
+    .platform-btn-icon[title="YouTube"]:hover      { background:#FF0000; border-color:#FF0000; }
+    .platform-btn-icon[title="Apple Music"]:hover  { background:#FA243C; border-color:#FA243C; }
+    .platform-btn-icon[title="Amazon Music"]:hover { background:#25D1DA; border-color:#25D1DA; }
+    .platform-btn-icon[title="Deezer"]:hover       { background:#A238FF; border-color:#A238FF; }
+    .platform-btn-icon[title="Tidal"]:hover        { background:#000000; border-color:#000000; }
+    .platform-btn-icon[title="Push"]:hover         { background:#7E22CE; border-color:#7E22CE; }
+    
       /* =========================================================
          MODAL FULLSCREEN SUPERPUESTO REAL (CUBRE TODA LA PANTALLA)
          ========================================================= */
@@ -984,81 +1017,174 @@
     });
   }
 
-  function createReleaseCardElement(item) {
-    var song = item.songData;
-    var releaseCard = document.createElement("div");
-    releaseCard.className = "release-card";
-    releaseCard.id = item.id;
-    releaseCard.style.cssText = "border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; margin-bottom: 20px; background: var(--bg-secondary); position: relative;";
+function createReleaseCardElement(item) {
+  var song = item.songData;
 
-    var html = '<div style="display:flex; align-items:center; justify-content:space-between; border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 15px;">' +
-                 '<h3 style="margin:0; font-size:20px; color:var(--text-primary); display:flex; align-items:center; gap:8px;">' +
-                   '<i class="fa-solid fa-compact-disc" style="color:var(--accent-purple);"></i>' + escapeHtml(item.title) +
-                   (item.explicit ? '<span class="badge-explicit" title="Contenido Explícito">' + i18n[currentLang].explicitBadge + '</span>' : '') +
-                 '</h3>' +
-                 '<button class="btn-action-icon" title="Compartir SmartLink Modal" onclick="openSmartLinkModal(\'' + item.id + '\')"><i class="fa-solid fa-share-nodes"></i></button>' +
-               '</div>';
+  /* ============================================================
+     0. CONTENEDOR PRINCIPAL
+     ============================================================ */
+  var releaseCard = document.createElement("div");
+  releaseCard.className = "release-card";
+  releaseCard.id = item.id;
+  releaseCard.style.cssText =
+    "border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; " +
+    "margin-bottom: 20px; background: var(--bg-secondary); position: relative;";
 
-    html += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 15px;">';
-    item.allowedFields.forEach(function(key) {
-      if (song[key] && !key.includes("Título ") && !key.includes("Embed") && !key.includes("Spotify") && !key.includes("YouTube")) {
-        html += '<div class="dynamic-field-box">' +
-                  '<strong class="dynamic-field-label">' + escapeHtml(key) + '</strong>' +
-                  '<span class="dynamic-field-value">' + escapeHtml(song[key]) + '</span>' +
-                '</div>';
-      }
-    });
-    html += '</div>';
+  var html = "";
 
-    var embedsList = [];
-    var embedKeys = ["Spotify Embed", "YouTube Embed", "Apple Music Embed", "Amazon Music Embed", "Deezer Embed"];
-    embedKeys.forEach(function(k) {
-      if (song[k]) {
-        var formatted = formatEmbedContent(song[k]);
-        if (formatted) embedsList.push(formatted);
-      }
-    });
+  /* ============================================================
+     1. CABECERA (título + badge explicit + botón SmartLink)
+     ============================================================ */
+  html +=
+    '<div style="display:flex; align-items:center; justify-content:space-between; ' +
+    'border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 15px;">' +
+      '<h3 style="margin:0; font-size:20px; color:var(--text-primary); display:flex; align-items:center; gap:8px;">' +
+        '<i class="fa-solid fa-compact-disc" style="color:var(--accent-purple);"></i>' +
+        escapeHtml(item.title) +
+        (item.explicit
+          ? '<span class="badge-explicit" title="Contenido Explícito">' +
+              i18n[currentLang].explicitBadge +
+            '</span>'
+          : '') +
+      '</h3>' +
+      '<button class="btn-action-icon" title="Compartir SmartLink Modal" ' +
+        'onclick="openSmartLinkModal(\'' + item.id + '\')">' +
+        '<i class="fa-solid fa-share-nodes"></i>' +
+      '</button>' +
+    '</div>';
 
-    if (embedsList.length > 0) {
-      html += '<div style="background: var(--bg-inner); padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 15px; overflow: hidden;">' +
-                '<h4 style="margin:0 0 10px 0; font-size:13px; color:var(--accent-color); text-transform:uppercase;"><i class="fa-solid fa-headphones"></i> ' + i18n[currentLang].platformsTitle + '</h4>' +
-                createSwipeCarouselHtml(item.id, embedsList) +
-              '</div>';
+  /* ============================================================
+     2. METADATOS (campos dinámicos en grid)
+     ============================================================ */
+  var fieldsHtml = "";
+  item.allowedFields.forEach(function (key) {
+    var isHiddenKey =
+      key.includes("Título ") ||
+      key.includes("Embed") ||
+      key.includes("Spotify") ||
+      key.includes("YouTube");
+
+    if (song[key] && !isHiddenKey) {
+      fieldsHtml +=
+        '<div class="dynamic-field-box">' +
+          '<strong class="dynamic-field-label">' + escapeHtml(key) + '</strong>' +
+          '<span class="dynamic-field-value">' + escapeHtml(song[key]) + '</span>' +
+        '</div>';
     }
+  });
 
-    /* OBTENCIÓN DINÁMICA DE TRACKS Y DE "YTEmbed 1" HASTA "YTEmbed 15" */
-    var tracksHtml = '';
-    for (var t = 1; t <= 15; t++) {
-      var trackTitle = song["Título " + t];
-      var lyricsText = song["Letra " + t] || song["Letra"] || "";
-
-      // Prioridad a YTEmbed 1..15, luego a YouTube 1..15 y por último YouTube global
-      var ytUrl = song["YTEmbed " + t] || song["YTEmbed" + t] || song["YouTube " + t] || song["YouTube"] || song["YouTube Embed"] || "";
-
-      if (trackTitle) {
-        tracksHtml += '<div style="background: var(--bg-primary); padding: 10px 14px; border-radius: 8px; margin-top: 8px; border-left: 3px solid var(--accent-purple); display:flex; align-items:center; justify-content:space-between; gap:10px;">' +
-                        '<div>' +
-                          '<strong style="font-size:14px; color:var(--text-primary);">' + t + '. ' + escapeHtml(trackTitle) + '</strong>' +
-                        '</div>' +
-                        '<div style="display:flex; gap:6px;">' +
-                          '<button class="btn-action-icon" title="Reproducir y Letra en Modal" onclick="openKaraokeModal(\'' + escapeHtml(item.artist) + '\', \'' + escapeHtml(trackTitle) + '\', \'' + escapeHtml(ytUrl) + '\', \'' + escapeHtml(lyricsText) + '\')">' +
-                            '<i class="fa-solid fa-play"></i>' +
-                          '</button>' +
-                        '</div>' +
-                      '</div>';
-      }
-    }
-
-    if (tracksHtml) {
-      html += '<div style="background: var(--bg-inner); padding: 12px; border-radius: 10px; border: 1px solid var(--border-color);">' +
-                '<h4 style="margin:0 0 10px 0; font-size:13px; color:var(--accent-purple); text-transform:uppercase;"><i class="fa-solid fa-music"></i> ' + i18n[currentLang].trackListTitle + '</h4>' +
-                tracksHtml +
-              '</div>';
-    }
-
-    releaseCard.innerHTML = html;
-    return releaseCard;
+  if (fieldsHtml) {
+    html +=
+      '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); ' +
+      'gap: 10px; margin-bottom: 15px;">' +
+        fieldsHtml +
+      '</div>';
   }
+
+  /* ============================================================
+     3. PLATAFORMAS (iconos con enlaces directos)
+     ============================================================ */
+  var linksHtml = "";
+  var linkKeys = ["Spotify", "YouTube", "Apple Music", "Amazon Music", "Deezer", "Tidal", "Push"];
+  linkKeys.forEach(function (key) {
+    if (song[key]) {
+      linksHtml +=
+        '<a href="' + escapeHtml(song[key]) + '" target="_blank" rel="noopener noreferrer" ' +
+          'class="platform-btn-icon" title="' + escapeHtml(key) + '">' +
+          '<i class="' + getPlatformIcon(key) + '"></i>' +
+        '</a>';
+    }
+  });
+
+  if (linksHtml) {
+    html +=
+      '<div style="margin-top: 20px; background: var(--bg-inner); padding: 15px; ' +
+      'border-radius: 12px; border: 1px solid var(--border-color); position: relative; z-index: 3;">' +
+        '<h4 style="margin: 0 0 12px 0; color: var(--accent-color); font-size: 13px; ' +
+        'font-weight: 800; text-transform: uppercase;">' +
+          '<i class="fa-solid fa-headphones" style="margin-right: 8px;"></i>' +
+          i18n[currentLang].platformsTitle +
+        '</h4>' +
+        '<div style="display: flex; flex-wrap: wrap; gap: 6px;">' + linksHtml + '</div>' +
+      '</div>';
+  }
+
+  /* ============================================================
+     4. EMBEDS (carrusel con reproductores incrustados)
+     ============================================================ */
+  var embedsList = [];
+  var embedKeys = ["Spotify Embed", "YouTube Embed", "Apple Music Embed", "Amazon Music Embed", "Deezer Embed"];
+  embedKeys.forEach(function (k) {
+    if (song[k]) {
+      var formatted = formatEmbedContent(song[k]);
+      if (formatted) embedsList.push(formatted);
+    }
+  });
+
+  if (embedsList.length > 0) {
+    html +=
+      '<div style="background: var(--bg-inner); padding: 12px; border-radius: 10px; ' +
+      'border: 1px solid var(--border-color); margin-top: 15px; overflow: hidden;">' +
+        '<h4 style="margin:0 0 10px 0; font-size:13px; color:var(--accent-color); text-transform:uppercase;">' +
+          '<i class="fa-solid fa-headphones"></i> ' + i18n[currentLang].platformsTitle +
+        '</h4>' +
+        createSwipeCarouselHtml(item.id, embedsList) +
+      '</div>';
+  }
+
+  /* ============================================================
+     5. TRACKLIST (con botón de karaoke por track)
+     ============================================================ */
+  var tracksHtml = "";
+  for (var t = 1; t <= 15; t++) {
+    var trackTitle = song["Título " + t];
+    if (!trackTitle) continue;
+
+    var lyricsText = song["Letra " + t] || song["Letra"] || "";
+
+    // Prioridad: YTEmbed N → YouTube N → YouTube global
+    var ytUrl =
+      song["YTEmbed " + t] || "";
+
+    tracksHtml +=
+      '<div style="background: var(--bg-primary); padding: 10px 14px; border-radius: 8px; ' +
+      'margin-top: 8px; border-left: 3px solid var(--accent-purple); ' +
+      'display:flex; align-items:center; justify-content:space-between; gap:10px;">' +
+        '<div>' +
+          '<strong style="font-size:14px; color:var(--text-primary);">' +
+            t + '. ' + escapeHtml(trackTitle) +
+          '</strong>' +
+        '</div>' +
+        '<div style="display:flex; gap:6px;">' +
+          '<button class="btn-action-icon" title="Reproducir y Letra en Modal" ' +
+            'data-artist="' + escapeHtml(item.artist) + '" ' +
+            'data-title="'  + escapeHtml(trackTitle)  + '" ' +
+            'data-yt="'     + escapeHtml(ytUrl)       + '" ' +
+            'data-lyrics="' + escapeHtml(lyricsText)  + '" ' +
+            'onclick="openKaraokeFromButton(this)">' +
+            '<i class="fa-solid fa-play"></i>' +
+          '</button>' +
+        '</div>' +
+      '</div>';
+  }
+
+  if (tracksHtml) {
+    html +=
+      '<div style="background: var(--bg-inner); padding: 12px; border-radius: 10px; ' +
+      'border: 1px solid var(--border-color); margin-top: 15px;">' +
+        '<h4 style="margin:0 0 10px 0; font-size:13px; color:var(--accent-purple); text-transform:uppercase;">' +
+          '<i class="fa-solid fa-music"></i> ' + i18n[currentLang].trackListTitle +
+        '</h4>' +
+        tracksHtml +
+      '</div>';
+  }
+
+  /* ============================================================
+     6. INYECCIÓN FINAL
+     ============================================================ */
+  releaseCard.innerHTML = html;
+  return releaseCard;
+}
 
   function createSwipeCarouselHtml(cardId, embeds) {
     var slidesHtml = embeds.map(function(embedHtml) {
@@ -1174,6 +1300,15 @@
     return (match && match[2].length === 11) ? match[2] : null;
   }
 
+function openKaraokeFromButton(btn) {
+  openKaraokeModal(
+    btn.dataset.artist || "",
+    btn.dataset.title  || "",
+    btn.dataset.yt     || "",
+    btn.dataset.lyrics || ""
+  );
+}
+    
   function openKaraokeModal(artist, title, ytUrl, lrcRawText) {
     var videoId = extractYouTubeId(ytUrl) || "FNSS8ah6UuA";
     document.getElementById("karaoke-title").textContent = artist + " - " + title;
