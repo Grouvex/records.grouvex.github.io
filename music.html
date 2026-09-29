@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="temas.css">
     <link rel="icon" href="https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/priv/arch/imagen/isede/Grouvex%20Studios%20Records%20Logo.png" type="image/x-icon">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="MobileOptimized" content="width">
     <meta name="author" content="Grouvex Studios">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -29,10 +29,8 @@
     <meta name="HandheldFriendly" content="true">
     
     <script src="/google-script-simulator.js"></script>
-    <!-- FONT AWESOME 6.5.2 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     
-    <!-- FIREBASE & JQUERY -->
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-database.js"></script>
@@ -53,7 +51,6 @@
     <script src="index.js"></script>
     <script type="module" src="abc.js"></script>
 
-    <!-- ESTILOS AVANZADOS Y SISTEMA DE VARIABLES DE TEMA COMPLETO -->
     <style>
       :root {
         --bg-primary: #0f172a;
@@ -108,7 +105,6 @@
         transition: background-color 0.3s ease, color 0.3s ease;
       }
 
-      /* TOOLBAR DE BÚSQUEDA Y CONTROLES */
       .toolbar-container {
         max-width: 1200px;
         margin: 15px auto;
@@ -284,41 +280,6 @@
         100% { transform: rotate(360deg); } 
       }
 
-      .pulse-future-block::before {
-        content: "";
-        position: absolute;
-        top: 20px;
-        left: 20px;
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        background: rgba(8, 145, 178, 0.4);
-        animation: wave-radial-expand 2.5s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
-        pointer-events: none;
-        z-index: 1;
-      }
-
-      @keyframes wave-radial-expand {
-        0% { transform: scale(0); opacity: 0.9; box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.8); }
-        50% { opacity: 0.5; }
-        100% { transform: scale(85); opacity: 0; box-shadow: 0 0 40px 20px rgba(8, 145, 178, 0); }
-      }
-
-      .radar-dot {
-        display: inline-block;
-        width: 8px;
-        height: 8px;
-        background-color: var(--accent-color);
-        border-radius: 50%;
-        margin-right: 6px;
-        animation: spin-glow 1.5s infinite alternate;
-      }
-
-      @keyframes spin-glow {
-        0% { opacity: 0.3; transform: scale(0.8); }
-        100% { opacity: 1; transform: scale(1.3); }
-      }
-
       .btn-action-icon {
         background: var(--bg-card);
         border: 1px solid var(--border-color);
@@ -356,27 +317,40 @@
         box-shadow: 0 2px 4px rgba(0,0,0,0.3);
       }
 
-      /* CARRUSEL DE EMBEDS (1 A 1 RESPONSIVE) */
+      /* CARRUSEL DESLIZANTE PURAMENTE TÁCTIL Y AJUSTADO (1 SOLO EMBED VISIBLE) */
       .embed-carousel-wrapper {
         position: relative;
         width: 100%;
+        max-width: 100%;
         overflow: hidden;
         border-radius: 12px;
         background: var(--bg-inner);
-        padding: 10px 0;
+        padding: 8px 0;
+        box-sizing: border-box;
       }
 
       .embed-carousel-track {
         display: flex;
-        transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
         width: 100%;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        box-sizing: border-box;
+      }
+
+      .embed-carousel-track::-webkit-scrollbar {
+        display: none;
       }
 
       .embed-carousel-slide {
+        flex: 0 0 100%;
         min-width: 100%;
         max-width: 100%;
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
         box-sizing: border-box;
-        padding: 0 10px;
+        padding: 0 5px;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -384,42 +358,19 @@
 
       .embed-carousel-slide iframe {
         width: 100% !important;
-        border-radius: 12px;
+        max-width: 100% !important;
+        border-radius: 10px;
         border: 0;
         min-height: 152px;
         max-height: 380px;
+        box-sizing: border-box;
       }
-
-      .carousel-nav-btn {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        background: rgba(0, 0, 0, 0.6);
-        color: #ffffff;
-        border: 1px solid var(--border-color);
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        z-index: 10;
-        transition: background 0.2s;
-      }
-
-      .carousel-nav-btn:hover {
-        background: var(--accent-color);
-      }
-
-      .carousel-nav-btn.prev { left: 8px; }
-      .carousel-nav-btn.next { right: 8px; }
 
       .carousel-indicators {
         display: flex;
         justify-content: center;
         gap: 6px;
-        margin-top: 8px;
+        margin-top: 10px;
       }
 
       .carousel-indicator-dot {
@@ -427,16 +378,14 @@
         height: 8px;
         border-radius: 50%;
         background: var(--border-color);
-        cursor: pointer;
         transition: background 0.2s, transform 0.2s;
       }
 
       .carousel-indicator-dot.active {
         background: var(--accent-color);
-        transform: scale(1.25);
+        transform: scale(1.3);
       }
 
-      /* ESTILOS DE CAMPOS DINÁMICOS RESPONSIVOS AL TEMA */
       .dynamic-field-box {
         background: var(--bg-field);
         padding: 8px 12px;
@@ -459,20 +408,24 @@
         font-weight: 600;
       }
 
-      /* ESTILOS DE MODALES */
+      /* =========================================================
+         ESTILOS OPTIMIZADOS PARA MODALES RESPONSIVOS (MULTI-DISPOSITIVO)
+         ========================================================= */
       .modal-overlay {
         position: fixed;
         top: 0;
         left: 0;
-        width: 100vw;
-        height: 100vh;
+        width: 100%;
+        height: 100%;
+        height: 100dvh;
         background: var(--modal-overlay);
         backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
         z-index: 10000;
         display: none;
         align-items: center;
         justify-content: center;
-        padding: 20px;
+        padding: 12px;
         box-sizing: border-box;
       }
 
@@ -482,84 +435,100 @@
       }
 
       @keyframes fadeIn {
-        from { opacity: 0; transform: scale(0.98); }
+        from { opacity: 0; transform: scale(0.96); }
         to { opacity: 1; transform: scale(1); }
       }
 
       .modal-container {
         background: var(--bg-secondary);
         border: 2px solid var(--card-border);
-        border-radius: 20px;
+        border-radius: 18px;
         width: 100%;
         max-width: 650px;
-        max-height: 85vh;
+        max-height: 90vh;
+        max-height: 90dvh;
         display: flex;
         flex-direction: column;
         box-shadow: 0 20px 50px var(--shadow-color);
         overflow: hidden;
         position: relative;
+        margin: auto;
       }
 
       .modal-header {
-        padding: 18px 24px;
+        padding: 14px 18px;
         border-bottom: 1px solid var(--border-color);
         display: flex;
         align-items: center;
         justify-content: space-between;
         background: var(--bg-card);
+        flex-shrink: 0;
       }
 
       .modal-header h3 {
         margin: 0;
-        font-size: 18px;
+        font-size: 16px;
         color: var(--text-primary);
         display: flex;
         align-items: center;
         gap: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .modal-close {
         background: transparent;
         border: none;
         color: var(--text-secondary);
-        font-size: 22px;
+        font-size: 26px;
+        line-height: 1;
         cursor: pointer;
+        padding: 0 4px;
         transition: color 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .modal-close:hover { color: var(--badge-explicit-bg); }
 
       .modal-body {
-        padding: 24px;
+        padding: 16px;
         overflow-y: auto;
-        flex: 1;
+        flex: 1 1 auto;
+        -webkit-overflow-scrolling: touch;
       }
 
       .karaoke-player-box {
         width: 100%;
         border-radius: 12px;
         overflow: hidden;
-        margin-bottom: 20px;
+        margin-bottom: 16px;
         background: #000;
-        aspect-ratio: 16/9;
+        aspect-ratio: 16 / 9;
+        max-height: 35vh;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.5);
       }
 
       .karaoke-lyrics-container {
         display: flex;
         flex-direction: column;
-        gap: 16px;
+        gap: 12px;
         text-align: center;
-        padding: 30px 10px;
+        padding: 15px 5px;
       }
 
       .karaoke-line {
-        font-size: 18px;
+        font-size: 16px;
         font-weight: 700;
         color: var(--lyric-inactive);
         cursor: pointer;
-        transition: all 0.3s ease;
-        padding: 8px 12px;
+        transition: all 0.25s ease;
+        padding: 8px 10px;
         border-radius: 8px;
+        line-height: 1.4;
+        word-break: break-word;
       }
 
       .karaoke-line:hover {
@@ -568,43 +537,44 @@
       }
 
       .karaoke-line.active {
-        font-size: 23px;
+        font-size: 20px;
         color: var(--lyric-active);
-        text-shadow: 0 0 15px var(--lyric-active);
-        transform: scale(1.05);
+        text-shadow: 0 0 12px var(--lyric-active);
+        transform: scale(1.02);
         background: rgba(56, 189, 248, 0.08);
       }
 
       .smartlink-card { text-align: center; }
 
       .smartlink-cover {
-        width: 180px;
-        height: 180px;
-        border-radius: 16px;
+        width: 140px;
+        height: 140px;
+        border-radius: 14px;
         object-fit: cover;
-        box-shadow: 0 10px 30px var(--shadow-color);
-        margin-bottom: 15px;
+        box-shadow: 0 8px 25px var(--shadow-color);
+        margin-bottom: 12px;
         border: 2px solid var(--card-border);
       }
 
       .smartlink-buttons {
         display: flex;
         flex-direction: column;
-        gap: 10px;
-        margin-top: 20px;
+        gap: 8px;
+        margin-top: 15px;
       }
 
       .smartlink-btn {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 12px 20px;
+        padding: 10px 16px;
         background: var(--bg-card);
         border: 1px solid var(--border-color);
-        border-radius: 12px;
+        border-radius: 10px;
         color: var(--text-primary);
         text-decoration: none;
         font-weight: 700;
+        font-size: 14px;
         transition: all 0.2s;
       }
 
@@ -612,6 +582,48 @@
         background: var(--accent-color);
         color: #ffffff;
         border-color: var(--accent-color);
+      }
+
+      /* MEDIA QUERIES ESPECÍFICAS PARA MÓVILES */
+      @media (max-width: 600px) {
+        .modal-overlay {
+          padding: 8px;
+        }
+
+        .modal-container {
+          max-height: 94dvh;
+          border-radius: 14px;
+        }
+
+        .modal-header {
+          padding: 12px 14px;
+        }
+
+        .modal-header h3 {
+          font-size: 14px;
+        }
+
+        .modal-body {
+          padding: 12px;
+        }
+
+        .karaoke-line {
+          font-size: 14px;
+        }
+
+        .karaoke-line.active {
+          font-size: 17px;
+        }
+
+        .smartlink-cover {
+          width: 110px;
+          height: 110px;
+        }
+
+        .smartlink-btn {
+          padding: 8px 12px;
+          font-size: 13px;
+        }
       }
 
       .custom-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
@@ -635,7 +647,6 @@
   <div id="news"></div>
 
 <main>
-  <!-- PUBLICADO POR -->
   <div class="tarjetas">
       <div class="tarjeta">
           <img id="imgTIGS" src="" alt="Imagen de Usuario">
@@ -656,13 +667,11 @@
     publishable-key="pk_live_51RN9E64bAPF5b1EYXhYKHGGqgE6efOROmgu1567ZBIspT9sdH0SzB5DSdznOJywVx48wrNgdGRbviJuD17WPJt4Z00S1SCbdl4">
   </stripe-buy-button>
 
-  <!-- BLOQUE DE CARGA -->
   <div id="loading" style="text-align: center; padding: 40px 15px; background: var(--bg-secondary); border-radius: 16px; margin: 15px auto; max-width: 1200px; color: var(--text-primary); box-shadow: 0 10px 30px var(--shadow-color); box-sizing: border-box;">
     <div style="border: 4px solid rgba(255, 255, 255, 0.1); border-top: 4px solid var(--accent-purple); border-right: 4px solid var(--accent-color); border-radius: 50%; width: 45px; height: 45px; animation: spin 0.8s linear infinite; margin: 0 auto 15px auto;"></div>
     <p id="loading-text" style="font-size: 16px; font-weight: 700; margin: 0;" data-i18n="loading">Cargando catálogo musical...</p>
   </div>
 
-  <!-- TOOLBAR Y CONTROLES -->
   <div id="toolbar-container" class="toolbar-container" style="display: none;">
     <div class="toolbar-row">
       <div class="search-box">
@@ -707,25 +716,12 @@
       <div class="chip" onclick="setChipFilter('Single', this)">Singles</div>
       <div class="chip" onclick="setChipFilter('EP', this)">EPs</div>
       <div class="chip" onclick="setChipFilter('Álbum', this)">Álbumes</div>
-      <div class="chip" onclick="setChipFilter('FUTURE', this)" data-i18n="filterFuture">Próximos Estrenos</div>
-      <div class="chip" onclick="setChipFilter('ANNIVERSARY', this)" data-i18n="filterAnniversary">Aniversarios</div>
     </div>
   </div>
 
-  <!-- HIGHLIGHTS / EVENTOS -->
-  <div id="events-summary-container" style="display: none; max-width: 1200px; margin: 0 auto 20px auto; padding: 0 10px; box-sizing: border-box;">
-    <div style="background: var(--bg-secondary); border: 2px solid var(--accent-purple); border-radius: 14px; padding: 16px; box-shadow: 0 8px 25px var(--shadow-color);">
-      <h3 style="margin: 0 0 12px 0; color: #f43f5e; font-size: 16px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 8px;">
-        <i class="fa-solid fa-bell"></i> <span data-i18n="activeEvents">Eventos y Destacados Activos</span>
-      </h3>
-      <div id="events-summary-list" class="custom-scroll" style="display: flex; gap: 12px; overflow-x: auto; padding-bottom: 6px;"></div>
-    </div>
-  </div>
-
-  <!-- CONTENEDOR DEL CATÁLOGO -->
   <div id="catalog-container" style="display: none; max-width: 1200px; margin: 0 auto; padding: 0 10px; box-sizing: border-box;"></div>
 
-  <!-- MODAL DE REPRODUCCIÓN Y KARAOKE SINCRONIZADO -->
+  <!-- MODAL DE KARAOKE Y REPRODUCTOR RESPONSIVO -->
   <div id="karaoke-modal" class="modal-overlay">
     <div class="modal-container">
       <div class="modal-header">
@@ -741,9 +737,9 @@
     </div>
   </div>
 
-  <!-- MODAL DE SMARTLINK Y COPIADO DE ENLACE DIRECTO -->
+  <!-- MODAL DE SMARTLINK RESPONSIVO -->
   <div id="smartlink-modal" class="modal-overlay">
-    <div class="modal-container" style="max-width: 480px;">
+    <div class="modal-container" style="max-width: 440px;">
       <div class="modal-header">
         <h3><i class="fa-solid fa-share-nodes" style="color: var(--accent-purple);"></i> SmartLink</h3>
         <button class="modal-close" onclick="closeSmartLinkModal()">&times;</button>
@@ -751,12 +747,12 @@
       <div class="modal-body custom-scroll">
         <div class="smartlink-card">
           <img id="smartlink-img" class="smartlink-cover" src="" alt="Portada">
-          <h2 id="smartlink-song-title" style="margin: 5px 0; font-size: 20px; color: var(--text-primary);"></h2>
-          <p id="smartlink-artist-name" style="margin: 0; color: var(--accent-color); font-weight: 700;"></p>
+          <h2 id="smartlink-song-title" style="margin: 5px 0; font-size: 18px; color: var(--text-primary);"></h2>
+          <p id="smartlink-artist-name" style="margin: 0; color: var(--accent-color); font-weight: 700; font-size: 14px;"></p>
           
           <div id="smartlink-platforms" class="smartlink-buttons"></div>
 
-          <button class="btn-tool" style="width: 100%; margin-top: 20px; justify-content: center; padding: 12px;" onclick="copySmartLinkToClipboard()">
+          <button class="btn-tool" style="width: 100%; margin-top: 15px; justify-content: center; padding: 10px;" onclick="copySmartLinkToClipboard()">
             <i class="fa-solid fa-copy"></i> <span data-i18n="copyLink">Copiar Enlace Directo</span>
           </button>
         </div>
@@ -768,7 +764,6 @@
 
 <div id="footer"></div>
 
-<!-- LÓGICA DE JAVASCRIPT CON TODAS LAS REGLAS APLICADAS -->
 <script>
   var rawSongsList = [];
   var parsedCatalog = [];
@@ -777,7 +772,6 @@
   var activeChipFilter = 'ALL';
   var currentViewMode = 'list';
   var activeSmartLinkUrl = '';
-  var carouselPositions = {};
 
   var ytPlayer = null;
   var karaokeParsedLyrics = [];
@@ -794,17 +788,13 @@
       sortArtistAsc: "Artista (A-Z)",
       hideExplicit: "Ocultar Explícito",
       filterAll: "Todos",
-      filterFuture: "Próximos Estrenos",
-      filterAnniversary: "Aniversarios",
-      activeEvents: "Eventos y Destacados Activos",
       releasesCount: "Lanzamientos",
       platformsTitle: "Plataformas y Reproductores",
       trackListTitle: "Lista de Canciones",
       copyLink: "Copiar Enlace Directo",
       linkCopied: "¡Enlace copiado al portapapeles!",
       explicitBadge: "E",
-      noLyrics: "Letra sincronizada no disponible para este tema.",
-      nowAvailable: "¡Ya disponible!"
+      noLyrics: "Letra sincronizada no disponible para este tema."
     },
     en: {
       loading: "Loading music catalog...",
@@ -815,17 +805,13 @@
       sortArtistAsc: "Artist (A-Z)",
       hideExplicit: "Hide Explicit",
       filterAll: "All",
-      filterFuture: "Upcoming Releases",
-      filterAnniversary: "Anniversaries",
-      activeEvents: "Active Highlights & Events",
       releasesCount: "Releases",
       platformsTitle: "Platforms & Players",
       trackListTitle: "Tracklist",
       copyLink: "Copy Direct Link",
       linkCopied: "Link copied to clipboard!",
       explicitBadge: "E",
-      noLyrics: "Synchronized lyrics not available for this track.",
-      nowAvailable: "Now Available!"
+      noLyrics: "Synchronized lyrics not available for this track."
     }
   };
 
@@ -847,7 +833,6 @@
       .getAllSongs();
   });
 
-  /* LECTURA Y PROCESAMIENTO DE URL ?q= (SIN FECHA) */
   function checkUrlQueryParams() {
     var urlParams = new URLSearchParams(window.location.search);
     var qParam = urlParams.get('q');
@@ -866,7 +851,6 @@
     }
   }
 
-  /* GESTIÓN DE TEMA GLOBAL */
   function applyTheme(theme) {
     currentTheme = theme;
     document.documentElement.setAttribute('data-theme', theme);
@@ -938,6 +922,21 @@
     renderCatalogUI();
   }
 
+  function evaluateExplicitContent(val) {
+    if (!val) return false;
+    var cleanVal = String(val).trim().toLowerCase();
+    
+    if (cleanVal.includes("cleaned version") || cleanVal.includes("not explicit") || cleanVal === "no" || cleanVal === "false") {
+      return false;
+    }
+    
+    if (cleanVal.includes("explicit") || cleanVal === "sí" || cleanVal === "si" || cleanVal === "true") {
+      return true;
+    }
+
+    return false;
+  }
+
   function processSongsData() {
     parsedCatalog = [];
     var counter = 0;
@@ -958,9 +957,8 @@
       if (priv === "privado" || priv === "") return;
 
       counter++;
-      var status = checkReleaseStatus(song);
       var category = song["Categoría del Lanzamiento"] || "Single";
-      var explicit = (song["Explicit Content"] || "").toString().toLowerCase() === "sí" || (song["Explicit Content"] || "").toString().toLowerCase() === "true";
+      var explicit = evaluateExplicitContent(song["Explicit Content"]);
 
       parsedCatalog.push({
         id: "release-card-" + counter,
@@ -968,7 +966,6 @@
         title: song["Título del álbum/sencillo/EP"] || "Lanzamiento sin título",
         category: category,
         explicit: explicit,
-        status: status,
         rawDate: song["Fecha de inicio de ventas"] || song["Lanzamiento original"] || song["Fecha de pedido anticipado"] || "",
         songData: song,
         allowedFields: defaultFields
@@ -976,81 +973,16 @@
     });
   }
 
-  function checkReleaseStatus(song) {
-    var today = new Date();
-    var rawDateStr = song["Fecha de inicio de ventas"] || song["Lanzamiento original"] || song["Fecha de pedido anticipado"] || "";
-    if (!rawDateStr) return { type: null, label: "", detail: "", badgeColor: "" };
-
-    var relDate = new Date(rawDateStr);
-    if (isNaN(relDate.getTime())) return { type: null, label: "", detail: "", badgeColor: "" };
-
-    if (relDate > today) {
-      return {
-        type: "FUTURE",
-        label: i18n[currentLang].filterFuture,
-        targetDate: relDate,
-        badgeColor: "#0891b2",
-        bgColor: "rgba(6, 182, 212, 0.15)",
-        borderColor: "#0891b2",
-        animClass: "pulse-future-block"
-      };
-    }
-
-    var isSameMonth = relDate.getMonth() === today.getMonth();
-    var isSameDay = relDate.getDate() === today.getDate();
-    var isPastYear = relDate.getFullYear() < today.getFullYear();
-
-    if (isSameMonth && isSameDay && isPastYear) {
-      var years = today.getFullYear() - relDate.getFullYear();
-      return {
-        type: "ANNIVERSARY",
-        label: i18n[currentLang].filterAnniversary,
-        detail: "Cumple " + years + " año" + (years > 1 ? "s" : "") + " hoy",
-        badgeColor: "#d97706",
-        bgColor: "rgba(245, 158, 11, 0.15)",
-        borderColor: "#d97706"
-      };
-    }
-
-    return { type: null, label: "", detail: "", badgeColor: "" };
-  }
-
   function renderCatalogUI() {
     var container = document.getElementById("catalog-container");
-    var eventsSummaryContainer = document.getElementById("events-summary-container");
-    var eventsSummaryList = document.getElementById("events-summary-list");
-
     var filtered = getFilteredAndSortedCatalog();
     container.innerHTML = "";
 
     var artistsMap = {};
-    var globalEvents = [];
-
     filtered.forEach(function(item) {
       if (!artistsMap[item.artist]) artistsMap[item.artist] = [];
       artistsMap[item.artist].push(item);
-
-      if (item.status.type) {
-        globalEvents.push(item);
-      }
     });
-
-    if (globalEvents.length > 0) {
-      eventsSummaryList.innerHTML = "";
-      globalEvents.forEach(function(item) {
-        var card = document.createElement("div");
-        card.style.cssText = "flex: 0 0 260px; background: var(--bg-card); border-left: 4px solid " + item.status.badgeColor + "; border-radius: 8px; padding: 10px 12px; cursor: pointer;";
-        card.onclick = function() { scrollToRelease(item.id); };
-        
-        card.innerHTML = '<div style="font-size:10px; font-weight:800; color:' + item.status.badgeColor + '; text-transform:uppercase;">' + escapeHtml(item.status.label) + '</div>' +
-                         '<div style="font-size:14px; font-weight:800; color:var(--text-primary); text-overflow:ellipsis; overflow:hidden; white-space:nowrap;">' + escapeHtml(item.title) + '</div>' +
-                         '<div style="font-size:12px; color:var(--accent-color);">' + escapeHtml(item.artist) + '</div>';
-        eventsSummaryList.appendChild(card);
-      });
-      eventsSummaryContainer.style.display = "block";
-    } else {
-      eventsSummaryContainer.style.display = "none";
-    }
 
     Object.keys(artistsMap).forEach(function(artistName) {
       var details = document.createElement("details");
@@ -1076,37 +1008,21 @@
     });
   }
 
-  /* TARJETA DE LANZAMIENTO CON CAMPOS DINÁMICOS ADAPTATIVOS Y CARRUSEL DE EMBEDS */
   function createReleaseCardElement(item) {
     var song = item.songData;
     var releaseCard = document.createElement("div");
-    releaseCard.className = "release-card " + (item.status.animClass || "");
+    releaseCard.className = "release-card";
     releaseCard.id = item.id;
     releaseCard.style.cssText = "border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; margin-bottom: 20px; background: var(--bg-secondary); position: relative;";
 
-    var html = '';
+    var html = '<div style="display:flex; align-items:center; justify-content:space-between; border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 15px;">' +
+                 '<h3 style="margin:0; font-size:20px; color:var(--text-primary); display:flex; align-items:center; gap:8px;">' +
+                   '<i class="fa-solid fa-compact-disc" style="color:var(--accent-purple);"></i>' + escapeHtml(item.title) +
+                   (item.explicit ? '<span class="badge-explicit" title="Contenido Explícito">' + i18n[currentLang].explicitBadge + '</span>' : '') +
+                 '</h3>' +
+                 '<button class="btn-action-icon" title="Compartir SmartLink Modal" onclick="openSmartLinkModal(\'' + item.id + '\')"><i class="fa-solid fa-share-nodes"></i></button>' +
+               '</div>';
 
-    if (item.status.type === 'FUTURE') {
-      html += '<div style="background:' + item.status.bgColor + '; border: 1px solid ' + item.status.borderColor + '; padding: 10px; border-radius: 8px; margin-bottom: 12px; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">' +
-                '<span><span class="radar-dot"></span><i class="fa-solid fa-rocket" style="margin-right:6px;"></i>' + escapeHtml(item.status.label) + '</span>' +
-                '<span id="countdown-' + item.id + '" style="color: var(--accent-color); font-family: monospace; font-size: 14px;"></span>' +
-              '</div>';
-      initCountdownTimer(item.id, item.status.targetDate);
-    } else if (item.status.type === 'ANNIVERSARY') {
-      html += '<div style="background:' + item.status.bgColor + '; border: 1px solid ' + item.status.borderColor + '; padding: 10px; border-radius: 8px; margin-bottom: 12px; font-size: 13px; font-weight: 700;">' +
-                '<i class="fa-solid fa-cake-candles" style="margin-right:6px;"></i>' + escapeHtml(item.status.label) + ': ' + escapeHtml(item.status.detail) +
-              '</div>';
-    }
-
-    html += '<div style="display:flex; align-items:center; justify-content:space-between; border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 15px;">' +
-              '<h3 style="margin:0; font-size:20px; color:var(--text-primary); display:flex; align-items:center; gap:8px;">' +
-                '<i class="fa-solid fa-compact-disc" style="color:var(--accent-purple);"></i>' + escapeHtml(item.title) +
-                (item.explicit ? '<span class="badge-explicit" title="Contenido Explícito">' + i18n[currentLang].explicitBadge + '</span>' : '') +
-              '</h3>' +
-              '<button class="btn-action-icon" title="Compartir SmartLink Modal" onclick="openSmartLinkModal(\'' + item.id + '\')"><i class="fa-solid fa-share-nodes"></i></button>' +
-            '</div>';
-
-    // CAMPOS DINÁMICOS CON ESTILOS CSS RECTIFICADOS PARA RESPONDER A TEMAS
     html += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 15px;">';
     item.allowedFields.forEach(function(key) {
       if (song[key] && !key.includes("Título ") && !key.includes("Embed") && !key.includes("Spotify") && !key.includes("YouTube")) {
@@ -1118,7 +1034,6 @@
     });
     html += '</div>';
 
-    // RECOLECCIÓN DE EMBEDS Y GENERACIÓN DE CARRUSEL (1 EN 1 RESPONSIVE)
     var embedsList = [];
     var embedKeys = ["Spotify Embed", "YouTube Embed", "Apple Music Embed", "Amazon Music Embed", "Deezer Embed"];
     embedKeys.forEach(function(k) {
@@ -1129,9 +1044,9 @@
     });
 
     if (embedsList.length > 0) {
-      html += '<div style="background: var(--bg-inner); padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 15px;">' +
+      html += '<div style="background: var(--bg-inner); padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 15px; overflow: hidden;">' +
                 '<h4 style="margin:0 0 10px 0; font-size:13px; color:var(--accent-color); text-transform:uppercase;"><i class="fa-solid fa-headphones"></i> ' + i18n[currentLang].platformsTitle + '</h4>' +
-                createEmbedCarouselHtml(item.id, embedsList) +
+                createSwipeCarouselHtml(item.id, embedsList) +
               '</div>';
     }
 
@@ -1166,76 +1081,35 @@
     return releaseCard;
   }
 
-  /* COMPONENTE DE CARRUSEL DE EMBEDS (1 EN 1 RESPONSIVE) */
-  function createEmbedCarouselHtml(cardId, embeds) {
-    carouselPositions[cardId] = 0;
-
+  function createSwipeCarouselHtml(cardId, embeds) {
     var slidesHtml = embeds.map(function(embedHtml) {
       return '<div class="embed-carousel-slide">' + embedHtml + '</div>';
     }).join('');
 
     var dotsHtml = embeds.map(function(_, idx) {
-      return '<div class="carousel-indicator-dot ' + (idx === 0 ? 'active' : '') + '" id="dot-' + cardId + '-' + idx + '" onclick="goToCarouselSlide(\'' + cardId + '\', ' + idx + ', ' + embeds.length + ')"></div>';
+      return '<div class="carousel-indicator-dot ' + (idx === 0 ? 'active' : '') + '" id="dot-' + cardId + '-' + idx + '"></div>';
     }).join('');
 
-    var controls = '';
-    if (embeds.length > 1) {
-      controls = '<button class="carousel-nav-btn prev" onclick="moveCarouselSlide(\'' + cardId + '\', -1, ' + embeds.length + ')"><i class="fa-solid fa-chevron-left"></i></button>' +
-                 '<button class="carousel-nav-btn next" onclick="moveCarouselSlide(\'' + cardId + '\', 1, ' + embeds.length + ')"><i class="fa-solid fa-chevron-right"></i></button>';
-    }
+    setTimeout(function() {
+      var track = document.getElementById("track-" + cardId);
+      if (track) {
+        track.addEventListener("scroll", function() {
+          var index = Math.round(track.scrollLeft / track.clientWidth);
+          for (var i = 0; i < embeds.length; i++) {
+            var dot = document.getElementById("dot-" + cardId + "-" + i);
+            if (dot) {
+              if (i === index) dot.classList.add("active");
+              else dot.classList.remove("active");
+            }
+          }
+        });
+      }
+    }, 100);
 
     return '<div class="embed-carousel-wrapper">' +
-             controls +
              '<div class="embed-carousel-track" id="track-' + cardId + '">' + slidesHtml + '</div>' +
-             '<div class="carousel-indicators">' + dotsHtml + '</div>' +
+             (embeds.length > 1 ? '<div class="carousel-indicators">' + dotsHtml + '</div>' : '') +
            '</div>';
-  }
-
-  function moveCarouselSlide(cardId, direction, total) {
-    var current = carouselPositions[cardId] || 0;
-    var next = current + direction;
-    if (next < 0) next = total - 1;
-    if (next >= total) next = 0;
-    goToCarouselSlide(cardId, next, total);
-  }
-
-  function goToCarouselSlide(cardId, index, total) {
-    carouselPositions[cardId] = index;
-    var track = document.getElementById("track-" + cardId);
-    if (track) {
-      track.style.transform = "translateX(-" + (index * 100) + "%)";
-    }
-    for (var i = 0; i < total; i++) {
-      var dot = document.getElementById("dot-" + cardId + "-" + i);
-      if (dot) {
-        if (i === index) dot.classList.add("active");
-        else dot.classList.remove("active");
-      }
-    }
-  }
-
-  function initCountdownTimer(elementId, targetDate) {
-    function update() {
-      var el = document.getElementById("countdown-" + elementId);
-      if (!el) return;
-
-      var now = new Date();
-      var diff = targetDate - now;
-
-      if (diff <= 0) {
-        el.innerHTML = i18n[currentLang].nowAvailable;
-        return;
-      }
-
-      var days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      var mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-      var secs = Math.floor((diff % (1000 * 60)) / 1000);
-
-      el.innerHTML = days + "d " + hours + "h " + mins + "m " + secs + "s";
-    }
-    update();
-    setInterval(update, 1000);
   }
 
   function applyAllFilters() {
@@ -1251,11 +1125,7 @@
       if (hideExplicit && item.explicit) return false;
 
       if (activeChipFilter !== 'ALL') {
-        if (activeChipFilter === 'FUTURE' || activeChipFilter === 'ANNIVERSARY') {
-          if (item.status.type !== activeChipFilter) return false;
-        } else {
-          if (item.category.toLowerCase() !== activeChipFilter.toLowerCase()) return false;
-        }
+        if (item.category.toLowerCase() !== activeChipFilter.toLowerCase()) return false;
       }
 
       if (searchQuery) {
@@ -1343,6 +1213,7 @@
     }
 
     document.getElementById("karaoke-modal").classList.add("active");
+    document.body.style.overflow = "hidden";
 
     if (ytPlayer) {
       ytPlayer.loadVideoById(videoId);
@@ -1404,11 +1275,11 @@
 
   function closeKaraokeModal() {
     document.getElementById("karaoke-modal").classList.remove("active");
+    document.body.style.overflow = "";
     stopKaraokeSyncLoop();
     if (ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo();
   }
 
-  /* ENLACE CON ?q= SIN FECHA Y MODAL DE COMPARTIR */
   function openSmartLinkModal(releaseId) {
     var item = parsedCatalog.find(function(i) { return i.id === releaseId; });
     if (!item) return;
@@ -1418,7 +1289,6 @@
     document.getElementById("smartlink-artist-name").textContent = item.artist;
     document.getElementById("smartlink-img").src = song["Cover?"] || song["Cover 1"] || "https://via.placeholder.com/200";
 
-    // FORMATO SOLICITADO SIN FECHA
     var queryText = encodeURIComponent(item.artist + " - " + item.title);
     activeSmartLinkUrl = window.location.origin + window.location.pathname + "?q=" + queryText;
 
@@ -1438,25 +1308,18 @@
     });
 
     document.getElementById("smartlink-modal").classList.add("active");
+    document.body.style.overflow = "hidden";
   }
 
   function closeSmartLinkModal() {
     document.getElementById("smartlink-modal").classList.remove("active");
+    document.body.style.overflow = "";
   }
 
   function copySmartLinkToClipboard() {
     navigator.clipboard.writeText(activeSmartLinkUrl).then(function() {
       alert(i18n[currentLang].linkCopied);
     });
-  }
-
-  function scrollToRelease(id) {
-    var el = document.getElementById(id);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      el.style.outline = "2px solid var(--accent-color)";
-      setTimeout(function() { el.style.outline = "none"; }, 2000);
-    }
   }
 
   function getPlatformIcon(platform) {
