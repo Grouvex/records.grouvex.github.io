@@ -627,6 +627,43 @@
         border-color: var(--accent-color);
       }
 
+    /* Contenedor relativo para posicionar el icono */
+    .lang-select-wrapper {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+    
+    /* Icono del globo posicionado sobre el select */
+    .lang-select-wrapper i {
+      position: absolute;
+      left: 12px;
+      pointer-events: none; /* Para que al hacer clic sobre el icono se abra el select */
+      color: inherit;
+      font-size: 0.9em;
+    }
+    
+    /* Estilo del elemento select heredando la apariencia de .btn-tool */
+    .lang-select-wrapper select.btn-tool {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      padding-left: 32px;  /* Espacio reservado para el icono de la izquierda */
+      padding-right: 28px; /* Espacio reservado para la flecha indicadora */
+      cursor: pointer;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 8px center;
+      background-size: 14px;
+    }
+    
+    /* Estilos de las opciones del desplegable */
+    .lang-select-wrapper select.btn-tool option {
+      background-color: #1e1e1e; /* Ajusta al color de fondo de tu tema */
+      color: #ffffff;            /* Ajusta al color de texto de tu tema */
+      padding: 8px;
+    }
+        
       @media (max-width: 600px) {
         .modal-overlay { padding: 6px; }
         .modal-container { width: 98vw; height: 96dvh; border-radius: 14px; }
@@ -710,10 +747,27 @@
         <button class="btn-tool" onclick="toggleTheme()" id="theme-btn" title="Alternar Modo Claro/Oscuro">
           <i class="fa-solid fa-moon"></i>
         </button>
-
-        <button class="btn-tool" onclick="toggleLanguage()" id="lang-btn">
-          <i class="fa-solid fa-globe"></i> ES
-        </button>
+          
+        <div class="lang-select-wrapper">
+          <i class="fa-solid fa-globe"></i>
+          <select class="btn-tool" id="lang-select" onchange="changeLanguage(this.value)">
+            <option value="es">ES - Español</option>
+            <option value="en">EN - English</option>
+            <option value="fr">FR - Français</option>
+            <option value="de">DE - Deutsch</option>
+            <option value="it">IT - Italiano</option>
+            <option value="pt">PT - Português</option>
+            <option value="ca">CA - Català</option>
+            <option value="ja">JA - 日本語</option>
+            <option value="zh">ZH - 中文</option>
+            <option value="ko">KO - 한국어</option>
+            <option value="ru">RU - Русский</option>
+            <option value="nl">NL - Nederlands</option>
+            <option value="pl">PL - Polski</option>
+            <option value="tr">TR - Türkçe</option>
+            <option value="ar">AR - العربية</option>
+          </select>
+        </div>
 
         <label class="switch-label" title="Ocultar contenido explícito">
           <i class="fa-solid fa-triangle-exclamation" style="color: var(--badge-explicit-bg);"></i>
@@ -790,44 +844,278 @@
   var karaokeSyncInterval = null;
   var currentActiveLyricIndex = -1;
 
-  var i18n = {
-    es: {
-      loading: "Cargando catálogo musical...",
-      searchPlaceholder: "Buscar por artista, álbum...",
-      sortRecent: "Más recientes primero",
-      sortTitleAsc: "Título (A-Z)",
-      sortTitleDesc: "Título (Z-A)",
-      sortArtistAsc: "Artista (A-Z)",
-      hideExplicit: "Ocultar Explícito",
-      filterAll: "Todos",
-      releasesCount: "Lanzamientos",
-      platformsTitle: "Plataformas",
-      embedTitle: "Reproductores",
-      trackListTitle: "Lista de Canciones",
-      copyLink: "Copiar Enlace Directo",
-      linkCopied: "¡Enlace copiado al portapapeles!",
-      explicitBadge: "E",
-      noLyrics: "Letra sincronizada no disponible para este tema."
-    },
-    en: {
-      loading: "Loading music catalog...",
-      searchPlaceholder: "Search by artist, album...",
-      sortRecent: "Newest first",
-      sortTitleAsc: "Title (A-Z)",
-      sortTitleDesc: "Title (Z-A)",
-      sortArtistAsc: "Artist (A-Z)",
-      hideExplicit: "Hide Explicit",
-      filterAll: "All",
-      releasesCount: "Releases",
-      platformsTitle: "Platforms",
-      embedTitle: "Players",
-      trackListTitle: "Tracklist",
-      copyLink: "Copy Direct Link",
-      linkCopied: "Link copied to clipboard!",
-      explicitBadge: "E",
-      noLyrics: "Synchronized lyrics not available for this track."
-    }
-  };
+var i18n = {
+  es: {
+    loading: "Cargando catálogo musical...",
+    searchPlaceholder: "Buscar por artista, álbum...",
+    sortRecent: "Más recientes primero",
+    sortTitleAsc: "Título (A-Z)",
+    sortTitleDesc: "Título (Z-A)",
+    sortArtistAsc: "Artista (A-Z)",
+    hideExplicit: "Ocultar Explícito",
+    filterAll: "Todos",
+    releasesCount: "Lanzamientos",
+    platformsTitle: "Plataformas",
+    embedTitle: "Reproductores",
+    trackListTitle: "Lista de Canciones",
+    copyLink: "Copiar Enlace Directo",
+    linkCopied: "¡Enlace copiado al portapapeles!",
+    explicitBadge: "E",
+    noLyrics: "Letra sincronizada no disponible para este tema."
+  },
+  en: {
+    loading: "Loading music catalog...",
+    searchPlaceholder: "Search by artist, album...",
+    sortRecent: "Newest first",
+    sortTitleAsc: "Title (A-Z)",
+    sortTitleDesc: "Title (Z-A)",
+    sortArtistAsc: "Artist (A-Z)",
+    hideExplicit: "Hide Explicit",
+    filterAll: "All",
+    releasesCount: "Releases",
+    platformsTitle: "Platforms",
+    embedTitle: "Players",
+    trackListTitle: "Tracklist",
+    copyLink: "Copy Direct Link",
+    linkCopied: "Link copied to clipboard!",
+    explicitBadge: "E",
+    noLyrics: "Synchronized lyrics not available for this track."
+  },
+  fr: {
+    loading: "Chargement du catalogue musical...",
+    searchPlaceholder: "Rechercher par artiste, album...",
+    sortRecent: "Plus récents en premier",
+    sortTitleAsc: "Titre (A-Z)",
+    sortTitleDesc: "Titre (Z-A)",
+    sortArtistAsc: "Artiste (A-Z)",
+    hideExplicit: "Masquer le contenu explicite",
+    filterAll: "Tous",
+    releasesCount: "Sorties",
+    platformsTitle: "Plateformes",
+    embedTitle: "Lecteurs",
+    trackListTitle: "Liste des pistes",
+    copyLink: "Copier le lien direct",
+    linkCopied: "Lien copié dans le presse-papiers !",
+    explicitBadge: "E",
+    noLyrics: "Paroles synchronisées indisponibles pour ce titre."
+  },
+  de: {
+    loading: "Musikkatalog wird geladen...",
+    searchPlaceholder: "Nach Künstler, Album suchen...",
+    sortRecent: "Neueste zuerst",
+    sortTitleAsc: "Titel (A-Z)",
+    sortTitleDesc: "Titel (Z-A)",
+    sortArtistAsc: "Künstler (A-Z)",
+    hideExplicit: "Explizite Inhalte ausblenden",
+    filterAll: "Alle",
+    releasesCount: "Veröffentlichungen",
+    platformsTitle: "Plattformen",
+    embedTitle: "Player",
+    trackListTitle: "Titelliste",
+    copyLink: "Direkten Link kopieren",
+    linkCopied: "Link in die Zwischenablage kopiert!",
+    explicitBadge: "E",
+    noLyrics: "Synchronisierter Songtext für diesen Titel nicht verfügbar."
+  },
+  it: {
+    loading: "Caricamento catalogo musicale...",
+    searchPlaceholder: "Cerca per artista, album...",
+    sortRecent: "Più recenti prima",
+    sortTitleAsc: "Titolo (A-Z)",
+    sortTitleDesc: "Titolo (Z-A)",
+    sortArtistAsc: "Artista (A-Z)",
+    hideExplicit: "Nascondi espliciti",
+    filterAll: "Tutti",
+    releasesCount: "Uscite",
+    platformsTitle: "Piattaforme",
+    embedTitle: "Lettori",
+    trackListTitle: "Tracce",
+    copyLink: "Copia link diretto",
+    linkCopied: "Link copiato negli appunti!",
+    explicitBadge: "E",
+    noLyrics: "Testo sincronizzato non disponibile per questo brano."
+  },
+  pt: {
+    loading: "Carregando catálogo musical...",
+    searchPlaceholder: "Buscar por artista, álbum...",
+    sortRecent: "Mais recentes primeiro",
+    sortTitleAsc: "Título (A-Z)",
+    sortTitleDesc: "Título (Z-A)",
+    sortArtistAsc: "Artista (A-Z)",
+    hideExplicit: "Ocultar explícito",
+    filterAll: "Todos",
+    releasesCount: "Lançamentos",
+    platformsTitle: "Plataformas",
+    embedTitle: "Reprodutores",
+    trackListTitle: "Lista de faixas",
+    copyLink: "Copiar link direto",
+    linkCopied: "Link copiado para a área de transferência!",
+    explicitBadge: "E",
+    noLyrics: "Letra sincronizada não disponível para esta faixa."
+  },
+  ca: {
+    loading: "Carregant el catàleg musical...",
+    searchPlaceholder: "Cercar per artista, àlbum...",
+    sortRecent: "Més recents primer",
+    sortTitleAsc: "Títol (A-Z)",
+    sortTitleDesc: "Títol (Z-A)",
+    sortArtistAsc: "Artista (A-Z)",
+    hideExplicit: "Ocultar explícit",
+    filterAll: "Tots",
+    releasesCount: "Llançaments",
+    platformsTitle: "Plataformes",
+    embedTitle: "Reproductors",
+    trackListTitle: "Llista de cançons",
+    copyLink: "Copiar enllaç directe",
+    linkCopied: "Enllaç copiat al porta-retalls!",
+    explicitBadge: "E",
+    noLyrics: "Lletra sincronitzada no disponible per a aquesta cançó."
+  },
+  ja: {
+    loading: "音楽カタログを読み込み中...",
+    searchPlaceholder: "アーティスト、アルバムで検索...",
+    sortRecent: "新しい順",
+    sortTitleAsc: "タイトル (A-Z)",
+    sortTitleDesc: "タイトル (Z-A)",
+    sortArtistAsc: "アーティスト (A-Z)",
+    hideExplicit: "不適切なコンテンツを非表示",
+    filterAll: "すべて",
+    releasesCount: "リリース",
+    platformsTitle: "プラットフォーム",
+    embedTitle: "プレーヤー",
+    trackListTitle: "トラックリスト",
+    copyLink: "直リンクをコピー",
+    linkCopied: "クリップボードにリンクをコピーしました！",
+    explicitBadge: "E",
+    noLyrics: "この曲の同期歌詞は利用できません。"
+  },
+  zh: {
+    loading: "正在加载音乐目录...",
+    searchPlaceholder: "按艺术家、专辑搜索...",
+    sortRecent: "最新优先",
+    sortTitleAsc: "标题 (A-Z)",
+    sortTitleDesc: "标题 (Z-A)",
+    sortArtistAsc: "艺术家 (A-Z)",
+    hideExplicit: "隐藏不良内容",
+    filterAll: "全部",
+    releasesCount: "发行作品",
+    platformsTitle: "平台",
+    embedTitle: "播放器",
+    trackListTitle: "曲目列表",
+    copyLink: "复制直接链接",
+    linkCopied: "链接已复制到剪贴板！",
+    explicitBadge: "E",
+    noLyrics: "暂无此歌曲的同步歌词。"
+  },
+  ko: {
+    loading: "음악 카탈로그 로딩 중...",
+    searchPlaceholder: "아티스트, 앨범 검색...",
+    sortRecent: "최신순",
+    sortTitleAsc: "제목 (A-Z)",
+    sortTitleDesc: "제목 (Z-A)",
+    sortArtistAsc: "아티스트 (A-Z)",
+    hideExplicit: "연령制限 콘텐츠 숨기기",
+    filterAll: "전체",
+    releasesCount: "발매작",
+    platformsTitle: "플랫폼",
+    embedTitle: "플레이어",
+    trackListTitle: "트랙리스트",
+    copyLink: "직접 링크 복사",
+    linkCopied: "클립보드에 링크가 복사되었습니다!",
+    explicitBadge: "E",
+    noLyrics: "이 트랙의 동기화된 가사를 사용할 수 없습니다."
+  },
+  ru: {
+    loading: "Загрузка музыкального каталога...",
+    searchPlaceholder: "Поиск по исполнителю, альбому...",
+    sortRecent: "Сначала новые",
+    sortTitleAsc: "Название (А-Я)",
+    sortTitleDesc: "Название (Я-А)",
+    sortArtistAsc: "Исполнитель (А-Я)",
+    hideExplicit: "Скрыть ненормативный контент",
+    filterAll: "Все",
+    releasesCount: "Релизы",
+    platformsTitle: "Платформы",
+    embedTitle: "Плееры",
+    trackListTitle: "Список треков",
+    copyLink: "Скопировать прямую ссылку",
+    linkCopied: "Ссылка скопирована в буфер обмена!",
+    explicitBadge: "E",
+    noLyrics: "Синхронизированные тексты недоступны для этого трека."
+  },
+  nl: {
+    loading: "Muziekcatalogus laden...",
+    searchPlaceholder: "Zoek op artiest, album...",
+    sortRecent: "Nieuwste eerst",
+    sortTitleAsc: "Titel (A-Z)",
+    sortTitleDesc: "Titel (Z-A)",
+    sortArtistAsc: "Artiest (A-Z)",
+    hideExplicit: "Explicit verbergen",
+    filterAll: "Alles",
+    releasesCount: "Releases",
+    platformsTitle: "Platformen",
+    embedTitle: "Spelers",
+    trackListTitle: "Tracklist",
+    copyLink: "Directe link kopiëren",
+    linkCopied: "Link gecopieerd naar klembord!",
+    explicitBadge: "E",
+    noLyrics: "Gesoigneerde songtekst niet beschikbaar voor dit nummer."
+  },
+  pl: {
+    loading: "Ładowanie katalogu muzycznego...",
+    searchPlaceholder: "Szukaj według wykonawcy, albumu...",
+    sortRecent: "Najnowsze pierwsze",
+    sortTitleAsc: "Tytuł (A-Z)",
+    sortTitleDesc: "Tytuł (Z-A)",
+    sortArtistAsc: "Wykonawca (A-Z)",
+    hideExplicit: "Ukryj treści jawne",
+    filterAll: "Wszystkie",
+    releasesCount: "Wydania",
+    platformsTitle: "Platformy",
+    embedTitle: "Odtwarzacze",
+    trackListTitle: "Lista utworów",
+    copyLink: "Kopiuj direct link",
+    linkCopied: "Link skopiowany do schowka!",
+    explicitBadge: "E",
+    noLyrics: "Zsynchronizowany tekst niedostępny dla tego utworu."
+  },
+  tr: {
+    loading: "Müzik kataloğu yükleniyor...",
+    searchPlaceholder: "Sanatçı, albüm ara...",
+    sortRecent: "En yeniler önce",
+    sortTitleAsc: "Başlık (A-Z)",
+    sortTitleDesc: "Başlık (Z-A)",
+    sortArtistAsc: "Sanatçı (A-Z)",
+    hideExplicit: "Açık İçeriği Gizle",
+    filterAll: "Tümü",
+    releasesCount: "Yayınlar",
+    platformsTitle: "Platformlar",
+    embedTitle: "Oynatıcılar",
+    trackListTitle: "Parça Listesi",
+    copyLink: "Doğrudan Bağlantıyı Kopyala",
+    linkCopied: "Bağlantı panoya kopyalandı!",
+    explicitBadge: "E",
+    noLyrics: "Bu parça için senkronize şarkı sözü mevcut değil."
+  },
+  ar: {
+    loading: "جاري تحميل كتالوج الموسيقى...",
+    searchPlaceholder: "البحث حسب الفنان، الألبوم...",
+    sortRecent: "الأحدث أولاً",
+    sortTitleAsc: "العنوان (أ-ي)",
+    sortTitleDesc: "العنوان (ي-أ)",
+    sortArtistAsc: "الفنان (أ-ي)",
+    hideExplicit: "إخفاء المحتوى الصريح",
+    filterAll: "الكل",
+    releasesCount: "الإصدارات",
+    platformsTitle: "المنصات",
+    embedTitle: "مشغلات الموسيقى",
+    trackListTitle: "قائمة الأغاني",
+    copyLink: "نسخ الرابط المباشر",
+    linkCopied: "تم نسخ الرابط إلى الحافظة!",
+    explicitBadge: "E",
+    noLyrics: "الكلمات المتزامنة غير متوفرة لهذه الأغنية."
+  }
+};
 
   document.addEventListener("DOMContentLoaded", function() {
     applyTheme(currentTheme);
@@ -879,22 +1167,22 @@
     applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
   }
 
-  function toggleLanguage() {
-    currentLang = currentLang === 'es' ? 'en' : 'es';
-    document.getElementById("lang-btn").innerHTML = '<i class="fa-solid fa-globe"></i> ' + currentLang.toUpperCase();
-    
-    document.querySelectorAll("[data-i18n]").forEach(function(el) {
-      var key = el.getAttribute("data-i18n");
-      if (i18n[currentLang][key]) el.textContent = i18n[currentLang][key];
-    });
+function changeLanguage(lang) {
+  if (!i18n[lang]) return;
+  currentLang = lang;
 
-    document.querySelectorAll("[data-i18n-ph]").forEach(function(el) {
-      var key = el.getAttribute("data-i18n-ph");
-      if (i18n[currentLang][key]) el.placeholder = i18n[currentLang][key];
-    });
+  document.querySelectorAll("[data-i18n]").forEach(function(el) {
+    var key = el.getAttribute("data-i18n");
+    if (i18n[currentLang][key]) el.textContent = i18n[currentLang][key];
+  });
 
-    renderCatalogUI();
-  }
+  document.querySelectorAll("[data-i18n-ph]").forEach(function(el) {
+    var key = el.getAttribute("data-i18n-ph");
+    if (i18n[currentLang][key]) el.placeholder = i18n[currentLang][key];
+  });
+
+  renderCatalogUI();
+}
 
   function setViewMode(mode) {
     currentViewMode = mode;
