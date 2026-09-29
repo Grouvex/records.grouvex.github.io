@@ -53,15 +53,18 @@
     <script src="index.js"></script>
     <script type="module" src="abc.js"></script>
 
-    <!-- ESTILOS AVANZADOS Y THEME ENGINE CON VARIABLES CSS -->
+    <!-- ESTILOS AVANZADOS Y SISTEMA DE VARIABLES DE TEMA COMPLETO -->
     <style>
       :root {
         --bg-primary: #0f172a;
         --bg-secondary: #182234;
         --bg-card: #1e293b;
         --bg-inner: #0b1120;
+        --bg-field: #131d31;
         --text-primary: #ffffff;
         --text-secondary: #94a3b8;
+        --text-field-label: #38bdf8;
+        --text-field-value: #f8fafc;
         --accent-color: #38bdf8;
         --accent-purple: #a855f7;
         --border-color: #334155;
@@ -70,7 +73,7 @@
         --modal-overlay: rgba(15, 23, 42, 0.95);
         --lyric-inactive: rgba(255, 255, 255, 0.4);
         --lyric-active: #38bdf8;
-        --badge-explicit-bg: #dc2626;
+        --badge-explicit-bg: #ef4444;
         --badge-explicit-text: #ffffff;
       }
 
@@ -79,8 +82,11 @@
         --bg-secondary: #ffffff;
         --bg-card: #f1f5f9;
         --bg-inner: #e2e8f0;
+        --bg-field: #ffffff;
         --text-primary: #0f172a;
         --text-secondary: #475569;
+        --text-field-label: #0284c7;
+        --text-field-value: #0f172a;
         --accent-color: #0284c7;
         --accent-purple: #7e22ce;
         --border-color: #cbd5e1;
@@ -89,7 +95,7 @@
         --modal-overlay: rgba(255, 255, 255, 0.95);
         --lyric-inactive: rgba(15, 23, 42, 0.4);
         --lyric-active: #0284c7;
-        --badge-explicit-bg: #dc2626;
+        --badge-explicit-bg: #ef4444;
         --badge-explicit-text: #ffffff;
       }
 
@@ -102,7 +108,7 @@
         transition: background-color 0.3s ease, color 0.3s ease;
       }
 
-      /* PANEL DE CONTROLES AVANZADOS (BARRA SUPERIOR DE HERRAMIENTAS) */
+      /* TOOLBAR DE BÚSQUEDA Y CONTROLES */
       .toolbar-container {
         max-width: 1200px;
         margin: 15px auto;
@@ -192,7 +198,6 @@
         cursor: pointer;
       }
 
-      /* SWITCH TOGGLE PARA CONTENIDO EXPLÍCITO */
       .switch-label {
         display: inline-flex;
         align-items: center;
@@ -238,7 +243,6 @@
         transform: translateX(16px);
       }
 
-      /* FILTROS POR CATEGORÍAS Y GÉNEROS (CHIPS/PILLS) */
       .chips-container {
         display: flex;
         gap: 8px;
@@ -265,7 +269,6 @@
         border-color: var(--accent-purple);
       }
 
-      /* MODOS DE VISTA: GRID VS LISTA */
       .catalog-grid {
         display: grid !important;
         grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -276,7 +279,6 @@
         margin-bottom: 0 !important;
       }
 
-      /* TARJETAS Y ANIMACIONES */
       @keyframes spin { 
         0% { transform: rotate(0deg); } 
         100% { transform: rotate(360deg); } 
@@ -317,30 +319,6 @@
         100% { opacity: 1; transform: scale(1.3); }
       }
 
-      .platform-btn-icon {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 42px;
-        height: 42px;
-        background: var(--bg-card);
-        color: var(--text-primary);
-        margin: 4px;
-        border-radius: 10px;
-        text-decoration: none;
-        font-size: 18px;
-        border: 1px solid var(--border-color);
-        box-shadow: 0 4px 10px var(--shadow-color);
-        transition: all 0.2s ease-in-out;
-      }
-
-      .platform-btn-icon:hover {
-        background: var(--accent-color);
-        color: #ffffff;
-        transform: translateY(-3px) scale(1.05);
-        border-color: var(--accent-color);
-      }
-
       .btn-action-icon {
         background: var(--bg-card);
         border: 1px solid var(--border-color);
@@ -361,7 +339,6 @@
         border-color: var(--accent-purple);
       }
 
-      /* BADGE EXPLÍCITO: 'E' EN FONDO ROJO */
       .badge-explicit {
         background-color: var(--badge-explicit-bg);
         color: var(--badge-explicit-text);
@@ -379,7 +356,110 @@
         box-shadow: 0 2px 4px rgba(0,0,0,0.3);
       }
 
-      /* ESTILOS DE MODALES (KARAOKE Y SMARTLINK) */
+      /* CARRUSEL DE EMBEDS (1 A 1 RESPONSIVE) */
+      .embed-carousel-wrapper {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        border-radius: 12px;
+        background: var(--bg-inner);
+        padding: 10px 0;
+      }
+
+      .embed-carousel-track {
+        display: flex;
+        transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        width: 100%;
+      }
+
+      .embed-carousel-slide {
+        min-width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+        padding: 0 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .embed-carousel-slide iframe {
+        width: 100% !important;
+        border-radius: 12px;
+        border: 0;
+        min-height: 152px;
+        max-height: 380px;
+      }
+
+      .carousel-nav-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(0, 0, 0, 0.6);
+        color: #ffffff;
+        border: 1px solid var(--border-color);
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 10;
+        transition: background 0.2s;
+      }
+
+      .carousel-nav-btn:hover {
+        background: var(--accent-color);
+      }
+
+      .carousel-nav-btn.prev { left: 8px; }
+      .carousel-nav-btn.next { right: 8px; }
+
+      .carousel-indicators {
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+        margin-top: 8px;
+      }
+
+      .carousel-indicator-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--border-color);
+        cursor: pointer;
+        transition: background 0.2s, transform 0.2s;
+      }
+
+      .carousel-indicator-dot.active {
+        background: var(--accent-color);
+        transform: scale(1.25);
+      }
+
+      /* ESTILOS DE CAMPOS DINÁMICOS RESPONSIVOS AL TEMA */
+      .dynamic-field-box {
+        background: var(--bg-field);
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: 1px solid var(--border-color);
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+      }
+
+      .dynamic-field-label {
+        color: var(--text-field-label);
+        font-size: 10px;
+        display: block;
+        text-transform: uppercase;
+        font-weight: 800;
+      }
+
+      .dynamic-field-value {
+        color: var(--text-field-value);
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      /* ESTILOS DE MODALES */
       .modal-overlay {
         position: fixed;
         top: 0;
@@ -455,7 +535,6 @@
         flex: 1;
       }
 
-      /* COMPONENTE KARAOKE SYNC */
       .karaoke-player-box {
         width: 100%;
         border-radius: 12px;
@@ -496,10 +575,7 @@
         background: rgba(56, 189, 248, 0.08);
       }
 
-      /* SMARTLINK / LINKTREE CARD */
-      .smartlink-card {
-        text-align: center;
-      }
+      .smartlink-card { text-align: center; }
 
       .smartlink-cover {
         width: 180px;
@@ -538,12 +614,9 @@
         border-color: var(--accent-color);
       }
 
-      /* SCROLLBAR PERSONALIZADO */
       .custom-scroll::-webkit-scrollbar { height: 6px; width: 6px; }
       .custom-scroll::-webkit-scrollbar-track { background: var(--bg-primary); border-radius: 10px; }
       .custom-scroll::-webkit-scrollbar-thumb { background: var(--accent-color); border-radius: 10px; }
-
-      .embed-wrapper iframe { width: 100% !important; border-radius: 12px; border: 0; }
     </style>
 </head>
 <body>
@@ -589,18 +662,15 @@
     <p id="loading-text" style="font-size: 16px; font-weight: 700; margin: 0;" data-i18n="loading">Cargando catálogo musical...</p>
   </div>
 
-  <!-- BARRA DE HERRAMIENTAS Y CONTROLES AVANZADOS -->
+  <!-- TOOLBAR Y CONTROLES -->
   <div id="toolbar-container" class="toolbar-container" style="display: none;">
     <div class="toolbar-row">
-      <!-- BÚSQUEDA GENERAL -->
       <div class="search-box">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="global-search-input" placeholder="Buscar por artista, álbum, fecha..." onkeyup="applyAllFilters()" data-i18n-ph="searchPlaceholder">
+        <input type="text" id="global-search-input" placeholder="Buscar por artista, álbum..." onkeyup="applyAllFilters()" data-i18n-ph="searchPlaceholder">
       </div>
 
-      <!-- CONTROLES SECUNDARIOS -->
       <div class="control-group">
-        <!-- SELECCIÓN DE ORDENAMIENTO -->
         <select id="sort-select" class="select-tool" onchange="applyAllFilters()">
           <option value="recent" data-i18n="sortRecent">Más recientes primero</option>
           <option value="title-asc" data-i18n="sortTitleAsc">Título (A-Z)</option>
@@ -608,7 +678,6 @@
           <option value="artist-asc" data-i18n="sortArtistAsc">Artista (A-Z)</option>
         </select>
 
-        <!-- MODO DE VISTA GRID / LISTA -->
         <button id="view-list-btn" class="btn-tool active" onclick="setViewMode('list')" title="Vista en Lista">
           <i class="fa-solid fa-list"></i>
         </button>
@@ -616,17 +685,14 @@
           <i class="fa-solid fa-table-cells"></i>
         </button>
 
-        <!-- THEME TOGGLE (MODO CLARO / OSCURO) -->
         <button class="btn-tool" onclick="toggleTheme()" id="theme-btn" title="Alternar Modo Claro/Oscuro">
           <i class="fa-solid fa-moon"></i>
         </button>
 
-        <!-- SELECTOR DE IDIOMA -->
         <button class="btn-tool" onclick="toggleLanguage()" id="lang-btn">
           <i class="fa-solid fa-globe"></i> ES
         </button>
 
-        <!-- SWITCH DE CONTENIDO EXPLÍCITO -->
         <label class="switch-label" title="Ocultar contenido explícito">
           <i class="fa-solid fa-triangle-exclamation" style="color: var(--badge-explicit-bg);"></i>
           <span data-i18n="hideExplicit">Ocultar Explícito</span>
@@ -636,7 +702,6 @@
       </div>
     </div>
 
-    <!-- FILTRO RÁPIDO DE ETIQUETAS Y CATEGORÍAS (CHIPS) -->
     <div class="chips-container custom-scroll" id="chips-filter-container">
       <div class="chip active" onclick="setChipFilter('ALL', this)" data-i18n="filterAll">Todos</div>
       <div class="chip" onclick="setChipFilter('Single', this)">Singles</div>
@@ -647,7 +712,7 @@
     </div>
   </div>
 
-  <!-- RESUMEN GENERAL DE EVENTOS (DESTACADOS) -->
+  <!-- HIGHLIGHTS / EVENTOS -->
   <div id="events-summary-container" style="display: none; max-width: 1200px; margin: 0 auto 20px auto; padding: 0 10px; box-sizing: border-box;">
     <div style="background: var(--bg-secondary); border: 2px solid var(--accent-purple); border-radius: 14px; padding: 16px; box-shadow: 0 8px 25px var(--shadow-color);">
       <h3 style="margin: 0 0 12px 0; color: #f43f5e; font-size: 16px; font-weight: 800; text-transform: uppercase; display: flex; align-items: center; gap: 8px;">
@@ -657,14 +722,14 @@
     </div>
   </div>
 
-  <!-- CONTENEDOR PRINCIPAL DEL CATÁLOGO -->
+  <!-- CONTENEDOR DEL CATÁLOGO -->
   <div id="catalog-container" style="display: none; max-width: 1200px; margin: 0 auto; padding: 0 10px; box-sizing: border-box;"></div>
 
-  <!-- MODAL DE KARAOKE SINCRONIZADO -->
+  <!-- MODAL DE REPRODUCCIÓN Y KARAOKE SINCRONIZADO -->
   <div id="karaoke-modal" class="modal-overlay">
     <div class="modal-container">
       <div class="modal-header">
-        <h3><i class="fa-solid fa-microphone-lines" style="color: var(--accent-color);"></i> <span id="karaoke-title">Letra Sincronizada</span></h3>
+        <h3><i class="fa-solid fa-microphone-lines" style="color: var(--accent-color);"></i> <span id="karaoke-title">Reproductor & Letra</span></h3>
         <button class="modal-close" onclick="closeKaraokeModal()">&times;</button>
       </div>
       <div class="modal-body custom-scroll">
@@ -676,7 +741,7 @@
     </div>
   </div>
 
-  <!-- MODAL DE SMARTLINK (LANDING PAGE DE COMPARTIR) -->
+  <!-- MODAL DE SMARTLINK Y COPIADO DE ENLACE DIRECTO -->
   <div id="smartlink-modal" class="modal-overlay">
     <div class="modal-container" style="max-width: 480px;">
       <div class="modal-header">
@@ -703,9 +768,8 @@
 
 <div id="footer"></div>
 
-<!-- LÓGICA CORE DE JAVASCRIPT RESTRUCTURADA Y CORREGIDA -->
+<!-- LÓGICA DE JAVASCRIPT CON TODAS LAS REGLAS APLICADAS -->
 <script>
-  /* --- ESTADO GLOBAL DE LA APLICACIÓN --- */
   var rawSongsList = [];
   var parsedCatalog = [];
   var currentLang = 'es';
@@ -713,18 +777,17 @@
   var activeChipFilter = 'ALL';
   var currentViewMode = 'list';
   var activeSmartLinkUrl = '';
+  var carouselPositions = {};
 
-  // ESTADO YOUTUBE KARAOKE
   var ytPlayer = null;
   var karaokeParsedLyrics = [];
   var karaokeSyncInterval = null;
   var currentActiveLyricIndex = -1;
 
-  /* --- DICCIONARIO INTERNO I18N (SOPORTE MULTI-IDIOMA) --- */
   var i18n = {
     es: {
       loading: "Cargando catálogo musical...",
-      searchPlaceholder: "Buscar por artista, álbum, fecha...",
+      searchPlaceholder: "Buscar por artista, álbum...",
       sortRecent: "Más recientes primero",
       sortTitleAsc: "Título (A-Z)",
       sortTitleDesc: "Título (Z-A)",
@@ -735,22 +798,17 @@
       filterAnniversary: "Aniversarios",
       activeEvents: "Eventos y Destacados Activos",
       releasesCount: "Lanzamientos",
-      quickAccess: "Accesos Rápidos del Artista:",
       platformsTitle: "Plataformas y Reproductores",
       trackListTitle: "Lista de Canciones",
       copyLink: "Copiar Enlace Directo",
       linkCopied: "¡Enlace copiado al portapapeles!",
       explicitBadge: "E",
       noLyrics: "Letra sincronizada no disponible para este tema.",
-      nowAvailable: "¡Ya disponible!",
-      days: "días",
-      hours: "hs",
-      mins: "min",
-      secs: "seg"
+      nowAvailable: "¡Ya disponible!"
     },
     en: {
       loading: "Loading music catalog...",
-      searchPlaceholder: "Search by artist, album, date...",
+      searchPlaceholder: "Search by artist, album...",
       sortRecent: "Newest first",
       sortTitleAsc: "Title (A-Z)",
       sortTitleDesc: "Title (Z-A)",
@@ -761,28 +819,21 @@
       filterAnniversary: "Anniversaries",
       activeEvents: "Active Highlights & Events",
       releasesCount: "Releases",
-      quickAccess: "Artist Quick Access:",
       platformsTitle: "Platforms & Players",
       trackListTitle: "Tracklist",
       copyLink: "Copy Direct Link",
       linkCopied: "Link copied to clipboard!",
       explicitBadge: "E",
       noLyrics: "Synchronized lyrics not available for this track.",
-      nowAvailable: "Now Available!",
-      days: "days",
-      hours: "hrs",
-      mins: "mins",
-      secs: "secs"
+      nowAvailable: "Now Available!"
     }
   };
 
-  /* --- INICIALIZACIÓN --- */
   document.addEventListener("DOMContentLoaded", function() {
     applyTheme(currentTheme);
     loadYouTubeIframeAPI();
     checkUrlQueryParams();
 
-    // Cierre de modales con ESC
     document.addEventListener("keydown", function(e) {
       if (e.key === "Escape") {
         closeKaraokeModal();
@@ -796,7 +847,7 @@
       .getAllSongs();
   });
 
-  /* --- VERIFICACIÓN Y LECTURA DE PARÁMETRO ENLACE ?q= --- */
+  /* LECTURA Y PROCESAMIENTO DE URL ?q= (SIN FECHA) */
   function checkUrlQueryParams() {
     var urlParams = new URLSearchParams(window.location.search);
     var qParam = urlParams.get('q');
@@ -815,7 +866,7 @@
     }
   }
 
-  /* --- MODO CLARO / OSCURO CORREGIDO --- */
+  /* GESTIÓN DE TEMA GLOBAL */
   function applyTheme(theme) {
     currentTheme = theme;
     document.documentElement.setAttribute('data-theme', theme);
@@ -830,7 +881,6 @@
     applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
   }
 
-  /* --- MULTI-IDIOMA --- */
   function toggleLanguage() {
     currentLang = currentLang === 'es' ? 'en' : 'es';
     document.getElementById("lang-btn").innerHTML = '<i class="fa-solid fa-globe"></i> ' + currentLang.toUpperCase();
@@ -848,7 +898,6 @@
     renderCatalogUI();
   }
 
-  /* --- CAMBIO DE VISTA (LISTA / GRID) --- */
   function setViewMode(mode) {
     currentViewMode = mode;
     var container = document.getElementById("catalog-container");
@@ -866,7 +915,6 @@
     }
   }
 
-  /* --- FILTRADO DE CHIPS --- */
   function setChipFilter(category, chipEl) {
     activeChipFilter = category;
     document.querySelectorAll(".chip").forEach(function(c) { c.classList.remove("active"); });
@@ -874,7 +922,6 @@
     applyAllFilters();
   }
 
-  /* --- LÓGICA DE PROCESAMIENTO DEL CATÁLOGO --- */
   function initCatalogData(response) {
     if (response.error || !response.songsData || response.songsData.length === 0) {
       document.getElementById("loading").innerHTML = '<p style="color: var(--text-primary);">No se encontraron lanzamientos.</p>';
@@ -929,7 +976,6 @@
     });
   }
 
-  /* --- EVALUACIÓN TEMPORAL Y COUNTDOWN --- */
   function checkReleaseStatus(song) {
     var today = new Date();
     var rawDateStr = song["Fecha de inicio de ventas"] || song["Lanzamiento original"] || song["Fecha de pedido anticipado"] || "";
@@ -962,15 +1008,13 @@
         detail: "Cumple " + years + " año" + (years > 1 ? "s" : "") + " hoy",
         badgeColor: "#d97706",
         bgColor: "rgba(245, 158, 11, 0.15)",
-        borderColor: "#d97706",
-        animClass: "snow-anniversary-block"
+        borderColor: "#d97706"
       };
     }
 
     return { type: null, label: "", detail: "", badgeColor: "" };
   }
 
-  /* --- RENDERIZADO REACTIVO DEL CATÁLOGO --- */
   function renderCatalogUI() {
     var container = document.getElementById("catalog-container");
     var eventsSummaryContainer = document.getElementById("events-summary-container");
@@ -1032,7 +1076,7 @@
     });
   }
 
-  /* --- CREADOR DE TARJETA DE LANZAMIENTO --- */
+  /* TARJETA DE LANZAMIENTO CON CAMPOS DINÁMICOS ADAPTATIVOS Y CARRUSEL DE EMBEDS */
   function createReleaseCardElement(item) {
     var song = item.songData;
     var releaseCard = document.createElement("div");
@@ -1059,33 +1103,35 @@
                 '<i class="fa-solid fa-compact-disc" style="color:var(--accent-purple);"></i>' + escapeHtml(item.title) +
                 (item.explicit ? '<span class="badge-explicit" title="Contenido Explícito">' + i18n[currentLang].explicitBadge + '</span>' : '') +
               '</h3>' +
-              '<button class="btn-action-icon" title="Compartir SmartLink" onclick="openSmartLinkModal(\'' + item.id + '\')"><i class="fa-solid fa-share-nodes"></i></button>' +
+              '<button class="btn-action-icon" title="Compartir SmartLink Modal" onclick="openSmartLinkModal(\'' + item.id + '\')"><i class="fa-solid fa-share-nodes"></i></button>' +
             '</div>';
 
+    // CAMPOS DINÁMICOS CON ESTILOS CSS RECTIFICADOS PARA RESPONDER A TEMAS
     html += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 15px;">';
     item.allowedFields.forEach(function(key) {
       if (song[key] && !key.includes("Título ") && !key.includes("Embed") && !key.includes("Spotify") && !key.includes("YouTube")) {
-        html += '<div style="background: var(--bg-primary); padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border-color);">' +
-                  '<strong style="color: var(--accent-color); font-size: 10px; display: block; text-transform: uppercase;">' + escapeHtml(key) + '</strong>' +
-                  '<span style="font-size: 13px; font-weight: 600;">' + escapeHtml(song[key]) + '</span>' +
+        html += '<div class="dynamic-field-box">' +
+                  '<strong class="dynamic-field-label">' + escapeHtml(key) + '</strong>' +
+                  '<span class="dynamic-field-value">' + escapeHtml(song[key]) + '</span>' +
                 '</div>';
       }
     });
     html += '</div>';
 
-    var embedsHtml = '';
+    // RECOLECCIÓN DE EMBEDS Y GENERACIÓN DE CARRUSEL (1 EN 1 RESPONSIVE)
+    var embedsList = [];
     var embedKeys = ["Spotify Embed", "YouTube Embed", "Apple Music Embed", "Amazon Music Embed", "Deezer Embed"];
     embedKeys.forEach(function(k) {
       if (song[k]) {
-        var src = formatEmbedContent(song[k]);
-        embedsHtml += '<div style="margin-bottom:10px;">' + src + '</div>';
+        var formatted = formatEmbedContent(song[k]);
+        if (formatted) embedsList.push(formatted);
       }
     });
 
-    if (embedsHtml) {
+    if (embedsList.length > 0) {
       html += '<div style="background: var(--bg-inner); padding: 12px; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 15px;">' +
                 '<h4 style="margin:0 0 10px 0; font-size:13px; color:var(--accent-color); text-transform:uppercase;"><i class="fa-solid fa-headphones"></i> ' + i18n[currentLang].platformsTitle + '</h4>' +
-                embedsHtml +
+                createEmbedCarouselHtml(item.id, embedsList) +
               '</div>';
     }
 
@@ -1101,8 +1147,8 @@
                           '<strong style="font-size:14px; color:var(--text-primary);">' + t + '. ' + escapeHtml(trackTitle) + '</strong>' +
                         '</div>' +
                         '<div style="display:flex; gap:6px;">' +
-                          '<button class="btn-action-icon" title="Modo Karaoke Sincronizado" onclick="openKaraokeModal(\'' + escapeHtml(item.artist) + '\', \'' + escapeHtml(trackTitle) + '\', \'' + escapeHtml(ytUrl) + '\', \'' + escapeHtml(lyricsText) + '\')">' +
-                            '<i class="fa-solid fa-microphone"></i>' +
+                          '<button class="btn-action-icon" title="Reproducir y Letra en Modal" onclick="openKaraokeModal(\'' + escapeHtml(item.artist) + '\', \'' + escapeHtml(trackTitle) + '\', \'' + escapeHtml(ytUrl) + '\', \'' + escapeHtml(lyricsText) + '\')">' +
+                            '<i class="fa-solid fa-play"></i>' +
                           '</button>' +
                         '</div>' +
                       '</div>';
@@ -1120,7 +1166,54 @@
     return releaseCard;
   }
 
-  /* --- COUNTDOWN INTERACTIVO --- */
+  /* COMPONENTE DE CARRUSEL DE EMBEDS (1 EN 1 RESPONSIVE) */
+  function createEmbedCarouselHtml(cardId, embeds) {
+    carouselPositions[cardId] = 0;
+
+    var slidesHtml = embeds.map(function(embedHtml) {
+      return '<div class="embed-carousel-slide">' + embedHtml + '</div>';
+    }).join('');
+
+    var dotsHtml = embeds.map(function(_, idx) {
+      return '<div class="carousel-indicator-dot ' + (idx === 0 ? 'active' : '') + '" id="dot-' + cardId + '-' + idx + '" onclick="goToCarouselSlide(\'' + cardId + '\', ' + idx + ', ' + embeds.length + ')"></div>';
+    }).join('');
+
+    var controls = '';
+    if (embeds.length > 1) {
+      controls = '<button class="carousel-nav-btn prev" onclick="moveCarouselSlide(\'' + cardId + '\', -1, ' + embeds.length + ')"><i class="fa-solid fa-chevron-left"></i></button>' +
+                 '<button class="carousel-nav-btn next" onclick="moveCarouselSlide(\'' + cardId + '\', 1, ' + embeds.length + ')"><i class="fa-solid fa-chevron-right"></i></button>';
+    }
+
+    return '<div class="embed-carousel-wrapper">' +
+             controls +
+             '<div class="embed-carousel-track" id="track-' + cardId + '">' + slidesHtml + '</div>' +
+             '<div class="carousel-indicators">' + dotsHtml + '</div>' +
+           '</div>';
+  }
+
+  function moveCarouselSlide(cardId, direction, total) {
+    var current = carouselPositions[cardId] || 0;
+    var next = current + direction;
+    if (next < 0) next = total - 1;
+    if (next >= total) next = 0;
+    goToCarouselSlide(cardId, next, total);
+  }
+
+  function goToCarouselSlide(cardId, index, total) {
+    carouselPositions[cardId] = index;
+    var track = document.getElementById("track-" + cardId);
+    if (track) {
+      track.style.transform = "translateX(-" + (index * 100) + "%)";
+    }
+    for (var i = 0; i < total; i++) {
+      var dot = document.getElementById("dot-" + cardId + "-" + i);
+      if (dot) {
+        if (i === index) dot.classList.add("active");
+        else dot.classList.remove("active");
+      }
+    }
+  }
+
   function initCountdownTimer(elementId, targetDate) {
     function update() {
       var el = document.getElementById("countdown-" + elementId);
@@ -1145,7 +1238,6 @@
     setInterval(update, 1000);
   }
 
-  /* --- FILTRADO MULTI-CAMPO DE ALTA PRECISIÓN Y ORDENAMIENTO --- */
   function applyAllFilters() {
     renderCatalogUI();
   }
@@ -1167,7 +1259,6 @@
       }
 
       if (searchQuery) {
-        // Búsqueda exhaustiva por todos los metadatos disponibles para máxima precisión
         var searchableContent = (
           item.artist + " " + 
           item.title + " " + 
@@ -1177,13 +1268,8 @@
           (item.songData["Categoría del Lanzamiento"] || "")
         ).toLowerCase();
 
-        // Evaluar coincidencia de todas las palabras clave introducidas
         var terms = searchQuery.split(" ");
-        var matchesAll = terms.every(function(term) {
-          return searchableContent.includes(term);
-        });
-
-        if (!matchesAll) return false;
+        return terms.every(function(term) { return searchableContent.includes(term); });
       }
 
       return true;
@@ -1195,7 +1281,6 @@
     });
   }
 
-  /* --- MÓDULO KARAOKE CON YOUTUBE IFRAME PLAYER API --- */
   function loadYouTubeIframeAPI() {
     if (window.YT) return;
     var tag = document.createElement('script');
@@ -1323,7 +1408,7 @@
     if (ytPlayer && ytPlayer.stopVideo) ytPlayer.stopVideo();
   }
 
-  /* --- MÓDULO SMARTLINK MODAL --- */
+  /* ENLACE CON ?q= SIN FECHA Y MODAL DE COMPARTIR */
   function openSmartLinkModal(releaseId) {
     var item = parsedCatalog.find(function(i) { return i.id === releaseId; });
     if (!item) return;
@@ -1333,8 +1418,8 @@
     document.getElementById("smartlink-artist-name").textContent = item.artist;
     document.getElementById("smartlink-img").src = song["Cover?"] || song["Cover 1"] || "https://via.placeholder.com/200";
 
-    // Generar la URL de precisión con parámetro ?q=
-    var queryText = encodeURIComponent(item.artist + " - " + item.title + (item.rawDate ? " (" + item.rawDate + ")" : ""));
+    // FORMATO SOLICITADO SIN FECHA
+    var queryText = encodeURIComponent(item.artist + " - " + item.title);
     activeSmartLinkUrl = window.location.origin + window.location.pathname + "?q=" + queryText;
 
     var platformsContainer = document.getElementById("smartlink-platforms");
@@ -1365,7 +1450,6 @@
     });
   }
 
-  /* --- HELPERS AUXILIARES --- */
   function scrollToRelease(id) {
     var el = document.getElementById(id);
     if (el) {
@@ -1396,7 +1480,7 @@
       var srcUrl = str;
       if (srcUrl.includes("youtube.com/watch?v=")) srcUrl = srcUrl.replace("watch?v=", "embed/");
       else if (srcUrl.includes("youtu.be/")) srcUrl = srcUrl.replace("youtu.be/", "youtube.com/embed/");
-      return '<iframe src="' + escapeHtml(srcUrl) + '" height="150" allow="autoplay; encrypted-media"></iframe>';
+      return '<iframe src="' + escapeHtml(srcUrl) + '" height="152" allow="autoplay; encrypted-media"></iframe>';
     }
     return str;
   }
