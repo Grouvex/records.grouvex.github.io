@@ -801,7 +801,8 @@
       hideExplicit: "Ocultar Explícito",
       filterAll: "Todos",
       releasesCount: "Lanzamientos",
-      platformsTitle: "Plataformas y Reproductores",
+      platformsTitle: "Plataformas",
+      embedTitle: "Reproductores"
       trackListTitle: "Lista de Canciones",
       copyLink: "Copiar Enlace Directo",
       linkCopied: "¡Enlace copiado al portapapeles!",
@@ -818,7 +819,8 @@
       hideExplicit: "Hide Explicit",
       filterAll: "All",
       releasesCount: "Releases",
-      platformsTitle: "Platforms & Players",
+      platformsTitle: "Platforms",
+      embedTitle: "Players",
       trackListTitle: "Tracklist",
       copyLink: "Copy Direct Link",
       linkCopied: "Link copied to clipboard!",
@@ -1126,7 +1128,7 @@ function createReleaseCardElement(item) {
       '<div style="background: var(--bg-inner); padding: 12px; border-radius: 10px; ' +
       'border: 1px solid var(--border-color); margin-top: 15px; overflow: hidden;">' +
         '<h4 style="margin:0 0 10px 0; font-size:13px; color:var(--accent-color); text-transform:uppercase;">' +
-          '<i class="fa-solid fa-headphones"></i> ' + i18n[currentLang].platformsTitle +
+          '<i class="fa-solid fa-headphones"></i> ' + i18n[currentLang].embedTitle +
         '</h4>' +
         createSwipeCarouselHtml(item.id, embedsList) +
       '</div>';
@@ -1409,7 +1411,7 @@ function openKaraokeFromButton(btn) {
     var song = item.songData;
     document.getElementById("smartlink-song-title").textContent = item.title;
     document.getElementById("smartlink-artist-name").textContent = item.artist;
-    document.getElementById("smartlink-img").src = song["Cover?"] || song["Cover 1"] || "https://via.placeholder.com/200";
+    document.getElementById("smartlink-img").src = song["Archivo de la ilustración"] || "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/priv/arch/imagen/isede/Grouvex%20Studios%20Records%20Banner.png";
 
     var queryText = encodeURIComponent(item.artist + " - " + item.title);
     activeSmartLinkUrl = window.location.origin + window.location.pathname + "?q=" + queryText;
