@@ -69,7 +69,7 @@
         --shadow-color: rgba(0, 0, 0, 0.5);
         --modal-overlay: rgba(15, 23, 42, 0.85);
         --lyric-inactive: rgba(255, 255, 255, 0.4);
-        --lyric-active: #38bdf8;
+        --lyric-active: #000000;
         --badge-explicit-bg: #ef4444;
         --badge-explicit-text: #ffffff;
       }
@@ -91,7 +91,7 @@
         --shadow-color: rgba(0, 0, 0, 0.08);
         --modal-overlay: rgba(15, 23, 42, 0.7);
         --lyric-inactive: rgba(15, 23, 42, 0.4);
-        --lyric-active: #0284c7;
+        --lyric-active: #ffffff;
         --badge-explicit-bg: #ef4444;
         --badge-explicit-text: #ffffff;
       }
@@ -550,7 +550,10 @@
         aspect-ratio: 16 / 9;
         max-height: 50vh;
         flex-shrink: 0;
-        box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+        position: sticky;
+        top: 0;
+        z-index: 0;
       }
 
       .karaoke-lyrics-container {
@@ -584,7 +587,7 @@
         color: var(--lyric-active);
         text-shadow: 0 0 15px var(--lyric-active);
         transform: scale(1.02);
-        background: rgba(56, 189, 248, 0.12);
+        background: rgb(0 0 0 / 57%);
       }
 
       .smartlink-card { text-align: center; }
