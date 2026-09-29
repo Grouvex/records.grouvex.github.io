@@ -70,6 +70,7 @@
         --modal-overlay: rgba(15, 23, 42, 0.85);
         --lyric-inactive: rgba(255, 255, 255, 0.4);
         --lyric-active: #000000;
+        --lyric-active-bg: 0 0 0;
         --badge-explicit-bg: #ef4444;
         --badge-explicit-text: #ffffff;
       }
@@ -92,6 +93,7 @@
         --modal-overlay: rgba(15, 23, 42, 0.7);
         --lyric-inactive: rgba(15, 23, 42, 0.4);
         --lyric-active: #ffffff;
+        --lyric-active-bg: 255 255 255;
         --badge-explicit-bg: #ef4444;
         --badge-explicit-text: #ffffff;
       }
@@ -587,7 +589,7 @@
         color: var(--lyric-active);
         text-shadow: 0 0 15px var(--lyric-active);
         transform: scale(1.02);
-        background: rgb(0 0 0 / 57%);
+        background: rgb(var(--lyric-active-bg) / 57%);
       }
 
       .smartlink-card { text-align: center; }
