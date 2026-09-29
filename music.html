@@ -1699,7 +1699,7 @@ function openKaraokeFromButton(btn) {
     var song = item.songData;
     document.getElementById("smartlink-song-title").textContent = item.title;
     document.getElementById("smartlink-artist-name").textContent = item.artist;
-    document.getElementById("smartlink-img").src = song["Archivo de la ilustración"] || "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/priv/arch/imagen/isede/Grouvex%20Studios%20Records%20Banner.png";
+    document.getElementById("smartlink-img").src = song["Archivo de la ilustración"] || "https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/priv/arch/imagen/isede/Grouvex%20Studios%20Records%20Logo.png";
 
     var queryText = encodeURIComponent(item.artist + " - " + item.title);
     activeSmartLinkUrl = window.location.origin + window.location.pathname + "?q=" + queryText;
