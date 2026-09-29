@@ -70,7 +70,8 @@
         --modal-overlay: rgba(15, 23, 42, 0.95);
         --lyric-inactive: rgba(255, 255, 255, 0.4);
         --lyric-active: #38bdf8;
-        --badge-explicit: #ef4444;
+        --badge-explicit-bg: #dc2626;
+        --badge-explicit-text: #ffffff;
       }
 
       [data-theme="light"] {
@@ -88,6 +89,8 @@
         --modal-overlay: rgba(255, 255, 255, 0.95);
         --lyric-inactive: rgba(15, 23, 42, 0.4);
         --lyric-active: #0284c7;
+        --badge-explicit-bg: #dc2626;
+        --badge-explicit-text: #ffffff;
       }
 
       body {
@@ -228,7 +231,7 @@
       }
 
       .switch-label input:checked + .switch-slider {
-        background-color: var(--badge-explicit);
+        background-color: var(--badge-explicit-bg);
       }
 
       .switch-label input:checked + .switch-slider::before {
@@ -358,16 +361,22 @@
         border-color: var(--accent-purple);
       }
 
+      /* BADGE EXPLÍCITO: 'E' EN FONDO ROJO */
       .badge-explicit {
-        background-color: var(--badge-explicit);
-        color: #ffffff;
-        font-size: 10px;
+        background-color: var(--badge-explicit-bg);
+        color: var(--badge-explicit-text);
+        font-size: 11px;
         font-weight: 900;
-        padding: 2px 6px;
-        border-radius: 4px;
-        text-transform: uppercase;
-        margin-left: 6px;
+        width: 18px;
+        height: 18px;
+        line-height: 18px;
+        text-align: center;
+        border-radius: 3px;
+        margin-left: 8px;
         display: inline-block;
+        font-family: Arial, sans-serif;
+        text-transform: uppercase;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.3);
       }
 
       /* ESTILOS DE MODALES (KARAOKE Y SMARTLINK) */
@@ -438,7 +447,7 @@
         transition: color 0.2s;
       }
 
-      .modal-close:hover { color: var(--badge-explicit); }
+      .modal-close:hover { color: var(--badge-explicit-bg); }
 
       .modal-body {
         padding: 24px;
@@ -586,7 +595,7 @@
       <!-- BÚSQUEDA GENERAL -->
       <div class="search-box">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="global-search-input" placeholder="Buscar por artista, álbum, canción..." onkeyup="applyAllFilters()" data-i18n-ph="searchPlaceholder">
+        <input type="text" id="global-search-input" placeholder="Buscar por artista, álbum, fecha..." onkeyup="applyAllFilters()" data-i18n-ph="searchPlaceholder">
       </div>
 
       <!-- CONTROLES SECUNDARIOS -->
@@ -619,7 +628,7 @@
 
         <!-- SWITCH DE CONTENIDO EXPLÍCITO -->
         <label class="switch-label" title="Ocultar contenido explícito">
-          <i class="fa-solid fa-triangle-exclamation" style="color: var(--badge-explicit);"></i>
+          <i class="fa-solid fa-triangle-exclamation" style="color: var(--badge-explicit-bg);"></i>
           <span data-i18n="hideExplicit">Ocultar Explícito</span>
           <input type="checkbox" id="explicit-toggle" onchange="applyAllFilters()">
           <span class="switch-slider"></span>
@@ -694,7 +703,7 @@
 
 <div id="footer"></div>
 
-<!-- LÓGICA CORE DE JAVASCRIPT RESTRUCTURADA -->
+<!-- LÓGICA CORE DE JAVASCRIPT RESTRUCTURADA Y CORREGIDA -->
 <script>
   /* --- ESTADO GLOBAL DE LA APLICACIÓN --- */
   var rawSongsList = [];
@@ -715,7 +724,7 @@
   var i18n = {
     es: {
       loading: "Cargando catálogo musical...",
-      searchPlaceholder: "Buscar por artista, álbum, canción...",
+      searchPlaceholder: "Buscar por artista, álbum, fecha...",
       sortRecent: "Más recientes primero",
       sortTitleAsc: "Título (A-Z)",
       sortTitleDesc: "Título (Z-A)",
@@ -731,7 +740,7 @@
       trackListTitle: "Lista de Canciones",
       copyLink: "Copiar Enlace Directo",
       linkCopied: "¡Enlace copiado al portapapeles!",
-      explicitBadge: "EXPLÍCITO",
+      explicitBadge: "E",
       noLyrics: "Letra sincronizada no disponible para este tema.",
       nowAvailable: "¡Ya disponible!",
       days: "días",
@@ -741,7 +750,7 @@
     },
     en: {
       loading: "Loading music catalog...",
-      searchPlaceholder: "Search by artist, album, song...",
+      searchPlaceholder: "Search by artist, album, date...",
       sortRecent: "Newest first",
       sortTitleAsc: "Title (A-Z)",
       sortTitleDesc: "Title (Z-A)",
@@ -757,7 +766,7 @@
       trackListTitle: "Tracklist",
       copyLink: "Copy Direct Link",
       linkCopied: "Link copied to clipboard!",
-      explicitBadge: "EXPLICIT",
+      explicitBadge: "E",
       noLyrics: "Synchronized lyrics not available for this track.",
       nowAvailable: "Now Available!",
       days: "days",
@@ -771,8 +780,9 @@
   document.addEventListener("DOMContentLoaded", function() {
     applyTheme(currentTheme);
     loadYouTubeIframeAPI();
+    checkUrlQueryParams();
 
-    // Cierre de modales con ESC o click fuera
+    // Cierre de modales con ESC
     document.addEventListener("keydown", function(e) {
       if (e.key === "Escape") {
         closeKaraokeModal();
@@ -786,21 +796,33 @@
       .getAllSongs();
   });
 
-  function handleError(error) {
-    var loadingDiv = document.getElementById("loading");
-    if (loadingDiv) {
-      loadingDiv.innerHTML = '<p style="color: var(--badge-explicit); font-weight: bold; font-size: 16px;">⚠️ Error: ' + error.message + '</p>';
+  /* --- VERIFICACIÓN Y LECTURA DE PARÁMETRO ENLACE ?q= --- */
+  function checkUrlQueryParams() {
+    var urlParams = new URLSearchParams(window.location.search);
+    var qParam = urlParams.get('q');
+    if (qParam) {
+      var searchInput = document.getElementById("global-search-input");
+      if (searchInput) {
+        searchInput.value = decodeURIComponent(qParam);
+      }
     }
   }
 
-  /* --- MODO CLARO / OSCURO --- */
+  function handleError(error) {
+    var loadingDiv = document.getElementById("loading");
+    if (loadingDiv) {
+      loadingDiv.innerHTML = '<p style="color: var(--badge-explicit-bg); font-weight: bold; font-size: 16px;">⚠️ Error: ' + error.message + '</p>';
+    }
+  }
+
+  /* --- MODO CLARO / OSCURO CORREGIDO --- */
   function applyTheme(theme) {
     currentTheme = theme;
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
-    var icon = document.getElementById("theme-btn") ? document.getElementById("theme-btn").querySelector("i") : null;
-    if (icon) {
-      icon.className = theme === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun';
+    var btn = document.getElementById("theme-btn");
+    if (btn) {
+      btn.innerHTML = theme === 'dark' ? '<i class="fa-solid fa-moon"></i>' : '<i class="fa-solid fa-sun"></i>';
     }
   }
 
@@ -813,7 +835,6 @@
     currentLang = currentLang === 'es' ? 'en' : 'es';
     document.getElementById("lang-btn").innerHTML = '<i class="fa-solid fa-globe"></i> ' + currentLang.toUpperCase();
     
-    // Actualizar elementos estáticos
     document.querySelectorAll("[data-i18n]").forEach(function(el) {
       var key = el.getAttribute("data-i18n");
       if (i18n[currentLang][key]) el.textContent = i18n[currentLang][key];
@@ -874,7 +895,6 @@
     parsedCatalog = [];
     var counter = 0;
 
-    var forbiddenFields = ["Grouvex Studios UserID", "Marca temporal", "Estado del Contrato", "Razón", "¿Se Puede Modificar el Lanzamiento?"];
     var defaultFields = [
       "Artista", "Título del álbum/sencillo/EP", "Idioma del álbum", "Versión del Lanzamiento", "Cover?", 
       "Álbum Recopilatorio", "Otros Artistas Álbum", "Compositores del álbum", "Letristas del álbum", 
@@ -902,7 +922,7 @@
         category: category,
         explicit: explicit,
         status: status,
-        rawDate: song["Fecha de inicio de ventas"] || song["Lanzamiento original"] || "",
+        rawDate: song["Fecha de inicio de ventas"] || song["Lanzamiento original"] || song["Fecha de pedido anticipado"] || "",
         songData: song,
         allowedFields: defaultFields
       });
@@ -959,7 +979,6 @@
     var filtered = getFilteredAndSortedCatalog();
     container.innerHTML = "";
 
-    // Agrupar por Artista
     var artistsMap = {};
     var globalEvents = [];
 
@@ -972,7 +991,6 @@
       }
     });
 
-    // Eventos destacados
     if (globalEvents.length > 0) {
       eventsSummaryList.innerHTML = "";
       globalEvents.forEach(function(item) {
@@ -990,7 +1008,6 @@
       eventsSummaryContainer.style.display = "none";
     }
 
-    // Renderizar bloques por Artista
     Object.keys(artistsMap).forEach(function(artistName) {
       var details = document.createElement("details");
       details.className = "artist-details";
@@ -1025,7 +1042,6 @@
 
     var html = '';
 
-    // Status Banner / Countdown
     if (item.status.type === 'FUTURE') {
       html += '<div style="background:' + item.status.bgColor + '; border: 1px solid ' + item.status.borderColor + '; padding: 10px; border-radius: 8px; margin-bottom: 12px; font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">' +
                 '<span><span class="radar-dot"></span><i class="fa-solid fa-rocket" style="margin-right:6px;"></i>' + escapeHtml(item.status.label) + '</span>' +
@@ -1038,16 +1054,14 @@
               '</div>';
     }
 
-    // Encabezado
     html += '<div style="display:flex; align-items:center; justify-content:space-between; border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 15px;">' +
               '<h3 style="margin:0; font-size:20px; color:var(--text-primary); display:flex; align-items:center; gap:8px;">' +
                 '<i class="fa-solid fa-compact-disc" style="color:var(--accent-purple);"></i>' + escapeHtml(item.title) +
-                (item.explicit ? '<span class="badge-explicit">' + i18n[currentLang].explicitBadge + '</span>' : '') +
+                (item.explicit ? '<span class="badge-explicit" title="Contenido Explícito">' + i18n[currentLang].explicitBadge + '</span>' : '') +
               '</h3>' +
               '<button class="btn-action-icon" title="Compartir SmartLink" onclick="openSmartLinkModal(\'' + item.id + '\')"><i class="fa-solid fa-share-nodes"></i></button>' +
             '</div>';
 
-    // Grid de Metadatos
     html += '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 15px;">';
     item.allowedFields.forEach(function(key) {
       if (song[key] && !key.includes("Título ") && !key.includes("Embed") && !key.includes("Spotify") && !key.includes("YouTube")) {
@@ -1059,7 +1073,6 @@
     });
     html += '</div>';
 
-    // Reproductores / Enlaces
     var embedsHtml = '';
     var embedKeys = ["Spotify Embed", "YouTube Embed", "Apple Music Embed", "Amazon Music Embed", "Deezer Embed"];
     embedKeys.forEach(function(k) {
@@ -1076,11 +1089,10 @@
               '</div>';
     }
 
-    // Tracklist con Karaoke Trigger
     var tracksHtml = '';
     for (var t = 1; t <= 15; t++) {
       var trackTitle = song["Título " + t];
-      var lyricsText = song["Letra " + t] || song["Letra"] || ""; // Metadato LRC
+      var lyricsText = song["Letra " + t] || song["Letra"] || "";
       var ytUrl = song["YouTube"] || song["YouTube Embed"] || "";
 
       if (trackTitle) {
@@ -1133,7 +1145,7 @@
     setInterval(update, 1000);
   }
 
-  /* --- FILTRADO Y ORDENAMIENTO DUAL --- */
+  /* --- FILTRADO MULTI-CAMPO DE ALTA PRECISIÓN Y ORDENAMIENTO --- */
   function applyAllFilters() {
     renderCatalogUI();
   }
@@ -1144,10 +1156,8 @@
     var sortMode = document.getElementById("sort-select").value;
 
     return parsedCatalog.filter(function(item) {
-      // Filtro Explícito
       if (hideExplicit && item.explicit) return false;
 
-      // Filtro Chips
       if (activeChipFilter !== 'ALL') {
         if (activeChipFilter === 'FUTURE' || activeChipFilter === 'ANNIVERSARY') {
           if (item.status.type !== activeChipFilter) return false;
@@ -1156,11 +1166,24 @@
         }
       }
 
-      // Búsqueda
       if (searchQuery) {
-        var matchArtist = item.artist.toLowerCase().includes(searchQuery);
-        var matchTitle = item.title.toLowerCase().includes(searchQuery);
-        if (!matchArtist && !matchTitle) return false;
+        // Búsqueda exhaustiva por todos los metadatos disponibles para máxima precisión
+        var searchableContent = (
+          item.artist + " " + 
+          item.title + " " + 
+          item.rawDate + " " + 
+          (item.songData["Género primario"] || "") + " " +
+          (item.songData["Género secundario"] || "") + " " +
+          (item.songData["Categoría del Lanzamiento"] || "")
+        ).toLowerCase();
+
+        // Evaluar coincidencia de todas las palabras clave introducidas
+        var terms = searchQuery.split(" ");
+        var matchesAll = terms.every(function(term) {
+          return searchableContent.includes(term);
+        });
+
+        if (!matchesAll) return false;
       }
 
       return true;
@@ -1168,7 +1191,7 @@
       if (sortMode === 'title-asc') return a.title.localeCompare(b.title);
       if (sortMode === 'title-desc') return b.title.localeCompare(a.title);
       if (sortMode === 'artist-asc') return a.artist.localeCompare(b.artist);
-      return new Date(b.rawDate) - new Date(a.rawDate); // recent
+      return new Date(b.rawDate) - new Date(a.rawDate);
     });
   }
 
@@ -1181,7 +1204,6 @@
     firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
   }
 
-  // LRC Parser Regex
   function parseLRC(lrcText) {
     if (!lrcText) return [];
     var lines = lrcText.split('\n');
@@ -1211,10 +1233,9 @@
   }
 
   function openKaraokeModal(artist, title, ytUrl, lrcRawText) {
-    var videoId = extractYouTubeId(ytUrl) || "L3wKzyIN1yk"; // ID Fallback demo
+    var videoId = extractYouTubeId(ytUrl) || "L3wKzyIN1yk";
     document.getElementById("karaoke-title").textContent = artist + " - " + title;
 
-    // Parsear letra
     karaokeParsedLyrics = parseLRC(lrcRawText);
     var lyricsContainer = document.getElementById("karaoke-lyrics");
     lyricsContainer.innerHTML = "";
@@ -1238,7 +1259,6 @@
 
     document.getElementById("karaoke-modal").classList.add("active");
 
-    // Inicializar Player
     if (ytPlayer) {
       ytPlayer.loadVideoById(videoId);
     } else {
@@ -1268,7 +1288,6 @@
       if (!ytPlayer || !ytPlayer.getCurrentTime) return;
       var currentTime = ytPlayer.getCurrentTime();
 
-      // Encontrar índice activo
       var activeIndex = -1;
       for (var i = 0; i < karaokeParsedLyrics.length; i++) {
         if (currentTime >= karaokeParsedLyrics[i].time) {
@@ -1314,7 +1333,9 @@
     document.getElementById("smartlink-artist-name").textContent = item.artist;
     document.getElementById("smartlink-img").src = song["Cover?"] || song["Cover 1"] || "https://via.placeholder.com/200";
 
-    activeSmartLinkUrl = window.location.origin + window.location.pathname + "#" + releaseId;
+    // Generar la URL de precisión con parámetro ?q=
+    var queryText = encodeURIComponent(item.artist + " - " + item.title + (item.rawDate ? " (" + item.rawDate + ")" : ""));
+    activeSmartLinkUrl = window.location.origin + window.location.pathname + "?q=" + queryText;
 
     var platformsContainer = document.getElementById("smartlink-platforms");
     platformsContainer.innerHTML = "";
@@ -1344,7 +1365,7 @@
     });
   }
 
-  /* --- HELPER AUXILIARES --- */
+  /* --- HELPERS AUXILIARES --- */
   function scrollToRelease(id) {
     var el = document.getElementById(id);
     if (el) {
