@@ -418,11 +418,10 @@
         bottom: 0 !important;
         width: 100vw !important;
         height: 100vh !important;
-        height: 100dvh !important;
         background: var(--modal-overlay);
         backdrop-filter: blur(14px);
         -webkit-backdrop-filter: blur(14px);
-        z-index: 100000 !important; /* Superpuesto a todo */
+        z-index: 100000 !important;
         display: none;
         align-items: center;
         justify-content: center;
@@ -701,7 +700,8 @@
   </div>
 
   <div id="catalog-container" style="display: none; max-width: 1200px; margin: 0 auto; padding: 0 10px; box-sizing: border-box;"></div>
-
+</main>
+    
   <!-- MODAL DE KARAOKE Y REPRODUCTOR PANTALLA COMPLETA SUPERPUESTO -->
   <div id="karaoke-modal" class="modal-overlay">
     <div class="modal-container">
@@ -740,9 +740,7 @@
       </div>
     </div>
   </div>
-
-</main>
-
+    
 <div id="footer"></div>
 
 <script>
@@ -1177,7 +1175,7 @@
   }
 
   function openKaraokeModal(artist, title, ytUrl, lrcRawText) {
-    var videoId = extractYouTubeId(ytUrl) || "L3wKzyIN1yk";
+    var videoId = extractYouTubeId(ytUrl) || "FNSS8ah6UuA";
     document.getElementById("karaoke-title").textContent = artist + " - " + title;
 
     karaokeParsedLyrics = parseLRC(lrcRawText);
@@ -1284,7 +1282,7 @@
     var platformsContainer = document.getElementById("smartlink-platforms");
     platformsContainer.innerHTML = "";
 
-    var platformKeys = ["Spotify", "YouTube", "Apple Music", "Amazon Music", "Deezer", "Tidal"];
+    var platformKeys = ["Spotify", "YouTube", "Apple Music", "Amazon Music", "Deezer", "Tidal", "Push"];
     platformKeys.forEach(function(pKey) {
       if (song[pKey]) {
         var btn = document.createElement("a");
@@ -1318,6 +1316,7 @@
       "Apple Music": "fa-brands fa-apple",
       "Amazon Music": "fa-brands fa-amazon",
       "Deezer": "fa-brands fa-deezer",
+      "Tidal": "fa-brands fa-tidal",
       "Tidal": "fa-solid fa-compact-disc"
     };
     return icons[platform] || "fa-solid fa-link";
