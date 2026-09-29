@@ -277,10 +277,160 @@
         margin-bottom: 0 !important;
       }
 
-      @keyframes spin { 
-        0% { transform: rotate(0deg); } 
-        100% { transform: rotate(360deg); } 
-      }
+  /* Animación de Carga */
+  @keyframes spin { 
+    0% { transform: rotate(0deg); } 
+    100% { transform: rotate(360deg); } 
+  }
+
+  /* --- ANIMACIÓN 1: ONDAS QUE NACEN EN UN PUNTO Y SE EXPANDEN (PRÓXIMOS LANZAMIENTOS) --- */
+  .pulse-future-block {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Onda expansiva radial que brota desde el punto inicial */
+  .pulse-future-block::before {
+    content: "";
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(8, 145, 178, 0.4);
+    animation: wave-radial-expand 2.5s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes wave-radial-expand {
+    0% {
+      transform: scale(0);
+      opacity: 0.9;
+      box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.8);
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(85);
+      opacity: 0;
+      box-shadow: 0 0 40px 20px rgba(8, 145, 178, 0);
+    }
+  }
+
+  /* Indicador del Punto de Radar */
+  .radar-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    background-color: #38bdf8;
+    border-radius: 50%;
+    margin-right: 6px;
+    animation: spin-glow 1.5s infinite alternate;
+  }
+  @keyframes spin-glow {
+    0% { opacity: 0.3; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1.3); }
+  }
+
+  /* --- ANIMACIÓN 2: NIEVE REALISTA MULTICOLOR ALEATORIA Y LENTA --- */
+  .snow-anniversary-block {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Caída suave con bamboleo lateral aleatorio */
+  @keyframes snow-fall-realistic-1 {
+    0% {
+      transform: translateY(-10px) translateX(0) rotate(0deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.9;
+    }
+    50% {
+      transform: translateY(50vh) translateX(25px) rotate(180deg);
+    }
+    90% {
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateY(105%) translateX(-15px) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  @keyframes snow-fall-realistic-2 {
+    0% {
+      transform: translateY(-10px) translateX(0) rotate(0deg);
+      opacity: 0;
+    }
+    15% {
+      opacity: 0.85;
+    }
+    60% {
+      transform: translateY(60vh) translateX(-30px) rotate(-180deg);
+    }
+    100% {
+      transform: translateY(105%) translateX(20px) rotate(-360deg);
+      opacity: 0;
+    }
+  }
+
+  /* Capas de copos distribuidas aleatoriamente */
+  .snow-anniversary-block::before,
+  .snow-anniversary-block::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* Capa 1 de copos (tamaños variados y colores orgánicos aleatorios) */
+  .snow-anniversary-block::before {
+    background-image: 
+      radial-gradient(circle, #f43f5e 3px, transparent 3.5px),
+      radial-gradient(circle, #38bdf8 2px, transparent 2.5px),
+      radial-gradient(circle, #a855f7 4px, transparent 4.5px),
+      radial-gradient(circle, #fde047 2px, transparent 2.5px),
+      radial-gradient(circle, #10b981 3px, transparent 3.5px),
+      radial-gradient(circle, #ec4899 2px, transparent 2.5px),
+      radial-gradient(circle, #3b82f6 4px, transparent 4.5px),
+      radial-gradient(circle, #f97316 3px, transparent 3.5px);
+    background-size: 
+      120px 300px, 180px 250px, 220px 350px, 150px 280px,
+      200px 320px, 160px 270px, 240px 380px, 190px 290px;
+    background-position: 
+      10% -20px, 28% -50px, 45% -10px, 62% -40px,
+      75% -15px, 88% -60px, 35% -30px, 95% -25px;
+    animation: snow-fall-realistic-1 9s linear infinite;
+  }
+
+  /* Capa 2 de copos (segundo grupo desfasado para cobertura natural) */
+  .snow-anniversary-block::after {
+    background-image: 
+      radial-gradient(circle, #06b6d4 3px, transparent 3.5px),
+      radial-gradient(circle, #eab308 2px, transparent 2.5px),
+      radial-gradient(circle, #8b5cf6 3px, transparent 3.5px),
+      radial-gradient(circle, #f472b6 4px, transparent 4.5px),
+      radial-gradient(circle, #38bdf8 2px, transparent 2.5px),
+      radial-gradient(circle, #10b981 3px, transparent 3.5px),
+      radial-gradient(circle, #f43f5e 2px, transparent 2.5px);
+    background-size: 
+      140px 310px, 210px 260px, 170px 340px, 230px 290px,
+      190px 330px, 130px 280px, 250px 360px;
+    background-position: 
+      5% -35px, 20% -15px, 52% -45px, 68% -20px,
+      82% -55px, 92% -10px, 40% -50px;
+    animation: snow-fall-realistic-2 12s linear infinite;
+    animation-delay: 4.5s;
+  }
 
       .btn-action-icon {
         background: var(--bg-card);
@@ -794,6 +944,15 @@
     </div>
   </div>
 
+    <div id="events-summary-container" style="display:none; max-width:1200px; margin:0 auto 20px auto; padding:0 10px; box-sizing:border-box;">
+      <div style="background:var(--bg-secondary); border:2px solid var(--accent-purple); border-radius:14px; padding:16px; box-shadow:0 8px 25px rgba(168,85,247,0.2);">
+        <h3 style="margin:0 0 12px 0; color:var(--badge-explicit-bg); font-size:16px; font-weight:800; text-transform:uppercase; letter-spacing:0.5px; display:flex; align-items:center; gap:8px;">
+          <i class="fa-solid fa-bell"></i> <span data-i18n="activeEvents">Eventos y Destacados Activos</span>
+        </h3>
+        <div id="events-summary-list" class="custom-scroll" style="display:flex; gap:12px; overflow-x:auto; padding-bottom:6px;"></div>
+      </div>
+    </div>
+    
   <div id="catalog-container" style="display: none; max-width: 1200px; margin: 0 auto; padding: 0 10px; box-sizing: border-box;"></div>
 </main>
     
@@ -869,7 +1028,8 @@ var i18n = {
     copyLink: "Copiar Enlace Directo",
     linkCopied: "¡Enlace copiado al portapapeles!",
     explicitBadge: "E",
-    noLyrics: "Letra sincronizada no disponible para este tema."
+    noLyrics: "Letra sincronizada no disponible para este tema.",
+    activeEvents: "Eventos y Destacados Activos"
   },
   en: {
     loading: "Loading music catalog...",
@@ -887,7 +1047,8 @@ var i18n = {
     copyLink: "Copy Direct Link",
     linkCopied: "Link copied to clipboard!",
     explicitBadge: "E",
-    noLyrics: "Synchronized lyrics not available for this track."
+    noLyrics: "Synchronized lyrics not available for this track.",
+    activeEvents: "Active Events & Highlights"
   },
   fr: {
     loading: "Chargement du catalogue musical...",
@@ -905,7 +1066,8 @@ var i18n = {
     copyLink: "Copier le lien direct",
     linkCopied: "Lien copié dans le presse-papiers !",
     explicitBadge: "E",
-    noLyrics: "Paroles synchronisées indisponibles pour ce titre."
+    noLyrics: "Paroles synchronisées indisponibles pour ce titre.",
+    activeEvents: "Événements et temps forts"
   },
   de: {
     loading: "Musikkatalog wird geladen...",
@@ -923,7 +1085,8 @@ var i18n = {
     copyLink: "Direkten Link kopieren",
     linkCopied: "Link in die Zwischenablage kopiert!",
     explicitBadge: "E",
-    noLyrics: "Synchronisierter Songtext für diesen Titel nicht verfügbar."
+    noLyrics: "Synchronisierter Songtext für diesen Titel nicht verfügbar.",
+    activeEvents: "Aktive Events & Highlights"
   },
   it: {
     loading: "Caricamento catalogo musicale...",
@@ -941,7 +1104,8 @@ var i18n = {
     copyLink: "Copia link diretto",
     linkCopied: "Link copiato negli appunti!",
     explicitBadge: "E",
-    noLyrics: "Testo sincronizzato non disponibile per questo brano."
+    noLyrics: "Testo sincronizzato non disponibile per questo brano.",
+    activeEvents: "Eventi e in evidenza"
   },
   pt: {
     loading: "Carregando catálogo musical...",
@@ -959,7 +1123,8 @@ var i18n = {
     copyLink: "Copiar link direto",
     linkCopied: "Link copiado para a área de transferência!",
     explicitBadge: "E",
-    noLyrics: "Letra sincronizada não disponível para esta faixa."
+    noLyrics: "Letra sincronizada não disponível para esta faixa.",
+    activeEvents: "Eventos e Destaques"
   },
   ca: {
     loading: "Carregant el catàleg musical...",
@@ -977,7 +1142,8 @@ var i18n = {
     copyLink: "Copiar enllaç directe",
     linkCopied: "Enllaç copiat al porta-retalls!",
     explicitBadge: "E",
-    noLyrics: "Lletra sincronitzada no disponible per a aquesta cançó."
+    noLyrics: "Lletra sincronitzada no disponible per a aquesta cançó.",
+    activeEvents: "Esdeveniments i destacats"
   },
   ja: {
     loading: "音楽カタログを読み込み中...",
@@ -995,7 +1161,8 @@ var i18n = {
     copyLink: "直リンクをコピー",
     linkCopied: "クリップボードにリンクをコピーしました！",
     explicitBadge: "E",
-    noLyrics: "この曲の同期歌詞は利用できません。"
+    noLyrics: "この曲の同期歌詞は利用できません。",
+    activeEvents: "開催中のイベント・注目情報"
   },
   zh: {
     loading: "正在加载音乐目录...",
@@ -1013,7 +1180,8 @@ var i18n = {
     copyLink: "复制直接链接",
     linkCopied: "链接已复制到剪贴板！",
     explicitBadge: "E",
-    noLyrics: "暂无此歌曲的同步歌词。"
+    noLyrics: "暂无此歌曲的同步歌词。",
+    activeEvents: "活动与精选"
   },
   ko: {
     loading: "음악 카탈로그 로딩 중...",
@@ -1031,7 +1199,8 @@ var i18n = {
     copyLink: "직접 링크 복사",
     linkCopied: "클립보드에 링크가 복사되었습니다!",
     explicitBadge: "E",
-    noLyrics: "이 트랙의 동기화된 가사를 사용할 수 없습니다."
+    noLyrics: "이 트랙의 동기화된 가사를 사용할 수 없습니다.",
+    activeEvents: "이벤트 및 하이라이트"
   },
   ru: {
     loading: "Загрузка музыкального каталога...",
@@ -1049,7 +1218,8 @@ var i18n = {
     copyLink: "Скопировать прямую ссылку",
     linkCopied: "Ссылка скопирована в буфер обмена!",
     explicitBadge: "E",
-    noLyrics: "Синхронизированные тексты недоступны для этого трека."
+    noLyrics: "Синхронизированные тексты недоступны для этого трека.",
+    activeEvents: "События и избранное"
   },
   nl: {
     loading: "Muziekcatalogus laden...",
@@ -1067,7 +1237,8 @@ var i18n = {
     copyLink: "Directe link kopiëren",
     linkCopied: "Link gecopieerd naar klembord!",
     explicitBadge: "E",
-    noLyrics: "Gesoigneerde songtekst niet beschikbaar voor dit nummer."
+    noLyrics: "Gesoigneerde songtekst niet beschikbaar voor dit nummer.",
+    activeEvents: "Actieve evenementen & highlights"
   },
   pl: {
     loading: "Ładowanie katalogu muzycznego...",
@@ -1085,7 +1256,8 @@ var i18n = {
     copyLink: "Kopiuj direct link",
     linkCopied: "Link skopiowany do schowka!",
     explicitBadge: "E",
-    noLyrics: "Zsynchronizowany tekst niedostępny dla tego utworu."
+    noLyrics: "Zsynchronizowany tekst niedostępny dla tego utworu.",
+    activeEvents: "Aktywne wydarzenia i wyróżnienia"
   },
   tr: {
     loading: "Müzik kataloğu yükleniyor...",
@@ -1103,7 +1275,8 @@ var i18n = {
     copyLink: "Doğrudan Bağlantıyı Kopyala",
     linkCopied: "Bağlantı panoya kopyalandı!",
     explicitBadge: "E",
-    noLyrics: "Bu parça için senkronize şarkı sözü mevcut değil."
+    noLyrics: "Bu parça için senkronize şarkı sözü mevcut değil.",
+    activeEvents: "Etkinlikler ve Öne Çıkanlar"
   },
   ar: {
     loading: "جاري تحميل كتالوج الموسيقى...",
@@ -1121,7 +1294,8 @@ var i18n = {
     copyLink: "نسخ الرابط المباشر",
     linkCopied: "تم نسخ الرابط إلى الحافظة!",
     explicitBadge: "E",
-    noLyrics: "الكلمات المتزامنة غير متوفرة لهذه الأغنية."
+    noLyrics: "الكلمات المتزامنة غير متوفرة لهذه الأغنية.",
+    activeEvents: "الفعاليات والمميزات النشطة"
   }
 };
 
@@ -1247,95 +1421,294 @@ function changeLanguage(lang) {
     return false;
   }
 
-  function processSongsData() {
-    parsedCatalog = [];
-    var counter = 0;
+  // --- FUNCIÓN DE EVALUACIÓN TEMPORAL ---
+  function checkReleaseStatus(song) {
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
 
-    var defaultFields = [
-      "Artista", "Título del álbum/sencillo/EP", "Idioma del álbum", "Versión del Lanzamiento", "Cover?", 
-      "Álbum Recopilatorio", "Otros Artistas Álbum", "Compositores del álbum", "Letristas del álbum", 
-      "Información para colaboradores", "Género primario", "Género secundario", "Derechos de autor de la composición", 
-      "Derechos de autor de grabación de sonido", "Nombre del sello discográfico", "Lanzamiento original", 
-      "Fecha de pedido anticipado", "Fecha de inicio de ventas", "Explicit Content", "Categoría del Lanzamiento"
-    ];
+    var rawDateStr = song["Fecha de inicio de ventas"] || song["Lanzamiento original"] || song["Fecha de pedido anticipado"] || "";
+    if (!rawDateStr) return { type: null, label: "", detail: "", badgeColor: "", dateStr: "" };
 
-    rawSongsList.forEach(function(song) {
-      var priv = (song["Mostrar Privacidad"] || song["Privacidad"] || "").toString().trim().toLowerCase();
-      if (priv === "privado" || priv === "") return;
+    var relDate = new Date(rawDateStr);
+    if (isNaN(relDate.getTime())) return { type: null, label: "", detail: "", badgeColor: "", dateStr: "" };
 
-      counter++;
-      var category = song["Categoría del Lanzamiento"] || "Single";
-      var explicit = evaluateExplicitContent(song["Explicit Content"]);
+    var relDateZero = new Date(relDate.getFullYear(), relDate.getMonth(), relDate.getDate());
+    var formattedDate = relDate.toLocaleDateString();
 
-      parsedCatalog.push({
-        id: "release-card-" + counter,
-        artist: song["Artista"] || "Artista Desconocido",
-        title: song["Título del álbum/sencillo/EP"] || "Lanzamiento sin título",
-        category: category,
-        explicit: explicit,
-        rawDate: song["Fecha de inicio de ventas"] || song["Lanzamiento original"] || song["Fecha de pedido anticipado"] || "",
-        songData: song,
-        allowedFields: defaultFields
-      });
-    });
+    // 1. LANZAMIENTO FUTURO
+    if (relDateZero > today) {
+      var diffTime = relDateZero - today;
+      var diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      var daysText = diffDays === 1 ? "¡Se estrena mañana!" : "Faltan " + diffDays + " días";
+
+      return {
+        type: "FUTURE",
+        label: "Próximo Lanzamiento",
+        detail: daysText,
+        badgeColor: "#0891b2",
+        bgColor: "rgba(6, 182, 212, 0.15)",
+        borderColor: "#0891b2",
+        dateStr: formattedDate,
+        animClass: "pulse-future-block"
+      };
+    }
+
+    // 2. ANIVERSARIO HOY
+    var isSameMonth = relDate.getMonth() === today.getMonth();
+    var isSameDay = relDate.getDate() === today.getDate();
+    var isPastYear = relDate.getFullYear() < today.getFullYear();
+
+    if (isSameMonth && isSameDay && isPastYear) {
+      var years = today.getFullYear() - relDate.getFullYear();
+      return {
+        type: "ANNIVERSARY",
+        label: "Aniversario Hoy",
+        detail: "Cumple " + years + " año" + (years > 1 ? "s" : "") + " hoy",
+        badgeColor: "#d97706",
+        bgColor: "rgba(245, 158, 11, 0.15)",
+        borderColor: "#d97706",
+        dateStr: formattedDate,
+        animClass: "snow-anniversary-block"
+      };
+    }
+
+    return { type: null, label: "", detail: "", badgeColor: "", dateStr: "" };
   }
 
-  function renderCatalogUI() {
-    var container = document.getElementById("catalog-container");
-    var filtered = getFilteredAndSortedCatalog();
-    container.innerHTML = "";
-
-    var artistsMap = {};
-    filtered.forEach(function(item) {
-      if (!artistsMap[item.artist]) artistsMap[item.artist] = [];
-      artistsMap[item.artist].push(item);
-    });
-
-    Object.keys(artistsMap).forEach(function(artistName) {
-      var details = document.createElement("details");
-      details.className = "artist-details";
-      details.open = true;
-      details.style.cssText = "background: var(--bg-secondary); border: 2px solid var(--card-border); border-radius: 14px; margin-bottom: 20px; overflow: hidden;";
-
-      var summary = document.createElement("summary");
-      summary.style.cssText = "font-weight: 800; font-size: 18px; padding: 16px 20px; background: var(--bg-card); cursor: pointer; color: var(--text-primary); display: flex; align-items: center; justify-content: space-between;";
-      summary.innerHTML = '<span><i class="fa-solid fa-microphone-lines" style="color:var(--accent-color); margin-right:8px;"></i>' + escapeHtml(artistName) + '</span>' +
-                          '<span style="font-size: 12px; background: var(--card-border); padding: 4px 10px; border-radius: 20px; color: #fff;">' + artistsMap[artistName].length + ' ' + i18n[currentLang].releasesCount + '</span>';
-      details.appendChild(summary);
-
-      var artistContent = document.createElement("div");
-      artistContent.style.padding = "15px";
-
-      artistsMap[artistName].forEach(function(item) {
-        artistContent.appendChild(createReleaseCardElement(item));
-      });
-
-      details.appendChild(artistContent);
-      container.appendChild(details);
+  // --- NAVEGACIÓN DIRECTA AL LANZAMIENTO ---
+  function scrollToRelease(artistName, releaseId) {
+    var artistBlocks = document.querySelectorAll(".artist-details");
+    artistBlocks.forEach(function(details) {
+      if (details.dataset.artistName === artistName.toLowerCase()) {
+        details.open = true;
+        var targetCard = document.getElementById(releaseId);
+        if (targetCard) {
+          targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          targetCard.style.outline = "2px solid #38bdf8";
+          setTimeout(function() {
+            targetCard.style.outline = "none";
+          }, 2500);
+        }
+      }
     });
   }
+    
+function processSongsData() {
+  parsedCatalog = [];
+  var counter = 0;
+
+  var forbiddenFields = [
+    "Grouvex Studios UserID",
+    "Marca temporal",
+    "Estado del Contrato",
+    "Razón",
+    "¿Se Puede Modificar el Lanzamiento?"
+  ];
+
+  var defaultFields = [
+    "Artista", "Título del álbum/sencillo/EP", "Idioma del álbum", "Versión del Lanzamiento", "Cover?",
+    "Álbum Recopilatorio", "Otros Artistas Álbum", "Compositores del álbum", "Letristas del álbum",
+    "Información para colaboradores", "Género primario", "Género secundario", "Derechos de autor de la composición",
+    "Derechos de autor de grabación de sonido", "Nombre del sello discográfico", "Lanzamiento original",
+    "Fecha de pedido anticipado", "Fecha de inicio de ventas", "Explicit Content", "Categoría del Lanzamiento"
+  ];
+
+  rawSongsList.forEach(function(song) {
+    // 1. Obtener privacidad (soporta ambos nombres de campo)
+    var priv = (song["Mostrar Privacidad"] || song["Privacidad"] || "").toString().trim();
+
+    // 2. Privado → se ignora. Vacío o "público" → todos los campos por defecto.
+    if (priv.toLowerCase() === "privado" || priv === "") return;
+
+    // 3. Determinar campos permitidos
+    var allowedFields = [];
+    if (priv.toLowerCase() === "público" || priv.toLowerCase() === "publico") {
+      allowedFields = defaultFields;
+    } else {
+      allowedFields = priv.split(",").map(function(s) { return s.trim(); });
+    }
+
+    // 4. Filtrar campos prohibidos
+    allowedFields = allowedFields.filter(function(field) {
+      return !forbiddenFields.includes(field);
+    });
+
+    counter++;
+    var category = song["Categoría del Lanzamiento"] || "Single";
+    var explicit = evaluateExplicitContent(song["Explicit Content"]);
+    var status = checkReleaseStatus(song);
+
+    parsedCatalog.push({
+      id: "release-card-" + counter,
+      artist: song["Artista"] || "Artista Desconocido",
+      title: song["Título del álbum/sencillo/EP"] || "Lanzamiento sin título",
+      category: category,
+      explicit: explicit,
+      rawDate: song["Fecha de inicio de ventas"] || song["Lanzamiento original"] || song["Fecha de pedido anticipado"] || "",
+      songData: song,
+      allowedFields: allowedFields,
+      status: status 
+    });
+  });
+}
+
+function renderCatalogUI() {
+  var container = document.getElementById("catalog-container");
+  var filtered = getFilteredAndSortedCatalog();
+  container.innerHTML = "";
+
+  // ============================================================
+  // 1. RESUMEN GLOBAL DE EVENTOS (PRÓXIMOS / ANIVERSARIOS)
+  // ============================================================
+  var eventsSummaryContainer = document.getElementById("events-summary-container");
+  var eventsSummaryList = document.getElementById("events-summary-list");
+
+  if (eventsSummaryContainer && eventsSummaryList) {
+    var globalEvents = filtered.filter(function(item) {
+      return item.status && item.status.type;
+    });
+
+    if (globalEvents.length > 0) {
+      eventsSummaryList.innerHTML = "";
+
+      globalEvents.forEach(function(item) {
+        var card = document.createElement("div");
+        card.className = "quick-event-card";
+        card.onclick = function() { scrollToRelease(item.artist, item.id); };
+        card.style.cssText =
+          "flex: 0 0 260px; background: var(--bg-card); " +
+          "border-left: 4px solid " + item.status.badgeColor + "; " +
+          "border-radius: 8px; padding: 10px 12px; box-sizing: border-box; " +
+          "cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease;";
+
+        var icon = item.status.type === "ANNIVERSARY" ? "fa-cake-candles" : "fa-rocket";
+        var prefixVisual = item.status.type === "FUTURE" ? '<span class="radar-dot"></span>' : '';
+
+        card.innerHTML =
+          '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">' +
+            '<span style="font-size:10px; font-weight:800; color:#fff; background:' + item.status.badgeColor +
+              '; padding:2px 6px; border-radius:4px; text-transform:uppercase; display:inline-flex; align-items:center;">' +
+              prefixVisual +
+              '<i class="fa-solid ' + icon + '" style="margin-right:4px;"></i>' +
+              escapeHtml(item.status.label) +
+            '</span>' +
+            '<span style="font-size:10px; color:var(--text-secondary);">' +
+              '<i class="fa-solid fa-arrow-right"></i>' +
+            '</span>' +
+          '</div>' +
+          '<div style="font-size:14px; font-weight:800; color:var(--text-primary); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">' +
+            escapeHtml(item.title) +
+          '</div>' +
+          '<div style="font-size:12px; color:var(--accent-color); font-weight:600;">' +
+            escapeHtml(item.artist) +
+          '</div>' +
+          '<div style="font-size:11px; color:#fde047; font-weight:700; margin-top:2px;">' +
+            escapeHtml(item.status.detail) +
+          '</div>';
+
+        eventsSummaryList.appendChild(card);
+      });
+
+      eventsSummaryContainer.style.display = "block";
+    } else {
+      eventsSummaryContainer.style.display = "none";
+    }
+  }
+
+  // ============================================================
+  // 2. AGRUPAR POR ARTISTA
+  // ============================================================
+  var artistsMap = {};
+  filtered.forEach(function(item) {
+    if (!artistsMap[item.artist]) artistsMap[item.artist] = [];
+    artistsMap[item.artist].push(item);
+  });
+
+  // ============================================================
+  // 3. RENDERIZAR CADA ARTISTA
+  // ============================================================
+  Object.keys(artistsMap).forEach(function(artistName) {
+    var details = document.createElement("details");
+    details.className = "artist-details";
+    details.open = true;
+    details.dataset.artistName = artistName.toLowerCase(); // ⬅️ necesario para scrollToRelease
+    details.style.cssText =
+      "background: var(--bg-secondary); border: 2px solid var(--card-border); " +
+      "border-radius: 14px; margin-bottom: 20px; overflow: hidden;";
+
+    var summary = document.createElement("summary");
+    summary.style.cssText =
+      "font-weight: 800; font-size: 18px; padding: 16px 20px; " +
+      "background: var(--bg-card); cursor: pointer; color: var(--text-primary); " +
+      "display: flex; align-items: center; justify-content: space-between;";
+
+    summary.innerHTML =
+      '<span><i class="fa-solid fa-microphone-lines" style="color:var(--accent-color); margin-right:8px;"></i>' +
+        escapeHtml(artistName) +
+      '</span>' +
+      '<span style="font-size: 12px; background: var(--card-border); padding: 4px 10px; border-radius: 20px; color: #fff;">' +
+        artistsMap[artistName].length + ' ' + i18n[currentLang].releasesCount +
+      '</span>';
+
+    details.appendChild(summary);
+
+    var artistContent = document.createElement("div");
+    artistContent.style.padding = "15px";
+
+    artistsMap[artistName].forEach(function(item) {
+      artistContent.appendChild(createReleaseCardElement(item));
+    });
+
+    details.appendChild(artistContent);
+    container.appendChild(details);
+  });
+}
 
 function createReleaseCardElement(item) {
   var song = item.songData;
+  var eventStatus = item.status || { type: null, label: "", detail: "", badgeColor: "", dateStr: "" };
 
   /* ============================================================
-     0. CONTENEDOR PRINCIPAL
+     0. CONTENEDOR PRINCIPAL (con animación si aplica)
      ============================================================ */
   var releaseCard = document.createElement("div");
-  releaseCard.className = "release-card";
+  releaseCard.className = "release-card " + (eventStatus.animClass || "");
   releaseCard.id = item.id;
   releaseCard.style.cssText =
     "border: 1px solid var(--border-color); border-radius: 12px; padding: 15px; " +
-    "margin-bottom: 20px; background: var(--bg-secondary); position: relative;";
+    "margin-bottom: 20px; background: var(--bg-secondary); position: relative; " +
+    "transition: outline 0.3s ease;";
 
   var html = "";
+
+  /* ============================================================
+     0.5 BANNER DE EVENTO (PRÓXIMO / ANIVERSARIO)
+     ============================================================ */
+  if (eventStatus.type) {
+    var dotVisual = eventStatus.type === "FUTURE" ? '<span class="radar-dot"></span>' : '';
+    var iconEvent = eventStatus.type === "ANNIVERSARY" ? "fa-cake-candles" : "fa-rocket";
+    var bgColor = eventStatus.bgColor || "rgba(6, 182, 212, 0.15)";
+    var borderColor = eventStatus.borderColor || eventStatus.badgeColor;
+
+    html +=
+      '<div style="background:' + bgColor + '; border:1px solid ' + borderColor + '; color:var(--text-primary); ' +
+      'padding:10px 14px; border-radius:8px; margin-bottom:12px; font-size:13px; font-weight:600; ' +
+      'display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; ' +
+      'position:relative; z-index:3;">' +
+        '<span>' + dotVisual +
+          '<i class="fa-solid ' + iconEvent + '" style="margin-right:8px; color:' + eventStatus.badgeColor + ';"></i>' +
+          '<strong>' + escapeHtml(eventStatus.label) + ':</strong> ' + escapeHtml(eventStatus.detail) +
+        '</span>' +
+        '<span style="font-size:11px; opacity:0.8;">' + escapeHtml(eventStatus.dateStr) + '</span>' +
+      '</div>';
+  }
 
   /* ============================================================
      1. CABECERA (título + badge explicit + botón SmartLink)
      ============================================================ */
   html +=
     '<div style="display:flex; align-items:center; justify-content:space-between; ' +
-    'border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 15px;">' +
+    'border-bottom: 2px solid var(--accent-color); padding-bottom: 10px; margin-bottom: 15px; position:relative; z-index:3;">' +
       '<h3 style="margin:0; font-size:20px; color:var(--text-primary); display:flex; align-items:center; gap:8px;">' +
         '<i class="fa-solid fa-compact-disc" style="color:var(--accent-purple);"></i>' +
         escapeHtml(item.title) +
