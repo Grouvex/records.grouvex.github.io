@@ -2035,7 +2035,7 @@ function createReleaseCardElement(item) {
       if (sortMode === 'title-asc') return a.title.localeCompare(b.title);
       if (sortMode === 'title-desc') return b.title.localeCompare(a.title);
       if (sortMode === 'artist-asc') return a.artist.localeCompare(b.artist);
-      if (sortMode === 'last') return Date(a.rawDate) - new Date(b.rawDate;
+      if (sortMode === 'last') return Date(a.rawDate) - new Date(b.rawDate);
       return new Date(b.rawDate) - new Date(a.rawDate);
     });
   }
