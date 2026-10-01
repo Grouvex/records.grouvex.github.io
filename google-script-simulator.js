@@ -1,238 +1,287 @@
 // ============================================
-// PUENTE HIGH-PERFORMANCE CON SWR + LOCALSTORAGE
+// PUENTE HIGH-PERFORMANCE CON SWR, LOCALSTORAGE Y FLUENT EXTENSIONS
 // ============================================
 (function(global) {
-  'use strict';
+  'use strict';
 
-  const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbyx2ZKEOGThYPBLjDeavIn1EYF9tmcYieT-6mfvAZAeiR0-nO__NKiJTejXxjJGJCBaBA/exec';
-  const CACHE_PREFIX = 'GAS_SWR_';
+  const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbyx2ZKEOGThYPBLjDeavIn1EYF9tmcYieT-6mfvAZAeiR0-nO__NKiJTejXxjJGJCBaBA/exec';
+  const CACHE_PREFIX = 'GAS_SWR_';
 
-  const DEFAULTS = Object.freeze({
-    timeout: 25000,
-    retries: 3,
-    delay: 1000
-  });
+  const DEFAULTS = Object.freeze({
+    timeout: 25000,
+    retries: 3,
+    delay: 1000
+  });
 
-  const FETCH_HEADERS = Object.freeze({ 'Content-Type': 'text/plain;charset=utf-8' });
-  const inFlightRequests = new Map();
+  const FETCH_HEADERS = Object.freeze({ 'Content-Type': 'text/plain;charset=utf-8' });
+  const inFlightRequests = new Map();
 
-  function wait(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms + (Math.random() * 150)));
-  }
+  function wait(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms + (Math.random() * 150)));
+  }
 
-  // --- MÓDULO DE STORAGE CON SWR ---
-  function getCachedItem(key) {
-    try {
-      const raw = localStorage.getItem(CACHE_PREFIX + key);
-      if (!raw) return null;
-      return JSON.parse(raw); // Retorna { data, expiry, hash }
-    } catch (_) {
-      return null;
-    }
-  }
+  // --- MÓDULO DE STORAGE CON SWR ---
+  function getCachedItem(key) {
+    try {
+      const raw = localStorage.getItem(CACHE_PREFIX + key);
+      if (!raw) return null;
+      return JSON.parse(raw);
+    } catch (_) {
+      return null;
+    }
+  }
 
-  function setCachedItem(key, data, ttlMs) {
-    try {
-      const payload = {
-        data: data,
-        expiry: Date.now() + ttlMs,
-        hash: JSON.stringify(data) // Para detectar si los datos del servidor cambiaron
-      };
-      localStorage.setItem(CACHE_PREFIX + key, JSON.stringify(payload));
-    } catch (_) {}
-  }
+  function setCachedItem(key, data, ttlMs) {
+    try {
+      const payload = {
+        data: data,
+        expiry: Date.now() + ttlMs,
+        hash: JSON.stringify(data)
+      };
+      localStorage.setItem(CACHE_PREFIX + key, JSON.stringify(payload));
+    } catch (_) {}
+  }
 
-  /**
-   * Ejecutor con reintentos y lógica Stale-While-Revalidate
-   */
-  async function executeWithRetry(functionName, args, config) {
-    const maxRetries = config.retries ?? DEFAULTS.retries;
-    const baseDelay = config.retryDelay ?? DEFAULTS.delay;
-    const timeoutMs = config.timeout ?? DEFAULTS.timeout;
-    const ttlMs = config.swrTtl || config.ttl || 0;
-    const isSWR = Boolean(config.swrTtl);
-    const payloadArray = Array.isArray(args) ? args : [args];
+  /**
+   * Ejecutor con reintentos y lógica Stale-While-Revalidate
+   */
+  async function executeWithRetry(functionName, args, config) {
+    const maxRetries = config.retries ?? DEFAULTS.retries;
+    const baseDelay = config.retryDelay ?? DEFAULTS.delay;
+    const timeoutMs = config.timeout ?? DEFAULTS.timeout;
+    const ttlMs = config.swrTtl || config.ttl || 0;
+    const isSWR = Boolean(config.swrTtl);
+    const payloadArray = Array.isArray(args) ? args : [args];
 
-    const cacheKey = `${functionName}:${JSON.stringify(payloadArray)}`;
-    const cachedEntry = ttlMs > 0 ? getCachedItem(cacheKey) : null;
-    const now = Date.now();
+    const cacheKey = `${functionName}:${JSON.stringify(payloadArray)}`;
+    const cachedEntry = ttlMs > 0 ? getCachedItem(cacheKey) : null;
+    const now = Date.now();
 
-    // 1. SI LA CACHÉ SIGUE FRESCA (DENTRO DEL TTL): Devolverla directo y NO tocar el servidor
-    if (cachedEntry && now <= cachedEntry.expiry) {
-      console.log(`⚡ [Cache Hit Fresco] ${functionName}`);
-      if (typeof config.success === 'function') {
-        config.success(cachedEntry.data, config.userObj);
-      }
-      return cachedEntry.data;
-    }
+    // Helper para notificar estado de carga
+    const notifyLoading = (isLoading) => {
+      if (typeof config.onLoading === 'function') config.onLoading(isLoading);
+    };
 
-    // 2. SI SWR ESTÁ ACTIVO Y TENEMOS DATOS CADUCADOS (STALE):
-    // Entregar inmediatamente la respuesta guardada
-    let staleDataReturned = false;
-    if (isSWR && cachedEntry) {
-      console.log(`📦 [SWR Stale] Entregando caché guardada para '${functionName}' mientras se actualiza...`);
-      staleDataReturned = true;
-      if (typeof config.success === 'function') {
-        config.success(cachedEntry.data, config.userObj);
-      }
-    }
+    // Helper para aplicar transformación a los datos
+    const applyTransform = (data) => {
+      return typeof config.transform === 'function' ? config.transform(data) : data;
+    };
 
-    // 3. DEDUPLICACIÓN DE PETICIONES EN VUELO
-    if (inFlightRequests.has(cacheKey)) {
-      const inFlightPromise = inFlightRequests.get(cacheKey);
-      return staleDataReturned ? cachedEntry.data : inFlightPromise;
-    }
+    // 0. ACTUALIZACIÓN OPTIMISTA (si está configurada)
+    if (config.optimisticData !== undefined && typeof config.optimisticFn === 'function') {
+      config.optimisticFn(config.optimisticData);
+    }
 
-    // 4. REVALIDACIÓN EN SEGUNDO PLANO (FETCH AL SERVIDOR)
-    const task = (async () => {
-      let lastError = null;
+    notifyLoading(true);
 
-      for (let attempt = 0; attempt <= maxRetries; attempt++) {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+    // 1. SI LA CACHÉ SIGUE FRESCA (DENTRO DEL TTL)
+    if (cachedEntry && now <= cachedEntry.expiry) {
+      console.log(`⚡ [Cache Hit Fresco] ${functionName}`);
+      notifyLoading(false);
+      const transformedData = applyTransform(cachedEntry.data);
+      if (typeof config.success === 'function') {
+        config.success(transformedData, config.userObj);
+      }
+      return transformedData;
+    }
 
-        try {
-          const response = await fetch(GAS_API_URL, {
-            method: 'POST',
-            mode: 'cors',
-            headers: FETCH_HEADERS,
-            body: JSON.stringify({ endpoint: functionName, payload: payloadArray }),
-            signal: controller.signal
-          });
+    // 2. SI SWR ESTÁ ACTIVO Y TENEMOS DATOS CADUCADOS (STALE)
+    let staleDataReturned = false;
+    let staleTransformedData = null;
 
-          clearTimeout(timeoutId);
+    if (isSWR && cachedEntry) {
+      console.log(`📦 [SWR Stale] Entregando caché guardada para '${functionName}' mientras se actualiza...`);
+      staleDataReturned = true;
+      staleTransformedData = applyTransform(cachedEntry.data);
+      if (typeof config.success === 'function') {
+        config.success(staleTransformedData, config.userObj);
+      }
+    }
 
-          if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    // 3. DEDUPLICACIÓN DE PETICIONES EN VUELO
+    if (inFlightRequests.has(cacheKey)) {
+      const inFlightPromise = inFlightRequests.get(cacheKey);
+      return staleDataReturned ? staleTransformedData : inFlightPromise;
+    }
 
-          const text = await response.text();
-          let result;
-          try {
-            result = JSON.parse(text);
-          } catch (_) {
-            throw new Error("Respuesta no válida del servidor");
-          }
+    // 4. REVALIDACIÓN EN SEGUNDO PLANO (FETCH AL SERVIDOR)
+    const task = (async () => {
+      let lastError = null;
 
-          if (!result.success) throw new Error(result.error || "Error en el servidor");
+      try {
+        for (let attempt = 0; attempt <= maxRetries; attempt++) {
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
 
-          const newData = result.data;
-          const newHash = JSON.stringify(newData);
-          const hasChanged = !cachedEntry || cachedEntry.hash !== newHash;
+          // Soporte para AbortSignal externo
+          if (config.signal) {
+            config.signal.addEventListener('abort', () => controller.abort());
+          }
 
-          // Guardar nueva versión en caché
-          if (ttlMs > 0) {
-            setCachedItem(cacheKey, newData, ttlMs);
-          }
+          try {
+            const response = await fetch(GAS_API_URL, {
+              method: 'POST',
+              mode: 'cors',
+              headers: FETCH_HEADERS,
+              body: JSON.stringify({ endpoint: functionName, payload: payloadArray }),
+              signal: controller.signal
+            });
 
-          // Si usamos SWR y ya habíamos entregado datos viejos:
-          if (staleDataReturned) {
-            if (hasChanged) {
-              console.log(`🔄 [SWR Update] ¡Los datos de '${functionName}' cambiaron! Actualizando UI...`);
-              // Notificar al handler especial de actualización o al success si la vista requiere refrescar
-              if (typeof config.onUpdate === 'function') {
-                config.onUpdate(newData, config.userObj);
-              } else if (typeof config.success === 'function') {
-                config.success(newData, config.userObj);
-              }
-            } else {
-              console.log(`✅ [SWR Verified] Los datos de '${functionName}' no sufrieron cambios en el servidor.`);
-            }
-            return newData;
-          }
+            clearTimeout(timeoutId);
 
-          // Si no enviamos datos stale previamente, responder normalmente
-          if (typeof config.success === 'function') {
-            config.success(newData, config.userObj);
-          }
+            if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-          return newData;
+            const text = await response.text();
+            let result;
+            try {
+              result = JSON.parse(text);
+            } catch (_) {
+              throw new Error("Respuesta no válida del servidor");
+            }
 
-        } catch (error) {
-          clearTimeout(timeoutId);
-          const isAbort = error.name === 'AbortError';
-          const isNetworkError = error instanceof TypeError || isAbort || error.message.includes('HTTP');
+            if (!result.success) throw new Error(result.error || "Error en el servidor");
 
-          lastError = isAbort ? new Error(`Timeout (${timeoutMs}ms)`) : error;
-          if (!isNetworkError || attempt >= maxRetries) break;
+            const newData = result.data;
+            const newHash = JSON.stringify(newData);
+            const hasChanged = !cachedEntry || cachedEntry.hash !== newHash;
 
-          await wait(baseDelay * (1 << attempt));
-        }
-      }
+            // Guardar en caché si procede
+            if (ttlMs > 0) {
+              setCachedItem(cacheKey, newData, ttlMs);
+            }
 
-      const finalErrMsg = lastError ? lastError.message : "Error tras reintentos";
-      
-      // Si falló la red pero ya habíamos entregado datos Stale, evitamos lanzar excepción fatal
-      if (staleDataReturned) {
-        console.warn(`⚠️ No se pudo revalidar '${functionName}', pero la UI mantendrá los datos en caché.`);
-        return cachedEntry.data;
-      }
+            // Invalidador automático de caché para patrones específicos
+            if (config.invalidates) {
+              global.google.script.clearCache(config.invalidates);
+            }
 
-      if (typeof config.failure === 'function') {
-        config.failure(finalErrMsg, config.userObj);
-      }
-      throw new Error(finalErrMsg);
-    })();
+            const transformedNewData = applyTransform(newData);
 
-    inFlightRequests.set(cacheKey, task);
-    try {
-      const freshData = await task;
-      // Si devolvimos datos Stale al inicio de la llamada async, la promesa debe resolver con esos datos o los frescos
-      return staleDataReturned ? cachedEntry.data : freshData;
-    } finally {
-      inFlightRequests.delete(cacheKey);
-    }
-  }
+            // Manejo de SWR previo
+            if (staleDataReturned) {
+              if (hasChanged) {
+                console.log(`🔄 [SWR Update] ¡Los datos de '${functionName}' cambiaron! Actualizando UI...`);
+                if (typeof config.onUpdate === 'function') {
+                  config.onUpdate(transformedNewData, config.userObj);
+                } else if (typeof config.success === 'function') {
+                  config.success(transformedNewData, config.userObj);
+                }
+              } else {
+                console.log(`✅ [SWR Verified] Los datos de '${functionName}' no sufrieron cambios en el servidor.`);
+              }
+              return transformedNewData;
+            }
 
-  // --- CLASS RUNNER FLUENT ---
-  class ScriptRunner {
-    constructor(config = {}) {
-      this._config = config;
+            if (typeof config.success === 'function') {
+              config.success(transformedNewData, config.userObj);
+            }
 
-      return new Proxy(this, {
-        get(target, prop) {
-          if (prop in target) return target[prop];
+            return transformedNewData;
 
-          if (prop === 'withSuccessHandler') return fn => new ScriptRunner({ ...target._config, success: fn });
-          if (prop === 'withFailureHandler') return fn => new ScriptRunner({ ...target._config, failure: fn });
-          if (prop === 'withUserObject') return obj => new ScriptRunner({ ...target._config, userObj: obj });
-          if (prop === 'withTimeout') return ms => new ScriptRunner({ ...target._config, timeout: ms });
-          if (prop === 'withRetries') return (r, d) => new ScriptRunner({ ...target._config, retries: r, retryDelay: d });
-          
-          // Caché tradicional
-          if (prop === 'withCache') return ttlMs => new ScriptRunner({ ...target._config, ttl: ttlMs });
-          
-          // Estrategia Stale-While-Revalidate
-          if (prop === 'withSWR') return ttlMs => new ScriptRunner({ ...target._config, swrTtl: ttlMs });
-          
-          // Callback que se dispara solo si el servidor trae datos distintos a los que estaban guardados
-          if (prop === 'onUpdate') return fn => new ScriptRunner({ ...target._config, onUpdate: fn });
+          } catch (error) {
+            clearTimeout(timeoutId);
+            const isAbort = error.name === 'AbortError';
+            const isNetworkError = error instanceof TypeError || isAbort || error.message.includes('HTTP');
 
-          return (...args) => executeWithRetry(prop, args, target._config);
-        }
-      });
-    }
-  }
+            lastError = isAbort ? new Error(`Timeout (${timeoutMs}ms)`) : error;
+            if (!isNetworkError || attempt >= maxRetries) break;
 
-  global.google = global.google || {};
-  global.google.script = global.google.script || {};
-  global.google.script.run = new ScriptRunner();
+            await wait(baseDelay * (1 << attempt));
+          }
+        }
 
-  // Limpieza de caché
-  global.google.script.clearCache = function(pattern) {
-    try {
-      const keysToRemove = [];
-      for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        if (key && key.startsWith(CACHE_PREFIX)) {
-          if (!pattern || key.includes(pattern)) {
-            keysToRemove.push(key);
-          }
-        }
-      }
-      keysToRemove.forEach(k => localStorage.removeItem(k));
-      console.log(`🧹 Caché SWR eliminada (${keysToRemove.length} elementos)`);
-    } catch (e) {
-      console.error(e);
-    }
-  };
+        const finalErrMsg = lastError ? lastError.message : "Error tras reintentos";
+        
+        if (staleDataReturned) {
+          console.warn(`⚠️ No se pudo revalidar '${functionName}', pero la UI mantendrá los datos en caché.`);
+          return staleTransformedData;
+        }
+
+        if (typeof config.failure === 'function') {
+          config.failure(finalErrMsg, config.userObj);
+        }
+        throw new Error(finalErrMsg);
+
+      } finally {
+        notifyLoading(false);
+      }
+    })();
+
+    inFlightRequests.set(cacheKey, task);
+    try {
+      const freshData = await task;
+      return staleDataReturned ? staleTransformedData : freshData;
+    } finally {
+      inFlightRequests.delete(cacheKey);
+    }
+  }
+
+  // --- CLASS RUNNER FLUENT ---
+  class ScriptRunner {
+    constructor(config = {}) {
+      this._config = config;
+
+      return new Proxy(this, {
+        get(target, prop) {
+          if (prop in target) return target[prop];
+
+          // Callbacks estándar
+          if (prop === 'withSuccessHandler') return fn => new ScriptRunner({ ...target._config, success: fn });
+          if (prop === 'withFailureHandler') return fn => new ScriptRunner({ ...target._config, failure: fn });
+          if (prop === 'withUserObject') return obj => new ScriptRunner({ ...target._config, userObj: obj });
+          
+          // Tiempos y reintentos
+          if (prop === 'withTimeout') return ms => new ScriptRunner({ ...target._config, timeout: ms });
+          if (prop === 'withRetries') return (r, d) => new ScriptRunner({ ...target._config, retries: r, retryDelay: d });
+          
+          // Caché y SWR
+          if (prop === 'withCache') return ttlMs => new ScriptRunner({ ...target._config, ttl: ttlMs });
+          if (prop === 'withSWR') return ttlMs => new ScriptRunner({ ...target._config, swrTtl: ttlMs });
+          if (prop === 'onUpdate') return fn => new ScriptRunner({ ...target._config, onUpdate: fn });
+
+          // NUEVAS FUNCIONALIDADES
+          // 1. Invalida cachés según un patrón al completar con éxito
+          if (prop === 'invalidates') return pattern => new ScriptRunner({ ...target._config, invalidates: pattern });
+
+          // 2. Control de estado de carga (Spinner / Loading)
+          if (prop === 'withLoading') return fn => new ScriptRunner({ ...target._config, onLoading: fn });
+
+          // 3. Transformador de respuesta
+          if (prop === 'transform') return fn => new ScriptRunner({ ...target._config, transform: fn });
+
+          // 4. Actualización optimista
+          if (prop === 'withOptimistic') return (data, updateFn) => new ScriptRunner({ ...target._config, optimisticData: data, optimisticFn: updateFn });
+
+          // 5. Señal de cancelación (AbortSignal)
+          if (prop === 'withSignal') return signal => new ScriptRunner({ ...target._config, signal });
+
+          return (...args) => executeWithRetry(prop, args, target._config);
+        }
+      });
+    }
+  }
+
+  global.google = global.google || {};
+  global.google.script = global.google.script || {};
+  global.google.script.run = new ScriptRunner();
+
+  // Limpieza de caché
+  global.google.script.clearCache = function(pattern) {
+    try {
+      const keysToRemove = [];
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith(CACHE_PREFIX)) {
+          if (!pattern || key.includes(pattern)) {
+            keysToRemove.push(key);
+          }
+        }
+      }
+      keysToRemove.forEach(k => localStorage.removeItem(k));
+      console.log(`🧹 Caché SWR eliminada (${keysToRemove.length} elementos)`);
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
 })(typeof window !== 'undefined' ? window : this);
