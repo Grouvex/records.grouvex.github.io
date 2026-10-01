@@ -4,7 +4,7 @@
 (function(global) {
   'use strict';
 
-  const GAS_API_URL = 'https://script.google.com/macros/s/AKfycbyx2ZKEOGThYPBLjDeavIn1EYF9tmcYieT-6mfvAZAeiR0-nO__NKiJTejXxjJGJCBaBA/exec';
+  const GAS_API_URL = '__GAS_API_URL__';
   const CACHE_PREFIX = 'GAS_SWR_';
 
   const DEFAULTS = Object.freeze({
