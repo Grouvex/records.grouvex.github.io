@@ -887,26 +887,28 @@
       </div>
 
       <div class="control-group">
+        <i class="fa-solid fa-sort fa-fade"></i>
         <select id="sort-select" class="select-tool" onchange="applyAllFilters()">
           <option value="recent" data-i18n="sortRecent">Más recientes primero</option>
+          <option value="last" data-i18n="sortRecent">Más antiguo primero</option>
           <option value="title-asc" data-i18n="sortTitleAsc">Título (A-Z)</option>
           <option value="title-desc" data-i18n="sortTitleDesc">Título (Z-A)</option>
           <option value="artist-asc" data-i18n="sortArtistAsc">Artista (A-Z)</option>
         </select>
 
         <button id="view-list-btn" class="btn-tool active" onclick="setViewMode('list')" title="Vista en Lista">
-          <i class="fa-solid fa-list"></i>
+          <i class="fa-solid fa-list fa-jello"></i>
         </button>
         <button id="view-grid-btn" class="btn-tool" onclick="setViewMode('grid')" title="Vista en Cuadrícula">
-          <i class="fa-solid fa-table-cells"></i>
+          <i class="fa-solid fa-table-cells fa-jello"></i>
         </button>
 
         <button class="btn-tool" onclick="toggleTheme()" id="theme-btn" title="Alternar Modo Claro/Oscuro">
-          <i class="fa-solid fa-moon"></i>
+          <i class="fa-solid fa-moon fa-float"></i>
         </button>
           
         <div class="lang-select-wrapper">
-          <i class="fa-solid fa-globe"></i>
+          <i class="fa-solid fa-globe fa-flip-360"></i>
           <select class="btn-tool" id="lang-select" onchange="changeLanguage(this.value)">
             <option value="es">ES - Español</option>
             <option value="en">EN - English</option>
@@ -927,11 +929,14 @@
         </div>
 
         <label class="switch-label" title="Ocultar contenido explícito">
-          <i class="fa-solid fa-triangle-exclamation" style="color: var(--badge-explicit-bg);"></i>
+          <i class="fa-solid fa-triangle-exclamation fa-wag" style="color: var(--badge-explicit-bg);"></i>
           <span data-i18n="hideExplicit">Ocultar Explícito</span>
           <input type="checkbox" id="explicit-toggle" onchange="applyAllFilters()">
           <span class="switch-slider"></span>
         </label>
+        <button id="resetCatalog" class="btn-tool active" onclick="reloadCatalog()" title="Recargar Catálogo">
+          <i class="fa-solid fa-rotate fa-spin"></i>
+        </button>
       </div>
     </div>
 
@@ -1299,24 +1304,122 @@ var i18n = {
   }
 };
 
-  document.addEventListener("DOMContentLoaded", function() {
-    applyTheme(currentTheme);
-    loadYouTubeIframeAPI();
-    checkUrlQueryParams();
+document.addEventListener("DOMContentLoaded", function() {
+  // 1. Configuración inicial del DOM y eventos globales
+  applyTheme(currentTheme);
+  loadYouTubeIframeAPI();
+  checkUrlQueryParams();
 
-    document.addEventListener("keydown", function(e) {
-      if (e.key === "Escape") {
-        closeKaraokeModal();
-        closeSmartLinkModal();
-      }
-    });
-
-    google.script.run
-      .withSuccessHandler(initCatalogData)
-      .withFailureHandler(handleError)
-      .getAllSongs();
+  document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") {
+      closeKaraokeModal();
+      closeSmartLinkModal();
+    }
   });
 
+  // 2. Estado de carga visual en el DOM
+  const loadingDiv = document.getElementById("loading");
+  if (loadingDiv) {
+    loadingDiv.innerHTML = '<p><i class="fa-solid fa-spinner fa-spin"></i> Cargando catálogo...</p>';
+  }
+
+  // 3. Invocación al puente con la cadena completa de métodos
+  google.script.run
+    // Manejador principal: Renderiza INSTANTÁNEAMENTE si hay datos guardados o cuando llegan de la red
+    .withSuccessHandler(function(songs, userObj) {
+      console.log(`[Init] Catálogo cargado (${songs ? songs.length : 0} canciones). Contexto:`, userObj);
+      initCatalogData(songs);
+    })
+
+    // Manejador de errores (solo se activa si no había caché previa Y fallaron todos los reintentos/timeouts)
+    .withFailureHandler(function(error, userObj) {
+      console.error(`[Init Error] No se pudo cargar el catálogo (${userObj.action}):`, error);
+      handleError(error);
+    })
+
+    // Objeto de contexto de usuario
+    .withUserObject({ action: 'DOMContentLoaded', timestamp: Date.now() })
+
+    // Timeout de 20 segundos
+    .withTimeout(20000)
+
+    // Configuración de reintentos: 3 reintentos con backoff exponencial
+    .withRetries(3, 1000)
+
+    // Estrategia SWR con 10 minutos de frescura (600,000 ms)
+    .withSWR(10 * 60 * 1000)
+
+    // Callback SWR: Si revalida en background y detecta cambios respecto a localStorage, refresca la UI silenciosamente
+    .onUpdate(function(freshSongs, userObj) {
+      console.log('🔄 [SWR Init] Se detectaron cambios en el servidor. Actualizando catálogo en segundo plano...');
+      initCatalogData(freshSongs);
+    })
+
+    // Función remota en Apps Script
+    .getAllSongs();
+});
+    
+function reloadCatalog() {
+  // 1. Reconfiguración e inicialización del entorno visual
+  applyTheme(currentTheme);
+  loadYouTubeIframeAPI();
+  checkUrlQueryParams();
+
+  document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") {
+      closeKaraokeModal();
+      closeSmartLinkModal();
+    }
+  });
+
+  // 2. Limpiar la caché SWR de 'getAllSongs' en localStorage
+  // Al ser una recarga manual iniciada por el usuario, forzamos la eliminación de datos previos
+  if (typeof google.script.clearCache === 'function') {
+    google.script.clearCache('getAllSongs');
+  }
+
+  // 3. Indicador de carga en la UI antes de la petición
+  const loadingDiv = document.getElementById("loading");
+  if (loadingDiv) {
+    loadingDiv.innerHTML = '<p><i class="fa-solid fa-spinner fa-spin"></i> Cargando catálogo...</p>';
+  }
+
+  // 4. Invocación al puente con la cadena completa de métodos
+  google.script.run
+    // Manejador principal de éxito
+    .withSuccessHandler(function(songs, userObj) {
+      console.log(`Catálogo cargado exitosamente (${songs ? songs.length : 0} canciones). Contexto:`, userObj);
+      initCatalogData(songs);
+    })
+
+    // Manejador de fallos (captura timeouts, errores de servidor y red)
+    .withFailureHandler(function(error, userObj) {
+      console.error(`Error cargando el catálogo (${userObj.action}):`, error);
+      handleError(error);
+    })
+
+    // Objeto de contexto de usuario para depuración o seguimiento
+    .withUserObject({ action: 'reloadCatalog', timestamp: Date.now() })
+
+    // Timeout de 20 segundos para evitar llamadas colgadas infinitamente
+    .withTimeout(20000)
+
+    // Configuración de reintentos: 3 reintentos con 1000ms de retraso base exponentil
+    .withRetries(3, 1000)
+
+    // Estrategia SWR con TTL de 10 minutos (600,000 ms)
+    .withSWR(10 * 60 * 1000)
+
+    // Callback opcional: Solo actualiza la UI si la revalidación en segundo plano detecta cambios
+    .onUpdate(function(freshSongs, userObj) {
+      console.log('🔄 [SWR] Se detectaron cambios en el catálogo. Actualizando datos...');
+      initCatalogData(freshSongs);
+    })
+
+    // Función remota en Apps Script
+    .getAllSongs();
+}
+    
   function checkUrlQueryParams() {
     var urlParams = new URLSearchParams(window.location.search);
     var qParam = urlParams.get('q');
@@ -1328,12 +1431,21 @@ var i18n = {
     }
   }
 
-  function handleError(error) {
-    var loadingDiv = document.getElementById("loading");
-    if (loadingDiv) {
-      loadingDiv.innerHTML = '<p style="color: var(--badge-explicit-bg); font-weight: bold; font-size: 16px;">⚠️ Error: ' + error.message + '</p>';
-    }
+function handleError(error) {
+  var loadingDiv = document.getElementById("loading");
+  if (loadingDiv) {
+    const errorMessage = error && error.message ? error.message : error;
+    
+    loadingDiv.innerHTML = `
+      <p style="color: var(--badge-explicit-bg); font-weight: bold; font-size: 16px;">
+        ⚠️ Error: ${errorMessage}
+      </p>
+      <button id="resetCatalog" class="btn-tool active" onclick="reloadCatalog()" title="Recargar Catálogo">
+        <i class="fa-solid fa-rotate fa-spin"></i>
+      </button>
+    `;
   }
+}
 
   function applyTheme(theme) {
     currentTheme = theme;
@@ -1341,7 +1453,7 @@ var i18n = {
     localStorage.setItem('theme', theme);
     var btn = document.getElementById("theme-btn");
     if (btn) {
-      btn.innerHTML = theme === 'dark' ? '<i class="fa-solid fa-moon"></i>' : '<i class="fa-solid fa-sun"></i>';
+      btn.innerHTML = theme === 'dark' ? '<i class="fa-solid fa-moon fa-float"></i>' : '<i class="fa-solid fa-sun fa-float"></i>';
     }
   }
 
@@ -1923,6 +2035,7 @@ function createReleaseCardElement(item) {
       if (sortMode === 'title-asc') return a.title.localeCompare(b.title);
       if (sortMode === 'title-desc') return b.title.localeCompare(a.title);
       if (sortMode === 'artist-asc') return a.artist.localeCompare(b.artist);
+      if (sortMode === 'last') return Date(a.rawDate) - new Date(b.rawDate;
       return new Date(b.rawDate) - new Date(a.rawDate);
     });
   }
