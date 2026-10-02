@@ -5,7 +5,7 @@
   'use strict';
 
   // Endpoint proxied en Cloudflare (intercepta la llamada antes de llegar a GitHub)
-  const GAS_API_URL = 'https://records.grouvex.com/api/gas';
+  const GAS_API_URL = '/api/gas';
   const CACHE_PREFIX = 'GAS_SWR_';
 
   const DEFAULTS = Object.freeze({
