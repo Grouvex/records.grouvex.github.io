@@ -231,32 +231,42 @@
   class ScriptRunner {
     constructor(config = {}) {
       this._config = Object.freeze({ ...config });
-
+  
       return new Proxy(this, {
         get: (target, prop) => {
-          // 1. Ignorar llamadas internas de JS / Evaluadores de Promesas / Símbolos
-          if (typeof prop === 'symbol' || prop === 'then' || prop === 'toJSON') {
+          // 1. Ignorar símbolos y propiedades reservadas de Promesas / JS Runtime / Inspectores
+          if (
+            typeof prop === 'symbol' ||
+            prop === 'then' ||
+            prop === 'catch' ||
+            prop === 'finally' ||
+            prop === 'toJSON' ||
+            prop === 'prototype' ||
+            prop === 'constructor' ||
+            prop === 'toString' ||
+            prop === 'valueOf'
+          ) {
             return undefined;
           }
-
-          // 2. Si la propiedad es nativa de la propia clase
+  
+          // 2. Si la propiedad existe nativamente en target
           if (prop in target) {
             return target[prop];
           }
-
-          // 3. ¿Es un método configurador (builder)? -> Retorna un nuevo ScriptRunner con el config actualizado
+  
+          // 3. ¿Es un método configurador (builder)?
           if (Object.prototype.hasOwnProperty.call(FLUENT_METHODS, prop)) {
             return (...args) => {
               const nextConfig = FLUENT_METHODS[prop](target._config, ...args);
               return new ScriptRunner(nextConfig);
             };
           }
-
-          // 4. Si NO es un método configurador, ES la función remota del backend
-          if (typeof prop === 'string') {
+  
+          // 4. Invocación de función remota (solo si es un string válido que no sea "undefined")
+          if (typeof prop === 'string' && prop !== 'undefined') {
             return (...args) => executeWithRetry(prop, args, target._config);
           }
-
+  
           return undefined;
         }
       });
