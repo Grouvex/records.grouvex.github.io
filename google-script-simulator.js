@@ -11,7 +11,7 @@
     timeout: 25000,
     retries: 3,
     delay: 1000,
-    debug: true // Cambiar a false en producción si no deseas logs detallados
+    debug: false // Cambiar a false en producción si no deseas logs detallados
   });
 
   const FETCH_HEADERS = Object.freeze({ 'Content-Type': 'application/json' });
