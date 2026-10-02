@@ -213,40 +213,49 @@
     }
   }
 
-  // --- CLASS RUNNER FLUENT CORREGIDO ---
+  // --- CLASS RUNNER FLUENT REFACTORIZADO Y BLINDADO ---
   class ScriptRunner {
     constructor(config = {}) {
-      this._config = { ...config };
+      this._config = Object.freeze({ ...config });
 
       return new Proxy(this, {
-        get(target, prop) {
-          // ⚠️ PREVENCIÓN CLAVE: Evita interceptar 'then', símbolos y propiedades nativas
-          if (typeof prop === 'symbol' || prop === 'then') return undefined;
-          if (prop in target) return target[prop];
+        get: (target, prop) => {
+          // 1. Evita interceptar metodos o propiedades internas que arruinan cadenas
+          if (typeof prop === 'symbol' || prop === 'then' || prop === 'toJSON') {
+            return undefined;
+          }
 
-          // Callbacks estándar
-          if (prop === 'withSuccessHandler') return fn => new ScriptRunner({ ...target._config, success: fn });
-          if (prop === 'withFailureHandler') return fn => new ScriptRunner({ ...target._config, failure: fn });
-          if (prop === 'withUserObject') return obj => new ScriptRunner({ ...target._config, userObj: obj });
-          
-          // Tiempos y reintentos
-          if (prop === 'withTimeout') return ms => new ScriptRunner({ ...target._config, timeout: ms });
-          if (prop === 'withRetries') return (r, d) => new ScriptRunner({ ...target._config, retries: r, retryDelay: d });
-          
-          // Caché y SWR
-          if (prop === 'withCache') return ttlMs => new ScriptRunner({ ...target._config, ttl: ttlMs });
-          if (prop === 'withSWR') return ttlMs => new ScriptRunner({ ...target._config, swrTtl: ttlMs });
-          if (prop === 'onUpdate') return fn => new ScriptRunner({ ...target._config, onUpdate: fn });
+          if (prop in target) {
+            return target[prop];
+          }
 
-          // Extensiones Fluent
-          if (prop === 'invalidates') return pattern => new ScriptRunner({ ...target._config, invalidates: pattern });
-          if (prop === 'withLoading') return fn => new ScriptRunner({ ...target._config, onLoading: fn });
-          if (prop === 'transform') return fn => new ScriptRunner({ ...target._config, transform: fn });
-          if (prop === 'withOptimistic') return (data, updateFn) => new ScriptRunner({ ...target._config, optimisticData: data, optimisticFn: updateFn });
-          if (prop === 'withSignal') return signal => new ScriptRunner({ ...target._config, signal });
+          // 2. Definición de handlers fluent
+          const fluentMap = {
+            withSuccessHandler: fn => new ScriptRunner({ ...target._config, success: fn }),
+            withFailureHandler: fn => new ScriptRunner({ ...target._config, failure: fn }),
+            withUserObject: obj => new ScriptRunner({ ...target._config, userObj: obj }),
+            withTimeout: ms => new ScriptRunner({ ...target._config, timeout: ms }),
+            withRetries: (r, d) => new ScriptRunner({ ...target._config, retries: r, retryDelay: d }),
+            withCache: ttlMs => new ScriptRunner({ ...target._config, ttl: ttlMs }),
+            withSWR: ttlMs => new ScriptRunner({ ...target._config, swrTtl: ttlMs }),
+            onUpdate: fn => new ScriptRunner({ ...target._config, onUpdate: fn }),
+            invalidates: pattern => new ScriptRunner({ ...target._config, invalidates: pattern }),
+            withLoading: fn => new ScriptRunner({ ...target._config, onLoading: fn }),
+            transform: fn => new ScriptRunner({ ...target._config, transform: fn }),
+            withOptimistic: (data, updateFn) => new ScriptRunner({ ...target._config, optimisticData: data, optimisticFn: updateFn }),
+            withSignal: signal => new ScriptRunner({ ...target._config, signal })
+          };
 
-          // Cualquier otra propiedad se asume como el nombre de la función en Apps Script
-          return (...args) => executeWithRetry(prop, args, target._config);
+          if (prop in fluentMap) {
+            return fluentMap[prop];
+          }
+
+          // 3. Método de invocación final en Google Apps Script (ej. getAllSongs)
+          if (typeof prop === 'string') {
+            return (...args) => executeWithRetry(prop, args, target._config);
+          }
+
+          return undefined;
         }
       });
     }
