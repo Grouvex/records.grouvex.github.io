@@ -75,44 +75,6 @@ style.innerHTML = `
     .insignia.owner-designs { background-image: url('https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/owner-designs.gif'); }
     .insignia.diseñador { background-image: url('https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/diseñador.png'); }
     .insignia.verified-voice { background-image: url('https://raw.githubusercontent.com/Grouvex/grouvex.github.io/refs/heads/main/img/verified-voice.gif'); }
-    
-    /* Estilos para detalles (si quieres mantener la funcionalidad de expandir) */
-    details {
-        margin: 5px 0;
-        padding: 5px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background: rgba(255, 255, 255, 0.1);
-    }
-    
-    summary {
-        cursor: pointer;
-        font-weight: bold;
-        color: #666;
-        font-size: 12px;
-    }
-    
-    details div {
-        margin-top: 5px;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 2px;
-    }
-    
-    /* Para elementos con clase de usuario */
-    .Grouvex-Studios,
-    .Grouvex-Phoenix,
-    .Tarlight-Etherall,
-    .Maiki-Dran,
-    .Ángela {
-        display: flex;
-        align-items: center;
-        padding: 5px;
-        margin: 5px 0;
-        background: rgba(0, 0, 0, 0.05);
-        border-radius: 5px;
-        border: 1px solid rgba(0, 0, 0, 0.1);
-    }
 `;
 document.head.appendChild(style);
 console.log("Estilos CSS del modal añadidos correctamente.");
