@@ -13,7 +13,8 @@
     delay: 1000
   });
 
-  const FETCH_HEADERS = Object.freeze({ 'Content-Type': 'text/plain;charset=utf-8' });
+  // CORREGIDO: Especificar application/json para que el Worker reconozca el body
+  const FETCH_HEADERS = Object.freeze({ 'Content-Type': 'application/json' });
   const inFlightRequests = new Map();
 
   function wait(ms) {
@@ -46,6 +47,12 @@
    * Ejecutor con reintentos y lógica Stale-While-Revalidate
    */
   async function executeWithRetry(functionName, args, config) {
+    // CORREGIDO: Guard de seguridad estricto para evitar peticiones malformadas
+    if (!functionName || typeof functionName !== 'string' || functionName === 'undefined') {
+      console.error('❌ Intento de llamada remota abortado: La acción no es válida ->', functionName);
+      return Promise.reject(new Error(`Función remota no válida: ${functionName}`));
+    }
+
     const maxRetries = config.retries ?? DEFAULTS.retries;
     const baseDelay = config.retryDelay ?? DEFAULTS.delay;
     const timeoutMs = config.timeout ?? DEFAULTS.timeout;
@@ -234,7 +241,7 @@
   
       return new Proxy(this, {
         get: (target, prop) => {
-          // 1. Ignorar símbolos y propiedades reservadas de Promesas / JS Runtime / Inspectores
+          // 1. CORREGIDO: Ignorar exhaustivamente propiedades de Rocket Loader, Promesas y Runtime
           if (
             typeof prop === 'symbol' ||
             prop === 'then' ||
@@ -244,7 +251,11 @@
             prop === 'prototype' ||
             prop === 'constructor' ||
             prop === 'toString' ||
-            prop === 'valueOf'
+            prop === 'valueOf' ||
+            prop === 'nodeType' ||
+            prop === 'length' ||
+            prop === '_jsonp' ||
+            prop === 'caller'
           ) {
             return undefined;
           }
@@ -262,8 +273,8 @@
             };
           }
   
-          // 4. Invocación de función remota (solo si es un string válido que no sea "undefined")
-          if (typeof prop === 'string' && prop !== 'undefined') {
+          // 4. Invocación de función remota
+          if (typeof prop === 'string' && prop !== 'undefined' && prop.trim() !== '') {
             return (...args) => executeWithRetry(prop, args, target._config);
           }
   
