@@ -120,7 +120,7 @@
               method: 'POST',
               mode: 'cors',
               headers: FETCH_HEADERS,
-              body: JSON.stringify({ endpoint: functionName, payload: payloadArray }),
+              body: JSON.stringify({ action: functionName, args: payloadArray }),
               signal: controller.signal
             });
 
