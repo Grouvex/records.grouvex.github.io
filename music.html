@@ -1939,8 +1939,16 @@ for (var t = 1; t <= 15; t++) {
 
     // Verificar si el campo tiene valor y si está dentro de los allowedFields del item
     var isAllowed = item.allowedFields && item.allowedFields.includes(fieldKey);
+    var hasValue = val !== undefined && val !== null && String(val).trim() !== "";
 
-    if (isAllowed && val !== undefined && val !== "") {
+    console.log("[TrackMeta] Pista " + t + " | Campo: '" + fieldKey + "'", {
+      val: val,
+      isAllowed: isAllowed,
+      hasValue: hasValue,
+      willRender: isAllowed && hasValue
+    });
+
+    if (isAllowed && hasValue) {
       trackMetaHtml += 
         '<div class="track-meta-box" style="background: var(--bg-inner, #0f172a); padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border-color, #334155); word-break: break-word;">' +
           '<span style="color:#fde047; font-weight:700;">' + escapeHtml(prop.trim()) + ':</span> ' +
