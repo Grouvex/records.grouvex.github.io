@@ -1947,6 +1947,14 @@ for (var t = 1; t <= 15; t++) {
     }
   });
 
+  // Log por cada pista procesada con sus datos principales
+  console.log("[Tracklist] Procesando pista " + t + ":", {
+    title: trackTitle,
+    ytUrl: ytUrl,
+    hasLyrics: Boolean(lyricsText),
+    hasMeta: Boolean(trackMetaHtml)
+  });
+
   // Ensamblado del elemento en la lista
   tracksHtml +=
     '<div style="background: var(--bg-primary, #182234); padding: 12px 14px; border-radius: 8px; margin-top: 8px; border-left: 4px solid var(--accent-purple, #a855f7);">' +
@@ -1977,6 +1985,10 @@ for (var t = 1; t <= 15; t++) {
 
   tracksHtml += '</div>';
 }
+
+console.log("[Tracklist] Finalizado renderizado.", {
+  hasTracks: Boolean(tracksHtml)
+});
 
 if (tracksHtml) {
   var titleText = (typeof i18n !== "undefined" && i18n[currentLang] && i18n[currentLang].trackListTitle) 
