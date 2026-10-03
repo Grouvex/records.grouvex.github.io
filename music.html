@@ -1930,18 +1930,20 @@ for (var t = 1; t <= 15; t++) {
   // Generación del bloque de metadatos (sin "Preview Clip")
   var trackMetaHtml = "";
   var trackProperties = [
-    "Artistas", "Compositores", "¿Contiene letras?", "Letristas", "ISRC", "Idioma", "Cover"
+    "Artistas ", "Compositores ", "¿Contiene letras? ", "Letristas ", "ISRC ", "Idioma ", "Cover "
   ];
 
   trackProperties.forEach(function(prop) {
-    // Si tus claves en 'song' llevan espacio usas (prop + " " + t), si no llevan espacio usas (prop + t)
-    var fullKey = prop + " " + t; 
-    var val = song[fullKey] !== undefined ? song[fullKey] : song[prop + t];
+    var fieldKey = prop + t;
+    var val = song[fieldKey];
 
-    if (typeof allowed !== "undefined" && (allowed.includes(fullKey) || allowed.includes(prop + t)) && val !== undefined && val !== "") {
+    // Verificar si el campo tiene valor y si está dentro de los allowedFields del item
+    var isAllowed = item.allowedFields && item.allowedFields.includes(fieldKey);
+
+    if (isAllowed && val !== undefined && val !== "") {
       trackMetaHtml += 
         '<div class="track-meta-box" style="background: var(--bg-inner, #0f172a); padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border-color, #334155); word-break: break-word;">' +
-          '<span style="color:#fde047; font-weight:700;">' + escapeHtml(prop) + ':</span> ' +
+          '<span style="color:#fde047; font-weight:700;">' + escapeHtml(prop.trim()) + ':</span> ' +
           '<span style="color:var(--text-primary, #ffffff); font-weight:500;">' + escapeHtml(val) + '</span>' +
         '</div>';
     }
