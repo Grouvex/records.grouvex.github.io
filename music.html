@@ -1609,24 +1609,35 @@ function processSongsData() {
   parsedCatalog = [];
   var counter = 0;
 
-  var forbiddenFields = [
-    "Grouvex Studios UserID",
-    "Marca temporal",
-    "Estado del Contrato",
-    "Razón",
-    "¿Se Puede Modificar el Lanzamiento?"
-  ];
-
-var trackBaseFields = [
-  "Artistas ", "Compositores ", "¿Contiene letras? ", "Letristas ", "ISRC ", "Idioma ", "Cover ", "Título ", "Letra ", "YTEmbed "
-];
-
-    var trackDefaultFields = [];
-    for (var i = 1; i <= 15; i++) {
-      trackBaseFields.forEach(function(base) {
-        trackDefaultFields.push(base + i);
-      });
+    // Función helper genérica para construir arreglos de campos con número de pista
+    function generateTrackFields(baseFields, maxTracks) {
+      var fields = [];
+      for (var i = 1; i <= maxTracks; i++) {
+        for (var j = 0; j < baseFields.length; j++) {
+          fields.push(baseFields[j] + i);
+        }
+      }
+      return fields;
     }
+    
+    // Configuración genérica (puedes ajustar MAX_TRACKS si cambia la estructura)
+    var MAX_TRACKS = 15;
+    
+    var trackBaseFieldsFF = ["ISRC "];
+    var trackBaseFields = [
+      "Artistas ", "Compositores ", "¿Contiene letras? ", "Letristas ", "Idioma ", "Cover ", "Título ", "Letra ", "YTEmbed "
+    ];
+    
+    var trackDefaultFieldsFF = generateTrackFields(trackBaseFieldsFF, MAX_TRACKS);
+    var trackDefaultFields = generateTrackFields(trackBaseFields, MAX_TRACKS);
+    
+    var forbiddenFields = [
+      "Grouvex Studios UserID",
+      "Marca temporal",
+      "Estado del Contrato",
+      "Razón",
+      "¿Se Puede Modificar el Lanzamiento?"
+    ].concat(trackDefaultFieldsFF);
     
     // Unir los campos por defecto del álbum con los de las canciones
     var defaultFields = [
