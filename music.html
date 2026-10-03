@@ -1617,13 +1617,25 @@ function processSongsData() {
     "¿Se Puede Modificar el Lanzamiento?"
   ];
 
-  var defaultFields = [
-    "Artista", "Título del álbum/sencillo/EP", "Idioma del álbum", "Versión del Lanzamiento", "Cover?",
-    "Álbum Recopilatorio", "Otros Artistas Álbum", "Compositores del álbum", "Letristas del álbum",
-    "Información para colaboradores", "Género primario", "Género secundario", "Derechos de autor de la composición",
-    "Derechos de autor de grabación de sonido", "Nombre del sello discográfico", "Lanzamiento original",
-    "Fecha de pedido anticipado", "Fecha de inicio de ventas", "Explicit Content", "Categoría del Lanzamiento"
-  ];
+var trackBaseFields = [
+  "Artistas ", "Compositores ", "¿Contiene letras? ", "Letristas ", "ISRC ", "Idioma ", "Cover ", "Título ", "Letra ", "YTEmbed "
+];
+
+    var trackDefaultFields = [];
+    for (var i = 1; i <= 15; i++) {
+      trackBaseFields.forEach(function(base) {
+        trackDefaultFields.push(base + i);
+      });
+    }
+    
+    // Unir los campos por defecto del álbum con los de las canciones
+    var defaultFields = [
+      "Artista", "Título del álbum/sencillo/EP", "Idioma del álbum", "Versión del Lanzamiento", "Cover?",
+      "Álbum Recopilatorio", "Otros Artistas Álbum", "Compositores del álbum", "Letristas del álbum",
+      "Información para colaboradores", "Género primario", "Género secundario", "Derechos de autor de la composición",
+      "Derechos de autor de grabación de sonido", "Nombre del sello discográfico", "Lanzamiento original",
+      "Fecha de pedido anticipado", "Fecha de inicio de ventas", "Explicit Content", "Categoría del Lanzamiento"
+    ].concat(trackDefaultFields);
 
   rawSongsList.forEach(function(song) {
     // 1. Obtener privacidad (soporta ambos nombres de campo)
