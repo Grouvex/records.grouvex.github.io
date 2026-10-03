@@ -1915,52 +1915,82 @@ function createReleaseCardElement(item) {
       '</div>';
   }
 
-  /* ============================================================
-     5. TRACKLIST (con botón de karaoke por track)
-     ============================================================ */
-  var tracksHtml = "";
-  for (var t = 1; t <= 15; t++) {
-    var trackTitle = song["Título " + t];
-    if (!trackTitle) continue;
+/* ============================================================
+   5. TRACKLIST (con botón de karaoke y metadatos por track)
+   ============================================================ */
+var tracksHtml = "";
 
-    var lyricsText = song["Letra " + t] || song["Letra"] || "";
+for (var t = 1; t <= 15; t++) {
+  var trackTitle = song["Título " + t];
+  if (!trackTitle) continue;
 
-    // Prioridad: YTEmbed N → YouTube N → YouTube global
-    var ytUrl =
-      song["YTEmbed " + t] || "";
+  var lyricsText = song["Letra " + t] || song["Letra"] || "";
+  var ytUrl = song["YTEmbed " + t] || "";
 
-    tracksHtml +=
-      '<div style="background: var(--bg-primary); padding: 10px 14px; border-radius: 8px; ' +
-      'margin-top: 8px; border-left: 3px solid var(--accent-purple); ' +
-      'display:flex; align-items:center; justify-content:space-between; gap:10px;">' +
+  // Generación del bloque de metadatos (sin "Preview Clip")
+  var trackMetaHtml = "";
+  var trackProperties = [
+    "Artistas", "Compositores", "¿Contiene letras?", "Letristas", "ISRC", "Idioma", "Cover"
+  ];
+
+  trackProperties.forEach(function(prop) {
+    // Si tus claves en 'song' llevan espacio usas (prop + " " + t), si no llevan espacio usas (prop + t)
+    var fullKey = prop + " " + t; 
+    var val = song[fullKey] !== undefined ? song[fullKey] : song[prop + t];
+
+    if (typeof allowed !== "undefined" && (allowed.includes(fullKey) || allowed.includes(prop + t)) && val !== undefined && val !== "") {
+      trackMetaHtml += 
+        '<div class="track-meta-box" style="background: var(--bg-inner, #0f172a); padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border-color, #334155); word-break: break-word;">' +
+          '<span style="color:#fde047; font-weight:700;">' + escapeHtml(prop) + ':</span> ' +
+          '<span style="color:var(--text-primary, #ffffff); font-weight:500;">' + escapeHtml(val) + '</span>' +
+        '</div>';
+    }
+  });
+
+  // Ensamblado del elemento en la lista
+  tracksHtml +=
+    '<div style="background: var(--bg-primary, #182234); padding: 12px 14px; border-radius: 8px; margin-top: 8px; border-left: 4px solid var(--accent-purple, #a855f7);">' +
+      '<div style="display:flex; align-items:center; justify-content:space-between; gap:10px;">' +
         '<div>' +
-          '<strong style="font-size:14px; color:var(--text-primary);">' +
+          '<strong style="font-size:15px; color:var(--text-primary, #ffffff); word-break: break-word;">' +
             t + '. ' + escapeHtml(trackTitle) +
           '</strong>' +
         '</div>' +
         '<div style="display:flex; gap:6px;">' +
           '<button class="btn-action-icon" title="Reproducir y Letra en Modal" ' +
-            'data-artist="' + escapeHtml(item.artist) + '" ' +
-            'data-title="'  + escapeHtml(trackTitle)  + '" ' +
-            'data-yt="'     + escapeHtml(ytUrl)       + '" ' +
-            'data-lyrics="' + escapeHtml(lyricsText)  + '" ' +
+            'data-artist="' + escapeHtml(item.artist || '') + '" ' +
+            'data-title="'  + escapeHtml(trackTitle)        + '" ' +
+            'data-yt="'     + escapeHtml(ytUrl)             + '" ' +
+            'data-lyrics="' + escapeHtml(lyricsText)        + '" ' +
             'onclick="openKaraokeFromButton(this)">' +
             '<i class="fa-solid fa-play"></i>' +
           '</button>' +
         '</div>' +
       '</div>';
-  }
 
-  if (tracksHtml) {
-    html +=
-      '<div style="background: var(--bg-inner); padding: 12px; border-radius: 10px; ' +
-      'border: 1px solid var(--border-color); margin-top: 15px;">' +
-        '<h4 style="margin:0 0 10px 0; font-size:13px; color:var(--accent-purple); text-transform:uppercase;">' +
-          '<i class="fa-solid fa-music"></i> ' + i18n[currentLang].trackListTitle +
-        '</h4>' +
-        tracksHtml +
+  if (trackMetaHtml) {
+    tracksHtml += 
+      '<div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; font-size: 13px;">' +
+        trackMetaHtml +
       '</div>';
   }
+
+  tracksHtml += '</div>';
+}
+
+if (tracksHtml) {
+  var titleText = (typeof i18n !== "undefined" && i18n[currentLang] && i18n[currentLang].trackListTitle) 
+    ? i18n[currentLang].trackListTitle 
+    : "Lista de Canciones";
+
+  html +=
+    '<div style="background: var(--bg-inner, #0b1120); padding: 15px; border-radius: 12px; border: 1px solid var(--border-color, #1e293b); margin-top: 15px; position: relative; z-index: 3;">' +
+      '<h4 style="margin:0 0 12px 0; font-size:14px; color:var(--accent-purple, #c084fc); text-transform:uppercase; font-weight:800; border-bottom:1px solid var(--border-color, #334155); padding-bottom:8px;">' +
+        '<i class="fa-solid fa-music" style="margin-right:8px;"></i>' + titleText +
+      '</h4>' +
+      tracksHtml +
+    '</div>';
+}
 
   /* ============================================================
      6. INYECCIÓN FINAL
