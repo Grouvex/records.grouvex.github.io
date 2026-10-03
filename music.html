@@ -1623,9 +1623,9 @@ function processSongsData() {
     // Configuración genérica (puedes ajustar MAX_TRACKS si cambia la estructura)
     var MAX_TRACKS = 15;
     
-    var trackBaseFieldsFF = ["ISRC "];
+    var trackBaseFieldsFF = ["ISRC ", "Letra "];
     var trackBaseFields = [
-      "Artistas ", "Compositores ", "¿Contiene letras? ", "Letristas ", "Idioma ", "Cover ", "Título ", "Letra ", "YTEmbed "
+      "Artistas ", "Compositores ", "¿Contiene letras? ", "Letristas ", "Idioma ", "Cover ", "Título ", "YTEmbed "
     ];
     
     var trackDefaultFieldsFF = generateTrackFields(trackBaseFieldsFF, MAX_TRACKS);
