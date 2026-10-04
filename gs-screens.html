@@ -423,7 +423,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
 .upcoming-item__info .upc-desc { font-size: .72rem; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
 @media (max-width: 560px) {
-  .upcoming-item { flex-wrap: wrap; }
+  .upcoming-item { flex-wrap: wrap; flex-direction: column;}
   .upcoming-item__thumb { width: 100%; max-width: 240px; }
 }
 
@@ -454,7 +454,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
 .fav-item__actions { display: flex; gap: 4px; flex-shrink: 0; }
 
 @media (max-width: 560px) {
-  .fav-item { flex-wrap: wrap; }
+  .fav-item { flex-wrap: wrap; flex-direction: column;}
   .fav-item__thumb { width: 100%; max-width: 200px; }
   .fav-item__actions { width: 100%; justify-content: flex-end; }
 }
@@ -838,7 +838,6 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
         <div><span class="label" data-i18n="apiFormats">Formatos API</span><strong id="stat-qualities-list">—</strong></div>
         <div><span class="label" data-i18n="author">Autor / Canal</span><strong id="stat-author">—</strong></div>
         <div><span class="label" data-i18n="tags">Etiquetas</span><strong id="stat-tags">—</strong></div>
-        <div><span class="label" data-i18n="videoId">ID Vídeo</span><strong id="stat-id">—</strong></div>
         <div><span class="label" data-i18n="playerState">Estado Reproductor</span><strong id="stat-player-state">—</strong></div>
       </div>
     </div>
@@ -1153,7 +1152,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       score: 'Punteggio', classification: 'Classificazione', genre: 'Genere',
       duration: 'Durata', views: 'Visualizzazioni',
       likesDislikes: 'Mi piace / Non mi piace', currentQuality: 'Qualità attuale', apiFormats: 'Formati API',
-      author: 'Autore / Canale', tags: 'Tag', videoId: 'ID Video', playerState: 'Stato player',
+      author: 'Autore / Canale', tags: 'Tag', playerState: 'Stato player',
       helpTitle: 'Scorciatoie da tastiera', helpSpace: 'Metti in pausa / Riproduci video',
       helpArrows: 'Indietro / Avanti di 10s', helpEsc: 'Chiudi finestra di riproduzione',
       helpQuestion: 'Apri / Chiudi questo aiuto', understood: 'Ho capito',
@@ -1216,7 +1215,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       score: 'Pontuação', classification: 'Classificação', genre: 'Género',
       duration: 'Duração', views: 'Visualizações',
       likesDislikes: 'Gostos / Não gostos', currentQuality: 'Qualidade Atual', apiFormats: 'Formatos API',
-      author: 'Autor / Canal', tags: 'Tags', videoId: 'ID do Vídeo', playerState: 'Estado do Reprodutor',
+      author: 'Autor / Canal', tags: 'Tags', playerState: 'Estado do Reprodutor',
       helpTitle: 'Atalhos de Teclado', helpSpace: 'Pausar / Reproduzir vídeo',
       helpArrows: 'Recuar / Avançar 10s', helpEsc: 'Fechar janela de reprodução',
       helpQuestion: 'Abrir / Fechar esta ajuda', understood: 'Entendido',
@@ -1279,7 +1278,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       score: '评分', classification: '分级', genre: '类型',
       duration: '时长', views: '播放量',
       likesDislikes: '赞 / 踩', currentQuality: '当前画质', apiFormats: 'API格式',
-      author: '作者 / 频道', tags: '标签', videoId: '视频ID', playerState: '播放器状态',
+      author: '作者 / 频道', tags: '标签', playerState: '播放器状态',
       helpTitle: '键盘快捷键', helpSpace: '暂停 / 播放视频',
       helpArrows: '快退 / 快进 10秒', helpEsc: '关闭播放弹窗',
       helpQuestion: '打开 / 关闭帮助', understood: '明白了',
@@ -1342,7 +1341,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       score: '評価', classification: 'レーティング', genre: 'ジャンル',
       duration: '時間', views: '再生回数',
       likesDislikes: '高評価 / 低評価', currentQuality: '現在の画質', apiFormats: 'APIフォーマット',
-      author: '作者 / チャンネル', tags: 'タグ', videoId: '動画ID', playerState: 'プレイヤー状態',
+      author: '作者 / チャンネル', tags: 'タグ', playerState: 'プレイヤー状態',
       helpTitle: 'キーボードショートカット', helpSpace: '再生 / 一時停止',
       helpArrows: '10秒巻き戻し / 早送り', helpEsc: 'モーダルを閉じる',
       helpQuestion: 'ヘルプの開閉', understood: '了解',
@@ -1405,7 +1404,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       score: 'Рейтинг', classification: 'Возраст', genre: 'Жанр',
       duration: 'Длительность', views: 'Просмотры',
       likesDislikes: 'Лайки / Дизлайки', currentQuality: 'Текущее качество', apiFormats: 'Форматы API',
-      author: 'Автор / Канал', tags: 'Теги', videoId: 'ID видео', playerState: 'Состояние плеера',
+      author: 'Автор / Канал', tags: 'Теги', playerState: 'Состояние плеера',
       helpTitle: 'Горячие клавиши', helpSpace: 'Пауза / Воспроизведение',
       helpArrows: 'Назад / Вперед на 10с', helpEsc: 'Закрыть плеер',
       helpQuestion: 'Открыть / Закрыть справку', understood: 'Понятно',
@@ -1468,7 +1467,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       score: 'التقييم', classification: 'التصنيف', genre: 'النوع',
       duration: 'المدة', views: 'المشاهدات',
       likesDislikes: 'إعجاب / عدم إعجاب', currentQuality: 'الجودة الحالية', apiFormats: 'صيغ API',
-      author: 'المؤلف / القناة', tags: 'العلامات', videoId: 'معرف الفيديو', playerState: 'حالة المشغل',
+      author: 'المؤلف / القناة', tags: 'العلامات', playerState: 'حالة المشغل',
       helpTitle: 'اختصارات لوحة المفاتيح', helpSpace: 'إيقاف / تشغيل الفيديو',
       helpArrows: 'تراجع / تقديم 10 ثوانٍ', helpEsc: 'إغلاق النافذة',
       helpQuestion: 'فتح / إغلاق المساعدة', understood: 'فهمت',
@@ -1531,7 +1530,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       score: 'स्कोर', classification: 'रेटिंग', genre: 'शैली',
       duration: 'अवधि', views: 'दृश्य',
       likesDislikes: 'पसंद / नापसंद', currentQuality: 'वर्तमान गुणवत्ता', apiFormats: 'API प्रारूप',
-      author: 'लेखक / चैनल', tags: 'टैग', videoId: 'वीडियो ID', playerState: 'प्लेयर स्थिति',
+      author: 'लेखक / चैनल', tags: 'टैग', playerState: 'प्लेयर स्थिति',
       helpTitle: 'कीबोर्ड शॉर्टकट', helpSpace: 'वीडियो रोकें / चलाएं',
       helpArrows: '10 सेकंड पीछे / आगे करें', helpEsc: 'प्लेबैक मॉडल बंद करें',
       helpQuestion: 'यह सहायता खोलें / बंद करें', understood: 'समझ गया',
@@ -1594,7 +1593,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       score: '평점', classification: '등급', genre: '장르',
       duration: '재생 시간', views: '조회수',
       likesDislikes: '좋아요 / 싫어요', currentQuality: '현재 화질', apiFormats: 'API 형식',
-      author: '작성자 / 채널', tags: '태그', videoId: '동영상 ID', playerState: '플레이어 상태',
+      author: '작성자 / 채널', tags: '태그', playerState: '플레이어 상태',
       helpTitle: '키보드 단축키', helpSpace: '일시정지 / 재생',
       helpArrows: '10초 되감기 / 빨리감기', helpEsc: '창 닫기',
       helpQuestion: '도움말 열기 / 닫기', understood: '확인',
@@ -1657,7 +1656,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       score: 'Score', classification: 'Beoordeling', genre: 'Genre',
       duration: 'Duur', views: 'Weergaven',
       likesDislikes: 'Likes / Dislikes', currentQuality: 'Huidige kwaliteit', apiFormats: 'API-formaten',
-      author: 'Auteur / Kanaal', tags: 'Tags', videoId: 'Video-ID', playerState: 'Spelerstatus',
+      author: 'Auteur / Kanaal', tags: 'Tags', playerState: 'Spelerstatus',
       helpTitle: 'Sneltoetsen', helpSpace: 'Pauzeer / Speel video',
       helpArrows: '10s terug / vooruit', helpEsc: 'Sluit venster',
       helpQuestion: 'Open / Sluit help', understood: 'Begrepen',
@@ -1720,7 +1719,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       score: 'Ocena', classification: 'Kategoria', genre: 'Gatunek',
       duration: 'Czas trwania', views: 'Wyświetlenia',
       likesDislikes: 'Polubienia / Niepolubienia', currentQuality: 'Aktualna jakość', apiFormats: 'Formaty API',
-      author: 'Autor / Kanał', tags: 'Tagi', videoId: 'ID wideo', playerState: 'Stan odtwarzacza',
+      author: 'Autor / Kanał', tags: 'Tagi', playerState: 'Stan odtwarzacza',
       helpTitle: 'Skróty klawiszowe', helpSpace: 'Pauza / Odtwarzaj wideo',
       helpArrows: 'Cofnij / Do przodu 10s', helpEsc: 'Zamknij okno odtwarzania',
       helpQuestion: 'Otwórz / Zamknij pomoc', understood: 'Zrozumiano',
@@ -1783,7 +1782,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       score: 'Puan', classification: 'Sınıflandırma', genre: 'Tür',
       duration: 'Süre', views: 'Görüntülenme',
       likesDislikes: 'Beğeni / Beğenmeme', currentQuality: 'Mevcut Kalite', apiFormats: 'API Formatları',
-      author: 'Yazar / Kanal', tags: 'Etiketler', videoId: 'Video ID', playerState: 'Oynatıcı Durumu',
+      author: 'Yazar / Kanal', tags: 'Etiketler', playerState: 'Oynatıcı Durumu',
       helpTitle: 'Klavye Kısayolları', helpSpace: 'Videoyu Duraklat / Oynat',
       helpArrows: '10s Geri / İleri', helpEsc: 'Pencereyi Kapat',
       helpQuestion: 'Yardımı Aç / Kapat', understood: 'Anladım',
@@ -2659,7 +2658,6 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
     document.getElementById('stat-classification').innerHTML = getClasificacionHTML(localData.clasificacion);
     document.getElementById('stat-genre').textContent = localData.genero || '—';
     document.getElementById('stat-author').textContent = author;
-    document.getElementById('stat-id').textContent = currentVideoId;
     document.getElementById('stat-tags').textContent = localData.etiquetas ? localData.etiquetas.join(', ') : '—';
 
     try {
