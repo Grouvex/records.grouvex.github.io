@@ -4,7 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#0a0b0f">
-<title>CINEMATECA · Cartelera Digital Ultimate</title>
+<title>GS-SCREENS · Cartelera Digital Grouvex Studios</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <style>
 *, *::before, *::after { box-sizing: border-box; }
@@ -24,12 +26,13 @@ html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
   --yt-red: #ff0000;
   --radius: 16px;
   --radius-sm: 12px;
-  --maxw: 1400px;
+  --maxw: 1600px;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
+  min-height: 100dvh;
   background: var(--bg);
   color: var(--text);
   font-family: "Inter", system-ui, -apple-system, sans-serif;
@@ -40,25 +43,31 @@ body {
 img { display: block; max-width: 100%; height: auto; }
 button, input, select { font: inherit; color: inherit; background: none; border: 0; }
 button, a.btn { cursor: pointer; text-decoration: none; }
+button { font-family: inherit; }
 
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
 
-.container { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: clamp(12px, 3vw, 32px); }
+.container { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: clamp(10px, 3vw, 32px); }
 
-/* TOPBAR */
 .topbar {
   position: sticky; top: 0; z-index: 60;
   background: rgba(10, 11, 15, 0.95); backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--line-soft);
 }
 .topbar__inner {
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  min-height: 64px; padding-block: 8px; flex-wrap: wrap;
+  display: flex; align-items: center; gap: 12px;
+  min-height: 64px; padding-block: 8px;
+  flex-wrap: wrap;
 }
-.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; flex-shrink: 0; }
+.topbar__inner .brand { flex-shrink: 0; }
+.topbar__inner .search-box { flex: 1 1 200px; min-width: 160px; max-width: 420px; }
+.topbar__inner .topbar__actions { flex-shrink: 0; margin-left: auto; }
+
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
 .brand__mark {
   width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center;
   background: linear-gradient(140deg, var(--accent), #b9832b); color: #17130a; flex-shrink: 0;
+  font-size: 16px;
 }
 .brand__text strong { font-size: .95rem; font-weight: 800; letter-spacing: .15em; display: block; }
 .brand__text small { font-size: .65rem; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; }
@@ -73,31 +82,55 @@ button, a.btn { cursor: pointer; text-decoration: none; }
   display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px;
   font-size: .75rem; font-weight: 600; color: var(--text); background: var(--surface);
   border: 1px solid var(--line); white-space: nowrap; flex-shrink: 0;
+  transition: all .2s;
 }
+.pill:hover { border-color: var(--accent); color: var(--accent); }
 .pill--accent { color: var(--accent); border-color: var(--accent); }
 
-/* FILTROS Y CONTROLES */
+.lang-select-wrap { position: relative; display: inline-flex; align-items: center; }
+.lang-select-wrap i { position: absolute; left: 10px; color: var(--muted); pointer-events: none; font-size: .8rem; }
+.lang-select {
+  appearance: none; -webkit-appearance: none;
+  padding: 6px 30px 6px 30px; border-radius: 999px;
+  background: var(--surface); border: 1px solid var(--line); color: var(--text);
+  font-size: .75rem; font-weight: 600; cursor: pointer;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2398a2b3' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'/%3e%3c/svg%3e");
+  background-repeat: no-repeat; background-position: right 8px center; background-size: 12px;
+  transition: border-color .2s;
+}
+.lang-select:hover, .lang-select:focus { border-color: var(--accent); color: var(--accent); }
+
+.float-btns { position: fixed; bottom: 20px; right: 20px; z-index: 90; display: flex; flex-direction: column; gap: 10px; }
+.float-btn {
+  width: 48px; height: 48px; border-radius: 50%;
+  background: var(--accent); color: #17130a; border: 0;
+  display: grid; place-items: center; font-size: 1.1rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,.5);
+  cursor: pointer; transition: all .25s;
+}
+.float-btn:hover { transform: scale(1.08); box-shadow: 0 6px 20px rgba(229,181,103,.5); }
+.float-btn--secondary { background: var(--surface-2); color: var(--accent); border: 1px solid var(--accent); }
+
 .controls-bar {
   padding-top: 20px; display: flex; flex-wrap: wrap; gap: 12px;
   align-items: center; justify-content: space-between; width: 100%;
 }
-.search-box { position: relative; flex: 1 1 240px; min-width: 200px; max-width: 100%; }
-.search-box input {
-  width: 100%; padding: 10px 14px 10px 38px; border-radius: 999px; background: var(--surface);
-  border: 1px solid var(--line); color: var(--text); font-size: .85rem;
-}
-.search-box input:focus { border-color: var(--accent); }
-.search-box svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
-
 .filter-group { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; max-width: 100%; }
 .select-custom {
   padding: 8px 14px; border-radius: 999px; background: var(--surface);
   border: 1px solid var(--line); color: var(--text); font-size: .8rem; cursor: pointer; max-width: 100%;
 }
 
-/* SECCIONES Y TARJETAS */
+.search-box { position: relative; }
+.search-box input {
+  width: 100%; padding: 8px 14px 8px 36px; border-radius: 999px; background: var(--surface);
+  border: 1px solid var(--line); color: var(--text); font-size: .82rem;
+}
+.search-box input:focus { border-color: var(--accent); }
+.search-box i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; font-size: .8rem; }
+
 .section { padding-top: clamp(20px, 3vw, 36px); }
-.section:last-of-type { padding-bottom: 60px; }
+.section:last-of-type { padding-bottom: 100px; }
 .section__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
 .section__titles h2 { margin: 0; font-size: clamp(1.1rem, 2vw, 1.5rem); font-weight: 800; display: flex; align-items: center; gap: 8px; }
 .section__titles h2::before { content: ""; width: 4px; height: 1em; border-radius: 4px; background: var(--accent); }
@@ -106,11 +139,15 @@ button, a.btn { cursor: pointer; text-decoration: none; }
 .track { --gap: 16px; --per-view: 1; display: flex; gap: var(--gap); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-block: 4px; }
 .track::-webkit-scrollbar { display: none; }
 .slide { flex: 0 0 calc((100% - (var(--per-view) - 1) * var(--gap)) / var(--per-view)); min-width: 0; scroll-snap-align: start; }
+
 .track--featured { --per-view: 1; }
 .track--grid { --per-view: 1; }
-@media (min-width: 520px)  { .track--grid { --per-view: 2; } }
-@media (min-width: 860px)  { .track--grid { --per-view: 3; } }
-@media (min-width: 1200px) { .track--grid { --per-view: 4; } }
+
+@media (min-width: 480px)  { .track--grid { --per-view: 2; } }
+@media (min-width: 768px)  { .track--grid { --per-view: 3; } }
+@media (min-width: 1024px) { .track--grid { --per-view: 4; } }
+@media (min-width: 1440px) { .track--grid { --per-view: 5; } }
+@media (min-width: 1800px) { .track--grid { --per-view: 6; } }
 
 .track--list-mode { display: flex; flex-direction: column; gap: 10px; }
 .track--list-mode .slide { flex: 1 1 100%; width: 100%; }
@@ -122,17 +159,18 @@ button, a.btn { cursor: pointer; text-decoration: none; }
 .fcard__media { position: absolute; inset: 0; }
 .fcard__media img { width: 100%; height: 100%; object-fit: cover; }
 .fcard__media::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, rgba(6,7,11,.92) 0%, rgba(6,7,11,.4) 60%, transparent 100%); }
-.fcard__body { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; gap: 8px; padding: clamp(14px, 2.5vw, 32px); max-width: 600px; }
+.fcard__body { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; gap: 8px; padding: clamp(14px, 2.5vw, 32px); max-width: min(600px, 90%); }
 
-.card-actions { position: absolute; top: 10px; right: 10px; z-index: 5; display: flex; gap: 6px; }
+.card-actions { position: absolute; top: 10px; right: 10px; z-index: 5; display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; max-width: calc(100% - 20px); }
 .fav-toggle {
   width: 34px; height: 34px; border-radius: 50%;
   background: rgba(10,11,15,.75); backdrop-filter: blur(4px); border: 1px solid var(--line);
   display: grid; place-items: center; color: #fff; flex-shrink: 0;
+  transition: all .2s;
 }
-.fav-toggle.is-fav { color: var(--danger); border-color: var(--danger); fill: var(--danger); }
+.fav-toggle:hover { transform: scale(1.1); border-color: var(--accent); }
+.fav-toggle.is-fav { color: var(--danger); border-color: var(--danger); fill: var(--danger); background: rgba(255,82,82,.15); }
 
-/* BADGES */
 .badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 999px; font-size: .65rem; font-weight: 800; text-transform: uppercase; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15); }
 .badge--gold { background: var(--accent); color: #17130a; border: 0; }
 .badge--timer { background: rgba(255, 82, 82, 0.2); color: var(--danger); border-color: var(--danger); }
@@ -148,9 +186,12 @@ button, a.btn { cursor: pointer; text-decoration: none; }
 .fcard__title { margin: 0; font-size: clamp(1.1rem, 2.2vw, 2rem); font-weight: 800; line-height: 1.1; }
 .fcard__desc { margin: 0; color: var(--muted); font-size: .82rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 14px; border-radius: 999px; font-weight: 700; font-size: .8rem; background: var(--surface-2); border: 1px solid var(--line); white-space: nowrap; color: inherit; flex-shrink: 0; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 14px; border-radius: 999px; font-weight: 700; font-size: .8rem; background: var(--surface-2); border: 1px solid var(--line); white-space: nowrap; color: inherit; flex-shrink: 0; transition: all .2s; }
+.btn:hover { border-color: var(--accent); }
 .btn--primary { background: var(--accent); color: #17130a; border: 0; }
+.btn--primary:hover { background: #d4a44d; }
 .btn--danger { background: rgba(255, 82, 82, 0.15); color: var(--danger); border-color: rgba(255, 82, 82, 0.3); }
+.btn--danger:hover { background: rgba(255,82,82,.3); }
 .btn--disabled { background: rgba(255,255,255,0.05) !important; color: var(--muted) !important; border-color: var(--line) !important; cursor: not-allowed !important; pointer-events: none; }
 .btn--yt { background: rgba(255, 0, 0, 0.12); color: #ff4e4e; border-color: rgba(255, 0, 0, 0.3); }
 .btn--yt:hover { background: rgba(255, 0, 0, 0.25); color: #ffffff; }
@@ -165,7 +206,31 @@ button, a.btn { cursor: pointer; text-decoration: none; }
 .scard__title { margin: 0; font-size: .88rem; font-weight: 700; }
 .scard__meta { font-size: .72rem; color: var(--muted); display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
 
-/* REPRODUCTOR BLOQUEADO */
+.card-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
+.card-tag {
+  display: inline-flex; align-items: center; gap: 2px; padding: 2px 8px;
+  border-radius: 999px; font-size: .65rem; font-weight: 600;
+  background: rgba(229,181,103,.12); border: 1px solid rgba(229,181,103,.3);
+  color: var(--accent); cursor: pointer; transition: all .2s;
+}
+.card-tag:hover { background: var(--accent); color: #17130a; }
+.card-tag i { font-size: .55rem; }
+
+.category-block { margin-bottom: 28px; }
+.category-block__head {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+  padding-bottom: 8px; border-bottom: 1px solid var(--line-soft);
+}
+.category-block__head h3 {
+  margin: 0; font-size: clamp(.95rem, 1.8vw, 1.15rem); font-weight: 800;
+  display: flex; align-items: center; gap: 8px; color: var(--text);
+}
+.category-block__head h3 i { color: var(--accent); }
+.category-block__head .cat-count {
+  font-size: .72rem; color: var(--muted); background: var(--surface);
+  padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line);
+}
+
 .blocked-screen {
   position: absolute; inset: 0; z-index: 10; background: #08090d;
   display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -178,70 +243,229 @@ button, a.btn { cursor: pointer; text-decoration: none; }
   background: var(--surface-2); padding: 10px 18px; border-radius: 12px; border: 1px solid var(--line); color: var(--accent);
 }
 
-/* MODAL */
-.modal { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 12px; }
+.modal { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 8px; }
 .modal[hidden] { display: none; }
 .modal__backdrop { position: absolute; inset: 0; background: rgba(4,5,9,.88); backdrop-filter: blur(8px); }
 
 .modal__panel {
-  position: relative; z-index: 1; width: min(960px, 100%); background: var(--surface);
-  border: 1px solid var(--line); border-radius: 16px; overflow: hidden; max-height: 94vh; display: flex; flex-direction: column;
+  position: relative; z-index: 1; width: min(1100px, 100%); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 16px; overflow: hidden;
+  max-height: calc(100vh - 16px); max-height: calc(100dvh - 16px);
+  display: flex; flex-direction: column;
 }
 
 .modal__player { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; flex-shrink: 0; }
 #yt-player { position: absolute; inset: 0; width: 100% !important; height: 100% !important; border: 0; }
 
 .modal__actions {
-  display: flex; gap: 10px; align-items: center; justify-content: space-between;
-  padding: 10px 18px; border-bottom: 1px solid var(--line-soft);
+  display: flex; gap: 8px; align-items: center;
+  padding: 10px 14px; border-bottom: 1px solid var(--line-soft);
   overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; width: 100%;
+  flex-wrap: nowrap;
 }
 .modal__actions::-webkit-scrollbar { display: none; }
-
 .modal__actions-group { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
-
 #skip-intro-btn { display: none; }
 
 .modal__info { padding: 14px 18px; overflow-y: auto; }
-.modal__info h2 { margin: 0 0 4px; font-size: 1.2rem; display: flex; align-items: center; gap: 10px; }
+.modal__info h2 { margin: 0 0 4px; font-size: clamp(1rem, 2.5vw, 1.2rem); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .modal__info p { margin: 0 0 12px; color: var(--muted); font-size: .85rem; line-height: 1.4; }
 
 .video-extracted-stats {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; padding: 12px;
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; padding: 12px;
   background: var(--surface-2); border-radius: var(--radius-sm); border: 1px solid var(--line);
   font-size: .8rem; color: var(--text); margin-top: 10px;
 }
 .video-extracted-stats div { display: flex; flex-direction: column; gap: 2px; }
 .video-extracted-stats span.label { font-size: .68rem; color: var(--muted); text-transform: uppercase; font-weight: 700; }
 
-.collections-panel {
-  position: relative; z-index: 1; width: min(520px, 100%); background: var(--surface);
-  border: 1px solid var(--line); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 16px;
+.collections-panel, .queue-panel, .history-panel, .filters-panel, .help-card, .upcoming-panel, .favorites-panel {
+  position: relative; z-index: 1; width: min(560px, 100%); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 18px; padding: 20px;
+  display: flex; flex-direction: column; gap: 16px;
+  max-height: calc(100vh - 16px); max-height: calc(100dvh - 16px);
+  overflow-y: auto;
 }
-.collections-panel h3 { margin: 0; font-size: 1.1rem; color: var(--text); display: flex; align-items: center; justify-content: space-between; }
-.collections-list { display: flex; flex-direction: column; gap: 8px; max-height: 260px; overflow-y: auto; padding-right: 4px; }
-.collection-item {
+.history-panel { width: min(640px, 100%); }
+.help-card { width: min(440px, 100%); }
+.filters-panel { width: min(600px, 100%); }
+.upcoming-panel { width: min(720px, 100%); }
+.favorites-panel { width: min(720px, 100%); }
+
+.collections-panel h3, .queue-panel h3, .history-panel h3, .filters-panel h3, .upcoming-panel h3, .favorites-panel h3 {
+  margin: 0; font-size: 1.1rem; color: var(--text);
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
+}
+.collections-list, .queue-list { display: flex; flex-direction: column; gap: 8px; max-height: 300px; overflow-y: auto; padding-right: 4px; }
+.collection-item, .queue-item {
   display: flex; align-items: center; justify-content: space-between; gap: 10px;
   padding: 10px 12px; background: var(--surface-2); border-radius: var(--radius-sm); border: 1px solid var(--line);
 }
-.collection-item__info { display: flex; flex-direction: column; gap: 2px; }
-.collection-item__name { font-weight: 700; font-size: .88rem; }
+.collection-item__info { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.collection-item__name { font-weight: 700; font-size: .88rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .collection-item__count { font-size: .72rem; color: var(--muted); }
-.collection-item__actions { display: flex; gap: 6px; }
+.collection-item__actions { display: flex; gap: 6px; flex-shrink: 0; }
 
-.collections-form { display: flex; gap: 8px; }
+.collections-form { display: flex; gap: 8px; flex-wrap: wrap; }
 .collections-form input {
-  flex: 1; padding: 9px 12px; background: var(--surface-2); border: 1px solid var(--line);
+  flex: 1 1 180px; padding: 9px 12px; background: var(--surface-2); border: 1px solid var(--line);
   border-radius: 8px; color: var(--text); font-size: .85rem;
 }
 .collections-form input:focus { border-color: var(--accent); }
 
-.help-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 20px; max-width: 440px; width: 100%; position: relative; z-index: 1; }
-.kbd-grid { display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; font-size: .82rem; margin-block: 14px; }
+.help-card .kbd-grid { display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; font-size: .82rem; margin-block: 14px; }
 kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 6px; border-radius: 4px; font-family: monospace; color: var(--accent); }
 
 .footer { border-top: 1px solid var(--line-soft); padding: 20px 0; color: var(--muted); font-size: .78rem; }
 .footer__inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+
+.range-slider { display: flex; flex-direction: column; gap: 4px; width: 100%; }
+.range-slider input[type="range"] { width: 100%; accent-color: var(--accent); }
+.range-labels { display: flex; justify-content: space-between; font-size: .7rem; color: var(--muted); }
+
+.tag-cloud { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag-chip {
+  display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 999px;
+  background: var(--surface-2); border: 1px solid var(--line); font-size: .72rem; font-weight: 600;
+  cursor: pointer; transition: all .2s; color: var(--text);
+}
+.tag-chip:hover { border-color: var(--accent); color: var(--accent); }
+.tag-chip.active { background: var(--accent); color: #17130a; border-color: var(--accent); }
+
+.history-item {
+  display: flex; align-items: center; gap: 12px; padding: 10px 12px;
+  background: var(--surface-2); border-radius: var(--radius-sm); border: 1px solid var(--line);
+  margin-bottom: 8px; flex-wrap: nowrap;
+}
+.history-item__thumb { width: clamp(80px, 18vw, 120px); aspect-ratio: 16/9; border-radius: 8px; overflow: hidden; flex-shrink: 0; background: var(--surface); }
+.history-item__thumb img { width: 100%; height: 100%; object-fit: cover; }
+.history-item__info { flex: 1; min-width: 0; }
+.history-item__info h4 { margin: 0 0 2px; font-size: .85rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.history-item__info p { margin: 0; font-size: .7rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.history-item__progress { height: 4px; background: var(--line); border-radius: 4px; margin-top: 6px; overflow: hidden; }
+.history-item__progress-bar { height: 100%; background: var(--accent); border-radius: 4px; transition: width .3s; }
+.history-item__actions { display: flex; gap: 4px; flex-shrink: 0; }
+
+@media (max-width: 480px) {
+  .history-item { flex-wrap: wrap; }
+  .history-item__thumb { width: 100%; max-width: 160px; }
+  .history-item__actions { width: 100%; justify-content: flex-end; }
+}
+
+.queue-badge { position: absolute; top: 10px; left: 10px; z-index: 5; background: var(--accent); color: #17130a; font-size: .6rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; }
+
+.filter-section { display: flex; flex-direction: column; gap: 6px; }
+.filter-section label { font-size: .78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+.filter-section select, .filter-section input[type="text"] {
+  padding: 8px 12px; background: var(--surface-2); border: 1px solid var(--line);
+  border-radius: 8px; color: var(--text); font-size: .85rem;
+}
+
+.queue-item__num { font-weight: 800; color: var(--accent); min-width: 22px; font-size: .85rem; }
+.queue-item__title { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: .82rem; }
+
+.resume-banner {
+  display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+  background: rgba(229, 181, 103, 0.12); border: 1px solid var(--accent);
+  border-radius: var(--radius-sm); font-size: .82rem; margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+.resume-banner strong { color: var(--accent); }
+.resume-banner button { margin-left: auto; }
+
+.empty-state { text-align: center; padding: 24px 0; color: var(--muted); font-size: .85rem; }
+.empty-state i { display: block; font-size: 2rem; margin-bottom: 8px; opacity: .5; }
+
+.upcoming-list { display: flex; flex-direction: column; gap: 12px; }
+.upcoming-item {
+  display: flex; gap: 12px; padding: 10px; background: var(--surface-2);
+  border-radius: var(--radius-sm); border: 1px solid var(--line);
+  cursor: pointer; transition: all .2s; align-items: center;
+}
+.upcoming-item:hover { border-color: var(--accent); transform: translateX(4px); }
+.upcoming-item__thumb {
+  width: clamp(120px, 22vw, 180px); aspect-ratio: 16/9; border-radius: 8px;
+  overflow: hidden; flex-shrink: 0; position: relative; background: var(--surface);
+}
+.upcoming-item__thumb img { width: 100%; height: 100%; object-fit: cover; filter: brightness(.7); }
+.upcoming-item__thumb::after {
+  content: "\f017"; font-family: "Font Awesome 6 Free"; font-weight: 900;
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  color: var(--accent); font-size: 1.6rem; text-shadow: 0 2px 8px rgba(0,0,0,.8);
+}
+.upcoming-item__info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.upcoming-item__info h4 { margin: 0; font-size: .9rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.upcoming-item__info .upc-date { font-size: .75rem; color: var(--accent); font-weight: 700; }
+.upcoming-item__info .upc-countdown { font-size: .72rem; color: var(--muted); font-family: monospace; }
+.upcoming-item__info .upc-desc { font-size: .72rem; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+@media (max-width: 560px) {
+  .upcoming-item { flex-wrap: wrap; }
+  .upcoming-item__thumb { width: 100%; max-width: 240px; }
+}
+
+/* ====== LISTA DE FAVORITOS ====== */
+.fav-item {
+  display: flex; align-items: center; gap: 12px; padding: 10px 12px;
+  background: var(--surface-2); border-radius: var(--radius-sm); border: 1px solid var(--line);
+  margin-bottom: 8px; cursor: pointer; transition: all .2s;
+}
+.fav-item:hover { border-color: var(--accent); transform: translateX(4px); }
+.fav-item__thumb {
+  width: clamp(100px, 18vw, 140px); aspect-ratio: 16/9; border-radius: 8px;
+  overflow: hidden; flex-shrink: 0; background: var(--surface); position: relative;
+}
+.fav-item__thumb img { width: 100%; height: 100%; object-fit: cover; }
+.fav-item__thumb .fav-item__play-overlay {
+  position: absolute; inset: 0; background: rgba(8,9,13,.5);
+  display: grid; place-items: center; opacity: 0; transition: opacity .2s;
+}
+.fav-item:hover .fav-item__thumb .fav-item__play-overlay { opacity: 1; }
+.fav-item__play-overlay i {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--accent); color: #17130a; display: grid; place-items: center; font-size: .9rem;
+}
+.fav-item__info { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.fav-item__info h4 { margin: 0; font-size: .9rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.fav-item__info .fav-item__meta { font-size: .72rem; color: var(--muted); display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.fav-item__actions { display: flex; gap: 4px; flex-shrink: 0; }
+
+@media (max-width: 560px) {
+  .fav-item { flex-wrap: wrap; }
+  .fav-item__thumb { width: 100%; max-width: 200px; }
+  .fav-item__actions { width: 100%; justify-content: flex-end; }
+}
+
+@media (max-width: 900px) {
+  .topbar__inner { flex-wrap: wrap; }
+  .topbar__inner .search-box { order: 3; flex: 1 1 100%; max-width: 100%; }
+  .topbar__inner .topbar__actions { order: 2; }
+}
+
+@media (max-width: 640px) {
+  .topbar__inner { min-height: 56px; padding-block: 6px; gap: 8px; }
+  .brand__text strong { font-size: .85rem; }
+  .brand__text small { font-size: .6rem; }
+  .pill { font-size: .7rem; padding: 5px 10px; }
+  .filter-group { width: 100%; justify-content: flex-start; }
+  .filter-group .btn, .filter-group .select-custom { flex: 1 1 auto; font-size: .72rem; padding: 7px 10px; }
+  .controls-bar { gap: 10px; }
+  .section__head { margin-bottom: 10px; }
+  .modal__actions { padding: 8px 10px; gap: 6px; }
+  .modal__actions .btn { font-size: .72rem; padding: 6px 10px; }
+  .modal__info { padding: 12px; }
+  .float-btns { bottom: 14px; right: 14px; }
+  .float-btn { width: 42px; height: 42px; font-size: 1rem; }
+}
+
+@media (max-width: 400px) {
+  .card-actions { top: 6px; right: 6px; gap: 4px; }
+  .fav-toggle { width: 30px; height: 30px; }
+  .badge { font-size: .6rem; padding: 2px 6px; }
+}
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+.history-item, .queue-item, .collection-item, .upcoming-item, .fav-item { animation: fadeIn .2s ease; }
 </style>
 </head>
 
@@ -314,22 +538,53 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
 
 <header class="topbar">
   <div class="container topbar__inner">
-    <a class="brand" href="#">
+    <a class="brand" href="#top">
       <span class="brand__mark">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"/></svg>
+        <i class="fa-solid fa-play"></i>
       </span>
       <span class="brand__text">
-        <strong>CINEMATECA</strong>
-        <small>Cartelera Pro</small>
+        <strong>GS-SCREENS</strong>
+        <small data-i18n="subtitle">Grandes Pantallas - Cartelera</small>
       </span>
     </a>
 
+    <div class="search-box">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="text" id="search-input" placeholder="Buscar por título, director..." data-i18n-placeholder="search">
+    </div>
+
     <div class="topbar__actions">
-      <span class="pill" id="clock">--:--</span>
-      <button class="pill" id="help-btn" title="Atajos de teclado">⌨️ Keybinds (?)</button>
-      <button class="pill pill--accent" id="fav-filter-btn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-        <span id="fav-count">0 Favoritos</span>
+      <span class="pill" id="clock"><i class="fa-regular fa-clock"></i> --:--</span>
+      
+    <div class="lang-select-wrap">
+      <i class="fa-solid fa-globe"></i>
+      <select class="lang-select" id="lang-select">
+        <option value="es">🇪🇸 Español</option>
+        <option value="en">🇬🇧 English</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="de">🇩🇪 Deutsch</option>
+        <option value="it">🇮🇹 Italiano</option>
+        <option value="pt">🇵🇹 Português</option>
+        <option value="zh">🇨🇳 中文</option>
+        <option value="ja">🇯🇵 日本語</option>
+        <option value="ru">🇷🇺 Русский</option>
+        <option value="ar">🇸🇦 العربية</option>
+        <option value="hi">🇮🇳 हिन्दी</option>
+        <option value="ko">🇰🇷 한국어</option>
+        <option value="nl">🇳🇱 Nederlands</option>
+        <option value="pl">🇵🇱 Polski</option>
+        <option value="tr">🇹🇷 Türkçe</option>
+      </select>
+    </div>
+
+      <button class="pill" id="go-top-btn" title="Ir arriba" data-i18n-title="goTop">
+        <i class="fa-solid fa-arrow-up"></i>
+      </button>
+      <button class="btn" id="queue-btn"><i class="fa-solid fa-list"></i> <span data-i18n="queue">Cola</span> <span id="queue-count-badge" style="display:none; background:var(--accent); color:#17130a; border-radius:999px; padding:0 6px; font-size:.7rem; margin-left:2px;">0</span></button>
+
+      <button class="pill" id="fav-filter-btn">
+        <i class="fa-solid fa-heart"></i>
+        <span id="fav-count">0 <span data-i18n="favorites">Favoritos</span></span>
       </button>
     </div>
   </div>
@@ -337,26 +592,24 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
 
 <main class="container">
   <div class="controls-bar">
-    <div class="search-box">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input type="text" id="search-input" placeholder="Buscar por título, director...">
-    </div>
-
     <div class="filter-group">
       <select class="select-custom" id="collection-select">
-        <option value="ALL">Todas las colecciones</option>
+        <option value="ALL" data-i18n="allCollections">Todas las colecciones</option>
       </select>
-
-      <button class="btn" id="manage-collections-btn">📁 Gestionar Colecciones</button>
-      <button class="btn" id="view-mode-toggle" title="Cambiar Vista Cuadrícula/Lista">🔲 Cuadrícula</button>
+      <button class="pill" id="upcoming-btn" title="Próximos estrenos" data-i18n-title="upcoming"><i class="fa-solid fa-calendar-days"></i> <span data-i18n="upcoming">Próximos</span></button>
+      <button class="pill" id="help-btn" title="Atajos de teclado" data-i18n-title="keybinds"><i class="fa-solid fa-keyboard"></i> <span data-i18n="keybinds">Keybinds (?)</span></button>
+      <button class="btn" id="filters-btn"><i class="fa-solid fa-sliders"></i> <span data-i18n="filters">Filtros</span></button>
+      <button class="btn" id="manage-collections-btn"><i class="fa-solid fa-folder"></i> <span data-i18n="manageCollections">Colecciones</span></button>
+      <button class="btn" id="history-btn"><i class="fa-solid fa-clock-rotate-left"></i> <span data-i18n="history">Historial</span></button>
+      <button class="btn" id="view-mode-toggle" title="Cambiar Vista" data-i18n-title="toggleView"><i class="fa-solid fa-table-cells"></i> <span data-i18n="grid">Cuadrícula</span></button>
     </div>
   </div>
 
   <section class="section" id="seccion-destacados">
     <div class="section__head">
       <div class="section__titles">
-        <h2>Destacados</h2>
-        <p>Títulos seleccionados</p>
+        <h2 data-i18n="featured">Destacados</h2>
+        <p data-i18n="featuredSub">Títulos seleccionados</p>
       </div>
     </div>
     <div class="track track--featured" id="track-destacados"></div>
@@ -365,28 +618,147 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
   <section class="section">
     <div class="section__head">
       <div class="section__titles">
-        <h2>Catálogo Completo</h2>
-        <p id="catalog-subtitle">Explora toda la selección</p>
+        <h2 data-i18n="fullCatalog">Catálogo Completo</h2>
+        <p id="catalog-subtitle" data-i18n="catalogSub">Explora toda la selección</p>
       </div>
     </div>
-    <div class="track track--grid" id="track-catalogo"></div>
+    <div id="track-catalogo"></div>
   </section>
 </main>
+
+<div class="float-btns">
+  <button class="float-btn float-btn--secondary" id="float-upcoming-btn" title="Próximos estrenos" data-i18n-title="upcoming">
+    <i class="fa-solid fa-calendar-days"></i>
+  </button>
+  <button class="float-btn" id="float-top-btn" title="Ir arriba" data-i18n-title="goTop">
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+</div>
+
+<!-- Modal de Favoritos -->
+<div class="modal" id="favorites-modal" hidden>
+  <div class="modal__backdrop" data-close-favorites></div>
+  <div class="favorites-panel">
+    <h3>
+      <span><i class="fa-solid fa-heart" style="color:var(--danger);"></i> <span data-i18n="myFavorites">Mis Favoritos</span> <span id="fav-modal-count" style="font-size:.8rem; color:var(--muted); font-weight:600; margin-left:6px;">(0)</span></span>
+      <button class="btn" style="padding:4px 8px;" data-close-favorites><i class="fa-solid fa-xmark"></i></button>
+    </h3>
+    <div id="favorites-list-container"></div>
+  </div>
+</div>
+
+<div class="modal" id="upcoming-modal" hidden>
+  <div class="modal__backdrop" data-close-upcoming></div>
+  <div class="upcoming-panel">
+    <h3>
+      <span><i class="fa-solid fa-calendar-days"></i> <span data-i18n="upcomingTitle">Próximos Estrenos</span></span>
+      <button class="btn" style="padding:4px 8px;" data-close-upcoming><i class="fa-solid fa-xmark"></i></button>
+    </h3>
+    <div class="upcoming-list" id="upcoming-list-container"></div>
+  </div>
+</div>
+
+<div class="modal" id="filters-modal" hidden>
+  <div class="modal__backdrop" data-close-filters></div>
+  <div class="filters-panel">
+    <h3>
+      <span><i class="fa-solid fa-sliders"></i> <span data-i18n="advancedFilters">Filtros Avanzados</span></span>
+      <button class="btn" style="padding:4px 8px;" data-close-filters><i class="fa-solid fa-xmark"></i></button>
+    </h3>
+
+    <div class="filter-section">
+      <label data-i18n="sortBy">Ordenar por</label>
+      <select id="sort-select">
+        <option value="default" data-i18n="sortDefault">Por defecto</option>
+        <option value="title-asc" data-i18n="sortTitleAsc">Título (A-Z)</option>
+        <option value="title-desc" data-i18n="sortTitleDesc">Título (Z-A)</option>
+        <option value="date-asc" data-i18n="sortDateAsc">Fecha de estreno (más antiguo)</option>
+        <option value="date-desc" data-i18n="sortDateDesc">Fecha de estreno (más reciente)</option>
+        <option value="score-desc" data-i18n="sortScoreDesc">Puntuación (mayor a menor)</option>
+        <option value="score-asc" data-i18n="sortScoreAsc">Puntuación (menor a mayor)</option>
+        <option value="duration-asc" data-i18n="sortDurationAsc">Duración (más corto)</option>
+        <option value="duration-desc" data-i18n="sortDurationDesc">Duración (más largo)</option>
+      </select>
+    </div>
+
+    <div class="filter-section">
+      <label data-i18n="durationFilter">Duración del vídeo</label>
+      <div class="range-slider">
+        <input type="range" id="duration-min" min="0" max="3600" value="0" step="60">
+        <input type="range" id="duration-max" min="0" max="3600" value="3600" step="60">
+        <div class="range-labels">
+          <span id="duration-min-label">0 min</span>
+          <span id="duration-max-label">60+ min</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-section">
+      <label data-i18n="ageFilter">Clasificación de edad</label>
+      <select id="age-select">
+        <option value="all" data-i18n="ageAll">Todas las edades</option>
+        <option value="TP" data-i18n="ageTP">TP (Todo público)</option>
+        <option value="+7" data-i18n="age7">+7 años</option>
+        <option value="+12" data-i18n="age12">+12 años</option>
+        <option value="+16" data-i18n="age16">+16 años</option>
+        <option value="+18" data-i18n="age18">+18 años</option>
+        <option value="hide18" data-i18n="ageHide18">Ocultar +18</option>
+      </select>
+    </div>
+
+    <div class="filter-section">
+      <label data-i18n="tagsFilter">Etiquetas</label>
+      <div class="tag-cloud" id="tags-cloud"></div>
+    </div>
+
+    <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap;">
+      <button class="btn btn--primary" id="apply-filters-btn" style="flex:1;" data-i18n="applyFilters">Aplicar Filtros</button>
+      <button class="btn" id="clear-filters-btn" data-i18n="clearFilters">Limpiar</button>
+    </div>
+  </div>
+</div>
 
 <div class="modal" id="collections-modal" hidden>
   <div class="modal__backdrop" data-close-collections></div>
   <div class="collections-panel">
     <h3>
-      <span>📁 Mis Colecciones</span>
-      <button class="btn" style="padding: 4px 8px;" data-close-collections>✕</button>
+      <span><i class="fa-solid fa-folder"></i> <span data-i18n="myCollections">Mis Colecciones</span></span>
+      <button class="btn" style="padding: 4px 8px;" data-close-collections><i class="fa-solid fa-xmark"></i></button>
     </h3>
 
     <div class="collections-form">
-      <input type="text" id="new-col-name-input" placeholder="Nombre de nueva colección...">
-      <button class="btn btn--primary" id="create-col-btn">Crear</button>
+      <input type="text" id="new-col-name-input" placeholder="Nombre de nueva colección..." data-i18n-placeholder="newCollectionName">
+      <button class="btn btn--primary" id="create-col-btn"><i class="fa-solid fa-plus"></i> <span data-i18n="create">Crear</span></button>
     </div>
 
     <div class="collections-list" id="collections-list-container"></div>
+  </div>
+</div>
+
+<div class="modal" id="queue-modal" hidden>
+  <div class="modal__backdrop" data-close-queue></div>
+  <div class="queue-panel">
+    <h3>
+      <span><i class="fa-solid fa-list"></i> <span data-i18n="playQueue">Cola de Reproducción</span></span>
+      <button class="btn" style="padding: 4px 8px;" data-close-queue><i class="fa-solid fa-xmark"></i></button>
+    </h3>
+    <div class="queue-list" id="queue-list-container"></div>
+    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+      <button class="btn btn--primary" id="play-queue-btn" style="flex:1;" data-i18n="playQueueBtn"><i class="fa-solid fa-play"></i> Reproducir Cola</button>
+      <button class="btn btn--danger" id="clear-queue-btn" data-i18n="clearQueue"><i class="fa-solid fa-trash"></i> Limpiar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="history-modal" hidden>
+  <div class="modal__backdrop" data-close-history></div>
+  <div class="history-panel">
+    <h3>
+      <span><i class="fa-solid fa-clock-rotate-left"></i> <span data-i18n="watchHistory">Historial de Reproducción</span></span>
+      <button class="btn" style="padding: 4px 8px;" data-close-history><i class="fa-solid fa-xmark"></i></button>
+    </h3>
+    <div id="history-list-container"></div>
+    <button class="btn btn--danger" id="clear-history-btn" style="width:100%;" data-i18n="clearHistory"><i class="fa-solid fa-trash"></i> Borrar Historial</button>
   </div>
 </div>
 
@@ -396,32 +768,31 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
     <div class="modal__player">
       <div id="yt-player"></div>
       <div class="blocked-screen" id="player-blocked-screen" style="display: none;">
-        <h3 id="blocked-title">🔒 Vídeo No Disponible</h3>
-        <p id="blocked-desc">Este contenido no está disponible actualmente.</p>
+        <h3 id="blocked-title" data-i18n="blockedTitle"><i class="fa-solid fa-lock"></i> Vídeo No Disponible</h3>
+        <p id="blocked-desc" data-i18n="blockedDesc">Este contenido no está disponible actualmente.</p>
         <div class="blocked-timer" id="player-countdown" style="display: none;"></div>
       </div>
     </div>
     
     <div class="modal__actions">
       <div class="modal__actions-group">
-        <button class="btn btn--primary" id="skip-intro-btn">⏭ Saltar Intro</button>
+        <button class="btn btn--primary" id="skip-intro-btn"><i class="fa-solid fa-forward"></i> <span data-i18n="skipIntro">Saltar Intro</span></button>
       </div>
 
       <div class="modal__actions-group">
-        <a class="btn btn--yt" id="watch-on-yt-btn" target="_blank" rel="noopener noreferrer" title="Abrir vídeo directo en YouTube">
-          <svg width="18" height="13" viewBox="0 0 24 17" fill="currentColor">
-            <path d="M23.498 2.622a3.008 3.008 0 0 0-2.116-2.128C19.516 0 12 0 12 0S4.484 0 2.618.494A3.008 3.008 0 0 0 .502 2.622C0 4.5 0 8.5 0 8.5s0 4.001.502 5.878a3.008 3.008 0 0 0 2.116 2.128C4.484 17 12 17 12 17s7.516 0 9.382-.494a3.008 3.008 0 0 0 2.116-2.128C24 12.5 24 8.5 24 8.5s0-4.001-.502-5.878zM9.545 12.168V4.832L15.818 8.5l-6.273 3.668z"/>
-          </svg>
-          <span>Ver en YouTube</span>
+        <a class="btn btn--yt" id="watch-on-yt-btn" target="_blank" rel="noopener noreferrer" title="YouTube" data-i18n-title="watchOnYT">
+          <i class="fa-brands fa-youtube"></i>
+          <span data-i18n="watchOnYT">Ver en YouTube</span>
         </a>
 
         <button class="btn btn--like" id="modal-like-btn">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
-          <span id="modal-like-text">Me Gusta</span>
+          <i class="fa-solid fa-heart"></i>
+          <span id="modal-like-text" data-i18n="like">Me Gusta</span>
         </button>
 
-        <button class="btn" id="add-to-col-modal-btn">+ Añadir a Colección</button>
-        <button class="btn" data-close>Cerrar</button>
+        <button class="btn" id="add-to-col-modal-btn"><i class="fa-solid fa-folder-plus"></i> <span data-i18n="addToCollection">Colección</span></button>
+        <button class="btn" id="add-to-queue-modal-btn"><i class="fa-solid fa-list"></i> <span data-i18n="addToQueue">Cola</span></button>
+        <button class="btn" data-close><i class="fa-solid fa-xmark"></i> <span data-i18n="close">Cerrar</span></button>
       </div>
     </div>
 
@@ -431,19 +802,21 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       </h2>
       <p id="modal-desc"></p>
 
+      <div id="resume-banner-container"></div>
+
       <div class="video-extracted-stats" id="extracted-stats">
-        <div><span class="label">Puntuación</span><strong id="stat-score">Calculando...</strong></div>
-        <div><span class="label">Clasificación</span><strong id="stat-classification">—</strong></div>
-        <div><span class="label">Género</span><strong id="stat-genre">—</strong></div>
-        <div><span class="label">Duración</span><strong id="stat-duration">Cargando...</strong></div>
-        <div><span class="label">Visualizaciones</span><strong id="stat-views">Consultando...</strong></div>
-        <div><span class="label">Likes / Dislikes</span><strong id="stat-likes-dislikes">Consultando...</strong></div>
-        <div><span class="label">Calidad Actual</span><strong id="stat-quality">Cargando...</strong></div>
-        <div><span class="label">Formatos API</span><strong id="stat-qualities-list">—</strong></div>
-        <div><span class="label">Autor / Canal</span><strong id="stat-author">—</strong></div>
-        <div><span class="label">Etiquetas</span><strong id="stat-tags">—</strong></div>
-        <div><span class="label">ID Vídeo</span><strong id="stat-id">—</strong></div>
-        <div><span class="label">Estado Reproductor</span><strong id="stat-player-state">—</strong></div>
+        <div><span class="label" data-i18n="score">Puntuación</span><strong id="stat-score">Calculando...</strong></div>
+        <div><span class="label" data-i18n="classification">Clasificación</span><strong id="stat-classification">—</strong></div>
+        <div><span class="label" data-i18n="genre">Género</span><strong id="stat-genre">—</strong></div>
+        <div><span class="label" data-i18n="duration">Duración</span><strong id="stat-duration">Cargando...</strong></div>
+        <div><span class="label" data-i18n="views">Visualizaciones</span><strong id="stat-views">Consultando...</strong></div>
+        <div><span class="label" data-i18n="likesDislikes">Likes / Dislikes</span><strong id="stat-likes-dislikes">Consultando...</strong></div>
+        <div><span class="label" data-i18n="currentQuality">Calidad Actual</span><strong id="stat-quality">Cargando...</strong></div>
+        <div><span class="label" data-i18n="apiFormats">Formatos API</span><strong id="stat-qualities-list">—</strong></div>
+        <div><span class="label" data-i18n="author">Autor / Canal</span><strong id="stat-author">—</strong></div>
+        <div><span class="label" data-i18n="tags">Etiquetas</span><strong id="stat-tags">—</strong></div>
+        <div><span class="label" data-i18n="videoId">ID Vídeo</span><strong id="stat-id">—</strong></div>
+        <div><span class="label" data-i18n="playerState">Estado Reproductor</span><strong id="stat-player-state">—</strong></div>
       </div>
     </div>
   </div>
@@ -452,21 +825,21 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
 <div class="modal" id="help-modal" hidden>
   <div class="modal__backdrop" id="close-help-bg"></div>
   <div class="help-card">
-    <h3>Atajos de Teclado</h3>
+    <h3 data-i18n="helpTitle">Atajos de Teclado</h3>
     <div class="kbd-grid">
-      <kbd>Espacio</kbd> <span>Pausar / Reproducir vídeo</span>
-      <kbd>← / →</kbd> <span>Retroceder / Avanzar 10s</span>
-      <kbd>Esc</kbd> <span>Cerrar modal de reproducción</span>
-      <kbd>?</kbd> <span>Abrir / Cerrar esta ayuda</span>
+      <kbd>Espacio</kbd> <span data-i18n="helpSpace">Pausar / Reproducir vídeo</span>
+      <kbd>← / →</kbd> <span data-i18n="helpArrows">Retroceder / Avanzar 10s</span>
+      <kbd>Esc</kbd> <span data-i18n="helpEsc">Cerrar modal de reproducción</span>
+      <kbd>?</kbd> <span data-i18n="helpQuestion">Abrir / Cerrar esta ayuda</span>
     </div>
-    <button class="btn btn--primary" id="close-help-btn" style="width: 100%; margin-top: 10px;">Entendido</button>
+    <button class="btn btn--primary" id="close-help-btn" style="width: 100%; margin-top: 10px;" data-i18n="understood">Entendido</button>
   </div>
 </div>
 
 <footer class="footer">
   <div class="container footer__inner">
     <span>CINEMATECA 2026</span>
-    <span id="footer-status">Cargando catálogo...</span>
+    <span id="footer-status" data-i18n="loadingCatalog">Cargando catálogo...</span>
   </div>
 </footer>
 
@@ -474,25 +847,1052 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
 (function() {
   'use strict';
 
+  /* ====== TRADUCCIONES COMPLETAS (i18n) ====== */
+  const I18N = {
+    es: {
+      subtitle: 'Grandes Pantallas - Cartelera', keybinds: 'Keybinds (?)', favorites: 'Favoritos',
+      search: 'Buscar por título, director...', allCollections: 'Todas las colecciones',
+      filters: 'Filtros', manageCollections: 'Colecciones', queue: 'Cola', history: 'Historial',
+      grid: 'Cuadrícula', list: 'Lista', toggleView: 'Cambiar Vista',
+      featured: 'Destacados', featuredSub: 'Títulos seleccionados',
+      fullCatalog: 'Catálogo Completo', catalogSub: 'Explora toda la selección',
+      advancedFilters: 'Filtros Avanzados', sortBy: 'Ordenar por', sortDefault: 'Por defecto',
+      sortTitleAsc: 'Título (A-Z)', sortTitleDesc: 'Título (Z-A)',
+      sortDateAsc: 'Fecha de estreno (más antiguo)', sortDateDesc: 'Fecha de estreno (más reciente)',
+      sortScoreDesc: 'Puntuación (mayor a menor)', sortScoreAsc: 'Puntuación (menor a mayor)',
+      sortDurationAsc: 'Duración (más corto)', sortDurationDesc: 'Duración (más largo)',
+      durationFilter: 'Duración del vídeo', ageFilter: 'Clasificación de edad',
+      ageAll: 'Todas las edades', ageTP: 'TP (Todo público)', age7: '+7 años', age12: '+12 años',
+      age16: '+16 años', age18: '+18 años', ageHide18: 'Ocultar +18', tagsFilter: 'Etiquetas',
+      applyFilters: 'Aplicar Filtros', clearFilters: 'Limpiar',
+      myCollections: 'Mis Colecciones', newCollectionName: 'Nombre de nueva colección...',
+      create: 'Crear', playQueue: 'Cola de Reproducción', playQueueBtn: 'Reproducir Cola',
+      clearQueue: 'Limpiar', watchHistory: 'Historial de Reproducción', clearHistory: 'Borrar Historial',
+      blockedTitle: 'Vídeo No Disponible', blockedDesc: 'Este contenido no está disponible actualmente.',
+      watchOnYT: 'Ver en YouTube', like: 'Me Gusta', addToCollection: 'Colección',
+      addToQueue: 'Cola', close: 'Cerrar', skipIntro: 'Saltar Intro',
+      stateUnstarted: 'Sin iniciar', stateEnded: 'Finalizado', statePlaying: 'Reproduciendo',
+      statePaused: 'Pausado', stateBuffering: 'Cargando', stateCued: 'En cola', stateActive: 'Activo',
+      stateReady: 'Listo', stateLive: 'Streaming Live', stateStandard: 'Estándar',
+      stateAutoAdaptive: 'Auto (Adaptativo)', stateStandardFormat: 'Estándar H.264 / AAC',
+      score: 'Puntuación', classification: 'Clasificación', genre: 'Género',
+      duration: 'Duración', views: 'Visualizaciones',
+      likesDislikes: 'Likes / Dislikes', currentQuality: 'Calidad Actual', apiFormats: 'Formatos API',
+      author: 'Autor / Canal', tags: 'Etiquetas', videoId: 'ID Vídeo', playerState: 'Estado Reproductor',
+      helpTitle: 'Atajos de Teclado', helpSpace: 'Pausar / Reproducir vídeo',
+      helpArrows: 'Retroceder / Avanzar 10s', helpEsc: 'Cerrar modal de reproducción',
+      helpQuestion: 'Abrir / Cerrar esta ayuda', understood: 'Entendido',
+      loadingCatalog: 'Cargando catálogo...', noCollections: 'No tienes colecciones creadas.',
+      titles: 'títulos', queueEmpty: 'La cola está vacía.', historyEmpty: 'No hay historial de reproducción.',
+      noCatalogTitles: 'No hay títulos en el catálogo.',
+      resumeAt: 'Reanudar en', continueWatching: 'Continuar viendo',
+      resumeNow: '¡Disponible ahora!', restart: 'Reiniciar',
+      minutes: 'min', minutesPlus: '+ min', hour: 'h',
+      upcoming: 'Próximos', upcomingTitle: 'Próximos Estrenos',
+      noUpcoming: 'No hay próximos estrenos programados.',
+      goTop: 'Ir arriba', otherCategory: 'Otros',
+      apiNA: 'API N/A', apiCalculating: 'Calculando...',
+      apiConsulting: 'Consultando API...', apiLoading: 'Cargando datos API...',
+      apiLoadingViews: 'Cargando vistas API...', apiGettingViews: 'Obteniendo API...',
+      apiLoadStats: 'Cargando...', apiCalcScore: 'Calculando...',
+      confirmDeleteCollection: '¿Eliminar la colección "{name}"?',
+      confirmClearHistory: '¿Borrar todo el historial de reproducción?',
+      confirmClearQueue: '¿Vaciar la cola de reproducción?',
+      featured2: 'Destacado', availableNow: 'Disponible', premiere: 'ESTRENO',
+      finished: 'Finalizado', comingSoon: 'Próximamente', notAvailable: 'No disponible',
+      playNow: 'Reproducir', inQueue: 'EN COLA', filterBy: 'Filtrar por',
+      addFav: 'Favorito', addToQueueTitle: 'Añadir a la cola', removeFromQueueTitle: 'Quitar de la cola',
+      play: 'Reproducir', removeFromHistory: 'Eliminar del historial',
+      year: 'año', years: 'años', month: 'mes', months: 'meses',
+      day: 'día', days: 'días', hourShort: 'h', minuteShort: 'm', secondShort: 's',
+      noResults: 'No se encontraron resultados.',
+      myFavorites: 'Mis Favoritos',
+      noFavorites: 'No tienes vídeos en favoritos.',
+      removeFav: 'Quitar de favoritos',
+      favoritesSubtitle: 'Tu lista personal de títulos guardados',
+      playAllFavs: 'Reproducir todos'
+    },
+    en: {
+      subtitle: 'Big Screens - Now Showing', keybinds: 'Keybinds (?)', favorites: 'Favorites',
+      search: 'Search by title, director...', allCollections: 'All collections',
+      filters: 'Filters', manageCollections: 'Collections', queue: 'Queue', history: 'History',
+      grid: 'Grid', list: 'List', toggleView: 'Toggle View',
+      featured: 'Featured', featuredSub: 'Selected titles',
+      fullCatalog: 'Full Catalog', catalogSub: 'Explore the full selection',
+      advancedFilters: 'Advanced Filters', sortBy: 'Sort by', sortDefault: 'Default',
+      sortTitleAsc: 'Title (A-Z)', sortTitleDesc: 'Title (Z-A)',
+      sortDateAsc: 'Release date (oldest)', sortDateDesc: 'Release date (newest)',
+      sortScoreDesc: 'Score (high to low)', sortScoreAsc: 'Score (low to high)',
+      sortDurationAsc: 'Duration (shortest)', sortDurationDesc: 'Duration (longest)',
+      durationFilter: 'Video duration', ageFilter: 'Age rating',
+      ageAll: 'All ages', ageTP: 'TP (General)', age7: '+7 years', age12: '+12 years',
+      age16: '+16 years', age18: '+18 years', ageHide18: 'Hide +18', tagsFilter: 'Tags',
+      applyFilters: 'Apply Filters', clearFilters: 'Clear',
+      myCollections: 'My Collections', newCollectionName: 'New collection name...',
+      create: 'Create', playQueue: 'Play Queue', playQueueBtn: 'Play Queue',
+      clearQueue: 'Clear', watchHistory: 'Watch History', clearHistory: 'Clear History',
+      blockedTitle: 'Video Not Available', blockedDesc: 'This content is currently unavailable.',
+      watchOnYT: 'Watch on YouTube', like: 'Like', addToCollection: 'Collection',
+      addToQueue: 'Queue', close: 'Close', skipIntro: 'Skip Intro',
+      stateUnstarted: 'Unstarted', stateEnded: 'Ended', statePlaying: 'Playing',
+      statePaused: 'Paused', stateBuffering: 'Buffering', stateCued: 'Cued', stateActive: 'Active',
+      stateReady: 'Ready', stateLive: 'Live Stream', stateStandard: 'Standard',
+      stateAutoAdaptive: 'Auto (Adaptive)', stateStandardFormat: 'Standard H.264 / AAC',
+      score: 'Score', classification: 'Rating', genre: 'Genre',
+      duration: 'Duration', views: 'Views',
+      likesDislikes: 'Likes / Dislikes', currentQuality: 'Current Quality', apiFormats: 'API Formats',
+      author: 'Author / Channel', tags: 'Tags', videoId: 'Video ID', playerState: 'Player State',
+      helpTitle: 'Keyboard Shortcuts', helpSpace: 'Pause / Play video',
+      helpArrows: 'Rewind / Forward 10s', helpEsc: 'Close playback modal',
+      helpQuestion: 'Open / Close this help', understood: 'Got it',
+      loadingCatalog: 'Loading catalog...', noCollections: 'You have no collections yet.',
+      titles: 'titles', queueEmpty: 'The queue is empty.', historyEmpty: 'No watch history.',
+      noCatalogTitles: 'No titles in the catalog.',
+      resumeAt: 'Resume at', continueWatching: 'Continue watching',
+      resumeNow: 'Available now!', restart: 'Restart',
+      minutes: 'min', minutesPlus: '+ min', hour: 'h',
+      upcoming: 'Upcoming', upcomingTitle: 'Upcoming Releases',
+      noUpcoming: 'No upcoming releases scheduled.',
+      goTop: 'Go top', otherCategory: 'Others',
+      apiNA: 'API N/A', apiCalculating: 'Calculating...',
+      apiConsulting: 'Querying API...', apiLoading: 'Loading API data...',
+      apiLoadingViews: 'Loading API views...', apiGettingViews: 'Getting API...',
+      apiLoadStats: 'Loading...', apiCalcScore: 'Calculating...',
+      confirmDeleteCollection: 'Delete collection "{name}"?',
+      confirmClearHistory: 'Clear all watch history?',
+      confirmClearQueue: 'Empty the play queue?',
+      featured2: 'Featured', availableNow: 'Available', premiere: 'PREMIERE',
+      finished: 'Finished', comingSoon: 'Coming Soon', notAvailable: 'Not available',
+      playNow: 'Play Now', inQueue: 'IN QUEUE', filterBy: 'Filter by',
+      addFav: 'Favorite', addToQueueTitle: 'Add to queue', removeFromQueueTitle: 'Remove from queue',
+      play: 'Play', removeFromHistory: 'Remove from history',
+      year: 'year', years: 'years', month: 'month', months: 'months',
+      day: 'day', days: 'days', hourShort: 'h', minuteShort: 'm', secondShort: 's',
+      noResults: 'No results found.',
+      myFavorites: 'My Favorites',
+      noFavorites: 'You have no favorite videos.',
+      removeFav: 'Remove from favorites',
+      favoritesSubtitle: 'Your personal list of saved titles',
+      playAllFavs: 'Play all'
+    },
+    fr: {
+      subtitle: 'Grand Écran - À l'affiche', keybinds: 'Raccourcis (?)', favorites: 'Favoris',
+      search: 'Rechercher par titre, réalisateur...', allCollections: 'Toutes les collections',
+      filters: 'Filtres', manageCollections: 'Collections', queue: 'File', history: 'Historique',
+      grid: 'Grille', list: 'Liste', toggleView: 'Changer la vue',
+      featured: 'En vedette', featuredSub: 'Titres sélectionnés',
+      fullCatalog: 'Catalogue Complet', catalogSub: 'Explorez toute la sélection',
+      advancedFilters: 'Filtres Avancés', sortBy: 'Trier par', sortDefault: 'Par défaut',
+      sortTitleAsc: 'Titre (A-Z)', sortTitleDesc: 'Titre (Z-A)',
+      sortDateAsc: 'Date de sortie (plus ancien)', sortDateDesc: 'Date de sortie (plus récent)',
+      sortScoreDesc: 'Note (élevée à faible)', sortScoreAsc: 'Note (faible à élevée)',
+      sortDurationAsc: 'Durée (plus court)', sortDurationDesc: 'Durée (plus long)',
+      durationFilter: 'Durée de la vidéo', ageFilter: 'Classification par âge',
+      ageAll: 'Tous les âges', ageTP: 'TP (Tout public)', age7: '+7 ans', age12: '+12 ans',
+      age16: '+16 ans', age18: '+18 ans', ageHide18: 'Masquer +18', tagsFilter: 'Étiquettes',
+      applyFilters: 'Appliquer les Filtres', clearFilters: 'Effacer',
+      myCollections: 'Mes Collections', newCollectionName: 'Nom de la nouvelle collection...',
+      create: 'Créer', playQueue: 'File de Lecture', playQueueBtn: 'Lire la File',
+      clearQueue: 'Vider', watchHistory: 'Historique de Lecture', clearHistory: 'Effacer l\'Historique',
+      blockedTitle: 'Vidéo Non Disponible', blockedDesc: 'Ce contenu n\'est pas disponible actuellement.',
+      watchOnYT: 'Voir sur YouTube', like: 'J\'aime', addToCollection: 'Collection',
+      addToQueue: 'File', close: 'Fermer', skipIntro: 'Passer l\'Intro',
+      stateUnstarted: 'Non démarré', stateEnded: 'Terminé', statePlaying: 'Lecture',
+      statePaused: 'En pause', stateBuffering: 'Chargement', stateCued: 'En file', stateActive: 'Actif',
+      stateReady: 'Prêt', stateLive: 'Flux en direct', stateStandard: 'Standard',
+      stateAutoAdaptive: 'Auto (Adaptatif)', stateStandardFormat: 'Standard H.264 / AAC',
+      score: 'Note', classification: 'Classification', genre: 'Genre',
+      duration: 'Durée', views: 'Vues',
+      likesDislikes: 'J\'aime / Je n\'aime pas', currentQuality: 'Qualité Actuelle', apiFormats: 'Formats API',
+      author: 'Auteur / Chaîne', tags: 'Étiquettes', videoId: 'ID Vidéo', playerState: 'État du Lecteur',
+      helpTitle: 'Raccourcis Clavier', helpSpace: 'Pause / Lecture vidéo',
+      helpArrows: 'Reculer / Avancer 10s', helpEsc: 'Fermer le modal de lecture',
+      helpQuestion: 'Ouvrir / Fermer cette aide', understood: 'Compris',
+      loadingCatalog: 'Chargement du catalogue...', noCollections: 'Vous n\'avez pas encore de collections.',
+      titles: 'titres', queueEmpty: 'La file est vide.', historyEmpty: 'Aucun historique de lecture.',
+      noCatalogTitles: 'Aucun titre dans le catalogue.',
+      resumeAt: 'Reprendre à', continueWatching: 'Continuer à regarder',
+      resumeNow: 'Disponible maintenant !', restart: 'Redémarrer',
+      minutes: 'min', minutesPlus: '+ min', hour: 'h',
+      upcoming: 'À venir', upcomingTitle: 'Prochaines Sorties',
+      noUpcoming: 'Aucune sortie à venir programmée.',
+      goTop: 'Haut de page', otherCategory: 'Autres',
+      apiNA: 'API N/A', apiCalculating: 'Calcul...',
+      apiConsulting: 'Consultation API...', apiLoading: 'Chargement des données API...',
+      apiLoadingViews: 'Chargement des vues API...', apiGettingViews: 'Obtention API...',
+      apiLoadStats: 'Chargement...', apiCalcScore: 'Calcul...',
+      confirmDeleteCollection: 'Supprimer la collection "{name}" ?',
+      confirmClearHistory: 'Effacer tout l\'historique de lecture ?',
+      confirmClearQueue: 'Vider la file de lecture ?',
+      featured2: 'En vedette', availableNow: 'Disponible', premiere: 'PREMIÈRE',
+      finished: 'Terminé', comingSoon: 'Bientôt disponible', notAvailable: 'Non disponible',
+      playNow: 'Lire maintenant', inQueue: 'EN FILE', filterBy: 'Filtrer par',
+      addFav: 'Favori', addToQueueTitle: 'Ajouter à la file', removeFromQueueTitle: 'Retirer de la file',
+      play: 'Lire', removeFromHistory: 'Retirer de l\'historique',
+      year: 'an', years: 'ans', month: 'mois', months: 'mois',
+      day: 'jour', days: 'jours', hourShort: 'h', minuteShort: 'm', secondShort: 's',
+      noResults: 'Aucun résultat trouvé.',
+      myFavorites: 'Mes Favoris',
+      noFavorites: 'Vous n\'avez aucune vidéo en favoris.',
+      removeFav: 'Retirer des favoris',
+      favoritesSubtitle: 'Votre liste personnelle de titres sauvegardés',
+      playAllFavs: 'Tout lire'
+    },
+    de: {
+      subtitle: 'Große Leinwände - Kinoprogramm', keybinds: 'Tastenbelegung (?)', favorites: 'Favoriten',
+      search: 'Nach Titel, Regisseur suchen...', allCollections: 'Alle Sammlungen',
+      filters: 'Filter', manageCollections: 'Sammlungen', queue: 'Warteschlange', history: 'Verlauf',
+      grid: 'Raster', list: 'Liste', toggleView: 'Ansicht wechseln',
+      featured: 'Highlights', featuredSub: 'Ausgewählte Titel',
+      fullCatalog: 'Gesamter Katalog', catalogSub: 'Durchsuchen Sie die gesamte Auswahl',
+      advancedFilters: 'Erweiterte Filter', sortBy: 'Sortieren nach', sortDefault: 'Standard',
+      sortTitleAsc: 'Titel (A-Z)', sortTitleDesc: 'Titel (Z-A)',
+      sortDateAsc: 'Erscheinungsdatum (älteste)', sortDateDesc: 'Erscheinungsdatum (neueste)',
+      sortScoreDesc: 'Bewertung (hoch bis niedrig)', sortScoreAsc: 'Bewertung (niedrig bis hoch)',
+      sortDurationAsc: 'Dauer (kürzeste)', sortDurationDesc: 'Dauer (längste)',
+      durationFilter: 'Videodauer', ageFilter: 'Altersfreigabe',
+      ageAll: 'Alle Altersgruppen', ageTP: 'TP (Ohne Altersbeschränkung)', age7: '+7 Jahre', age12: '+12 Jahre',
+      age16: '+16 Jahre', age18: '+18 Jahre', ageHide18: '+18 ausblenden', tagsFilter: 'Tags',
+      applyFilters: 'Filter anwenden', clearFilters: 'Zurücksetzen',
+      myCollections: 'Meine Sammlungen', newCollectionName: 'Name der neuen Sammlung...',
+      create: 'Erstellen', playQueue: 'Warteschlange abspielen', playQueueBtn: 'Warteschlange abspielen',
+      clearQueue: 'Leeren', watchHistory: 'Wiedergabeverlauf', clearHistory: 'Verlauf löschen',
+      blockedTitle: 'Video nicht verfügbar', blockedDesc: 'Dieser Inhalt ist derzeit nicht verfügbar.',
+      watchOnYT: 'Auf YouTube ansehen', like: 'Gefällt mir', addToCollection: 'Sammlung',
+      addToQueue: 'Warteschlange', close: 'Schließen', skipIntro: 'Intro überspringen',
+      stateUnstarted: 'Nicht gestartet', stateEnded: 'Beendet', statePlaying: 'Wiedergabe',
+      statePaused: 'Pausiert', stateBuffering: 'Laden', stateCued: 'In Warteschlange', stateActive: 'Aktiv',
+      stateReady: 'Bereit', stateLive: 'Live-Stream', stateStandard: 'Standard',
+      stateAutoAdaptive: 'Auto (Adaptiv)', stateStandardFormat: 'Standard H.264 / AAC',
+      score: 'Bewertung', classification: 'Altersfreigabe', genre: 'Genre',
+      duration: 'Dauer', views: 'Aufrufe',
+      likesDislikes: 'Likes / Dislikes', currentQuality: 'Aktuelle Qualität', apiFormats: 'API-Formate',
+      author: 'Autor / Kanal', tags: 'Tags', videoId: 'Video-ID', playerState: 'Player-Status',
+      helpTitle: 'Tastenkombinationen', helpSpace: 'Video pausieren / abspielen',
+      helpArrows: '10s zurück / vorspulen', helpEsc: 'Wiedergabefenster schließen',
+      helpQuestion: 'Diese Hilfe öffnen / schließen', understood: 'Verstanden',
+      loadingCatalog: 'Katalog wird geladen...', noCollections: 'Sie haben noch keine Sammlungen erstellt.',
+      titles: 'Titel', queueEmpty: 'Die Warteschlange ist leer.', historyEmpty: 'Kein Wiedergabeverlauf vorhanden.',
+      noCatalogTitles: 'Keine Titel im Katalog.',
+      resumeAt: 'Fortsetzen bei', continueWatching: 'Weiterschauen',
+      resumeNow: 'Jetzt verfügbar!', restart: 'Neu starten',
+      minutes: 'Min.', minutesPlus: '+ Min.', hour: 'Std.',
+      upcoming: 'Demnächst', upcomingTitle: 'Kommende Neuerscheinungen',
+      noUpcoming: 'Keine kommenden Neuerscheinungen geplant.',
+      goTop: 'Nach oben', otherCategory: 'Sonstige',
+      apiNA: 'API N/A', apiCalculating: 'Berechnung...',
+      apiConsulting: 'API wird abgefragt...', apiLoading: 'API-Daten werden geladen...',
+      apiLoadingViews: 'API-Aufrufe werden geladen...', apiGettingViews: 'API wird abgerufen...',
+      apiLoadStats: 'Laden...', apiCalcScore: 'Berechnung...',
+      confirmDeleteCollection: 'Sammlung "{name}" löschen?',
+      confirmClearHistory: 'Gesamten Wiedergabeverlauf löschen?',
+      confirmClearQueue: 'Warteschlange leeren?',
+      featured2: 'Hervorgehoben', availableNow: 'Verfügbar', premiere: 'PREMIERE',
+      finished: 'Beendet', comingSoon: 'Demnächst', notAvailable: 'Nicht verfügbar',
+      playNow: 'Jetzt abspielen', inQueue: 'IN WARTESCHLANGE', filterBy: 'Filtern nach',
+      addFav: 'Favorit', addToQueueTitle: 'Zur Warteschlange hinzufügen', removeFromQueueTitle: 'Aus Warteschlange entfernen',
+      play: 'Abspielen', removeFromHistory: 'Aus Verlauf entfernen',
+      year: 'Jahr', years: 'Jahre', month: 'Monat', months: 'Monate',
+      day: 'Tag', days: 'Tage', hourShort: 'Std.', minuteShort: 'Min.', secondShort: 'Sek.',
+      noResults: 'Keine Ergebnisse gefunden.',
+      myFavorites: 'Meine Favoriten',
+      noFavorites: 'Sie haben keine Favoriten.',
+      removeFav: 'Aus Favoriten entfernen',
+      favoritesSubtitle: 'Ihre persönliche Liste gespeicherter Titel',
+      playAllFavs: 'Alle abspielen'
+    },
+    it: {
+      subtitle: 'Grandi Schermi - In Programmazione', keybinds: 'Scorciatoie (?)', favorites: 'Preferiti',
+      search: 'Cerca per titolo, regista...', allCollections: 'Tutte le collezioni',
+      filters: 'Filtri', manageCollections: 'Collezioni', queue: 'Coda', history: 'Cronologia',
+      grid: 'Griglia', list: 'Lista', toggleView: 'Cambia vista',
+      featured: 'In evidenza', featuredSub: 'Titoli selezionati',
+      fullCatalog: 'Catalogo completo', catalogSub: 'Esplora l\'intera selezione',
+      advancedFilters: 'Filtri avanzati', sortBy: 'Ordina per', sortDefault: 'Predefinito',
+      sortTitleAsc: 'Titolo (A-Z)', sortTitleDesc: 'Titolo (Z-A)',
+      sortDateAsc: 'Data di uscita (meno recente)', sortDateDesc: 'Data di uscita (più recente)',
+      sortScoreDesc: 'Punteggio (alto-basso)', sortScoreAsc: 'Punteggio (basso-alto)',
+      sortDurationAsc: 'Durata (più breve)', sortDurationDesc: 'Durata (più lunga)',
+      durationFilter: 'Durata del video', ageFilter: 'Classificazione per età',
+      ageAll: 'Tutte le età', ageTP: 'TP (Per tutti)', age7: '+7 anni', age12: '+12 anni',
+      age16: '+16 anni', age18: '+18 anni', ageHide18: 'Nascondi +18', tagsFilter: 'Tag',
+      applyFilters: 'Applica filtri', clearFilters: 'Rimuovi',
+      myCollections: 'Le mie collezioni', newCollectionName: 'Nome nuova collezione...',
+      create: 'Crea', playQueue: 'Riproduci coda', playQueueBtn: 'Riproduci coda',
+      clearQueue: 'Svuota', watchHistory: 'Cronologia di visione', clearHistory: 'Cancella cronologia',
+      blockedTitle: 'Video non disponibile', blockedDesc: 'Questo contenuto non è attualmente disponibile.',
+      watchOnYT: 'Guarda su YouTube', like: 'Mi piace', addToCollection: 'Collezione',
+      addToQueue: 'Coda', close: 'Chiudi', skipIntro: 'Salta intro',
+      stateUnstarted: 'Non avviato', stateEnded: 'Terminato', statePlaying: 'In riproduzione',
+      statePaused: 'In pausa', stateBuffering: 'Caricamento', stateCued: 'In coda', stateActive: 'Attivo',
+      stateReady: 'Pronto', stateLive: 'Diretta streaming', stateStandard: 'Standard',
+      stateAutoAdaptive: 'Auto (Adattivo)', stateStandardFormat: 'Standard H.264 / AAC',
+      score: 'Punteggio', classification: 'Classificazione', genre: 'Genere',
+      duration: 'Durata', views: 'Visualizzazioni',
+      likesDislikes: 'Mi piace / Non mi piace', currentQuality: 'Qualità attuale', apiFormats: 'Formati API',
+      author: 'Autore / Canale', tags: 'Tag', videoId: 'ID Video', playerState: 'Stato player',
+      helpTitle: 'Scorciatoie da tastiera', helpSpace: 'Metti in pausa / Riproduci video',
+      helpArrows: 'Indietro / Avanti di 10s', helpEsc: 'Chiudi finestra di riproduzione',
+      helpQuestion: 'Apri / Chiudi questo aiuto', understood: 'Ho capito',
+      loadingCatalog: 'Caricamento catalogo...', noCollections: 'Non hai ancora creato collezioni.',
+      titles: 'titoli', queueEmpty: 'La coda è vuota.', historyEmpty: 'Nessuna cronologia di visione.',
+      noCatalogTitles: 'Nessun titolo nel catalogo.',
+      resumeAt: 'Riprendi a', continueWatching: 'Continua a guardare',
+      resumeNow: 'Disponibile ora!', restart: 'Ricomincia',
+      minutes: 'min', minutesPlus: '+ min', hour: 'h',
+      upcoming: 'Prossimamente', upcomingTitle: 'Prossime uscite',
+      noUpcoming: 'Nessuna prossima uscita programmata.',
+      goTop: 'Torna su', otherCategory: 'Altri',
+      apiNA: 'API N/D', apiCalculating: 'Calcolo in corso...',
+      apiConsulting: 'Consultazione API...', apiLoading: 'Caricamento dati API...',
+      apiLoadingViews: 'Caricamento visualizzazioni API...', apiGettingViews: 'Recupero API...',
+      apiLoadStats: 'Caricamento...', apiCalcScore: 'Calcolo in corso...',
+      confirmDeleteCollection: 'Eliminare la collezione "{name}"?',
+      confirmClearHistory: 'Cancellare tutta la cronologia di visione?',
+      confirmClearQueue: 'Svuotare la coda di riproduzione?',
+      featured2: 'In evidenza', availableNow: 'Disponibile', premiere: 'ANTEPRIMA',
+      finished: 'Terminato', comingSoon: 'Prossimamente', notAvailable: 'Non disponibile',
+      playNow: 'Riproduci ora', inQueue: 'IN CODA', filterBy: 'Filtra per',
+      addFav: 'Preferito', addToQueueTitle: 'Aggiungi alla coda', removeFromQueueTitle: 'Rimuovi dalla coda',
+      play: 'Riproduci', removeFromHistory: 'Rimuovi dalla cronologia',
+      year: 'anno', years: 'anni', month: 'mese', months: 'mesi',
+      day: 'giorno', days: 'giorni', hourShort: 'h', minuteShort: 'm', secondShort: 's',
+      noResults: 'Nessun risultato trovato.',
+      myFavorites: 'I miei preferiti',
+      noFavorites: 'Non hai video nei preferiti.',
+      removeFav: 'Rimuovi dai preferiti',
+      favoritesSubtitle: 'La tua lista personale di titoli salvati',
+      playAllFavs: 'Riproduci tutti'
+    },
+    pt: {
+      subtitle: 'Grandes Ecrãs - Em Exibição', keybinds: 'Atalhos (?)', favorites: 'Favoritos',
+      search: 'Pesquisar por título, realizador...', allCollections: 'Todas as coleções',
+      filters: 'Filtros', manageCollections: 'Coleções', queue: 'Fila', history: 'Histórico',
+      grid: 'Grelha', list: 'Lista', toggleView: 'Alternar vista',
+      featured: 'Destaques', featuredSub: 'Títulos selecionados',
+      fullCatalog: 'Catálogo Completo', catalogSub: 'Explore toda a seleção',
+      advancedFilters: 'Filtros Avançados', sortBy: 'Ordenar por', sortDefault: 'Por defeito',
+      sortTitleAsc: 'Título (A-Z)', sortTitleDesc: 'Título (Z-A)',
+      sortDateAsc: 'Data de estreia (mais antiga)', sortDateDesc: 'Data de estreia (mais recente)',
+      sortScoreDesc: 'Pontuação (maior para menor)', sortScoreAsc: 'Pontuação (menor para maior)',
+      sortDurationAsc: 'Duração (mais curta)', sortDurationDesc: 'Duração (mais longa)',
+      durationFilter: 'Duração do vídeo', ageFilter: 'Classificação etária',
+      ageAll: 'Todas as idades', ageTP: 'TP (Para todos)', age7: '+7 anos', age12: '+12 anos',
+      age16: '+16 anos', age18: '+18 anos', ageHide18: 'Ocultar +18', tagsFilter: 'Tags',
+      applyFilters: 'Aplicar Filtros', clearFilters: 'Limpar',
+      myCollections: 'As Minhas Coleções', newCollectionName: 'Nome da nova coleção...',
+      create: 'Criar', playQueue: 'Fila de Reprodução', playQueueBtn: 'Reproduzir Fila',
+      clearQueue: 'Limpar', watchHistory: 'Histórico de Visualização', clearHistory: 'Limpar Histórico',
+      blockedTitle: 'Vídeo Indisponível', blockedDesc: 'Este conteúdo não está disponível de momento.',
+      watchOnYT: 'Ver no YouTube', like: 'Gostar', addToCollection: 'Coleção',
+      addToQueue: 'Fila', close: 'Fechar', skipIntro: 'Saltar Intro',
+      stateUnstarted: 'Não iniciado', stateEnded: 'Terminado', statePlaying: 'A reproduzir',
+      statePaused: 'Pausado', stateBuffering: 'A carregar', stateCued: 'Na fila', stateActive: 'Ativo',
+      stateReady: 'Pronto', stateLive: 'Transmissão ao vivo', stateStandard: 'Padrão',
+      stateAutoAdaptive: 'Auto (Adaptativo)', stateStandardFormat: 'Padrão H.264 / AAC',
+      score: 'Pontuação', classification: 'Classificação', genre: 'Género',
+      duration: 'Duração', views: 'Visualizações',
+      likesDislikes: 'Gostos / Não gostos', currentQuality: 'Qualidade Atual', apiFormats: 'Formatos API',
+      author: 'Autor / Canal', tags: 'Tags', videoId: 'ID do Vídeo', playerState: 'Estado do Reprodutor',
+      helpTitle: 'Atalhos de Teclado', helpSpace: 'Pausar / Reproduzir vídeo',
+      helpArrows: 'Recuar / Avançar 10s', helpEsc: 'Fechar janela de reprodução',
+      helpQuestion: 'Abrir / Fechar esta ajuda', understood: 'Entendido',
+      loadingCatalog: 'A carregar catálogo...', noCollections: 'Ainda não tem coleções criadas.',
+      titles: 'títulos', queueEmpty: 'A fila está vazia.', historyEmpty: 'Sem histórico de visualização.',
+      noCatalogTitles: 'Não há títulos no catálogo.',
+      resumeAt: 'Retomar em', continueWatching: 'Continuar a ver',
+      resumeNow: 'Disponível agora!', restart: 'Reiniciar',
+      minutes: 'min', minutesPlus: '+ min', hour: 'h',
+      upcoming: 'Em breve', upcomingTitle: 'Próximas Estreias',
+      noUpcoming: 'Não há próximas estreias agendadas.',
+      goTop: 'Ir para o topo', otherCategory: 'Outros',
+      apiNA: 'API N/D', apiCalculating: 'A calcular...',
+      apiConsulting: 'A consultar API...', apiLoading: 'A carregar dados da API...',
+      apiLoadingViews: 'A carregar visualizações...', apiGettingViews: 'A obter API...',
+      apiLoadStats: 'A carregar...', apiCalcScore: 'A calcular...',
+      confirmDeleteCollection: 'Eliminar a coleção "{name}"?',
+      confirmClearHistory: 'Limpar todo o histórico de visualização?',
+      confirmClearQueue: 'Esvaziar a fila de reprodução?',
+      featured2: 'Destaque', availableNow: 'Disponível', premiere: 'ESTREIA',
+      finished: 'Terminado', comingSoon: 'Em breve', notAvailable: 'Não disponível',
+      playNow: 'Reproduzir', inQueue: 'NA FILA', filterBy: 'Filtrar por',
+      addFav: 'Favorito', addToQueueTitle: 'Adicionar à fila', removeFromQueueTitle: 'Remover da fila',
+      play: 'Reproduzir', removeFromHistory: 'Remover do histórico',
+      year: 'ano', years: 'anos', month: 'mês', months: 'meses',
+      day: 'dia', days: 'dias', hourShort: 'h', minuteShort: 'm', secondShort: 's',
+      noResults: 'Nenhum resultado encontrado.',
+      myFavorites: 'Os Meus Favoritos',
+      noFavorites: 'Não tem vídeos nos favoritos.',
+      removeFav: 'Remover dos favoritos',
+      favoritesSubtitle: 'A sua lista pessoal de títulos guardados',
+      playAllFavs: 'Reproduzir todos'
+    },
+    zh: {
+      subtitle: '大银幕 - 影讯', keybinds: '快捷键 (?)', favorites: '收藏夹',
+      search: '按片名、导演搜索...', allCollections: '所有合集',
+      filters: '筛选', manageCollections: '合集管理', queue: '播放队列', history: '播放历史',
+      grid: '网格', list: '列表', toggleView: '切换视图',
+      featured: '精选推荐', featuredSub: '精选影片',
+      fullCatalog: '完整目录', catalogSub: '探索所有影片',
+      advancedFilters: '高级筛选', sortBy: '排序方式', sortDefault: '默认',
+      sortTitleAsc: '片名 (A-Z)', sortTitleDesc: '片名 (Z-A)',
+      sortDateAsc: '上映日期 (最早)', sortDateDesc: '上映日期 (最新)',
+      sortScoreDesc: '评分 (从高到低)', sortScoreAsc: '评分 (从低到高)',
+      sortDurationAsc: '时长 (最短)', sortDurationDesc: '时长 (最长)',
+      durationFilter: '视频时长', ageFilter: '分级',
+      ageAll: '所有年龄', ageTP: '全年龄', age7: '+7岁', age12: '+12岁',
+      age16: '+16岁', age18: '+18岁', ageHide18: '隐藏+18', tagsFilter: '标签',
+      applyFilters: '应用筛选', clearFilters: '清除',
+      myCollections: '我的合集', newCollectionName: '新合集名称...',
+      create: '创建', playQueue: '播放队列', playQueueBtn: '播放队列',
+      clearQueue: '清空', watchHistory: '观看历史', clearHistory: '清空历史',
+      blockedTitle: '视频不可用', blockedDesc: '该内容暂不可用。',
+      watchOnYT: '在YouTube上观看', like: '点赞', addToCollection: '加入合集',
+      addToQueue: '加入队列', close: '关闭', skipIntro: '跳过片头',
+      stateUnstarted: '未开始', stateEnded: '已结束', statePlaying: '播放中',
+      statePaused: '已暂停', stateBuffering: '缓冲中', stateCued: '已排队', stateActive: '活跃',
+      stateReady: '就绪', stateLive: '现场直播', stateStandard: '标准',
+      stateAutoAdaptive: '自动 (自适应)', stateStandardFormat: '标准 H.264 / AAC',
+      score: '评分', classification: '分级', genre: '类型',
+      duration: '时长', views: '播放量',
+      likesDislikes: '赞 / 踩', currentQuality: '当前画质', apiFormats: 'API格式',
+      author: '作者 / 频道', tags: '标签', videoId: '视频ID', playerState: '播放器状态',
+      helpTitle: '键盘快捷键', helpSpace: '暂停 / 播放视频',
+      helpArrows: '快退 / 快进 10秒', helpEsc: '关闭播放弹窗',
+      helpQuestion: '打开 / 关闭帮助', understood: '明白了',
+      loadingCatalog: '正在加载目录...', noCollections: '尚无创建的合集。',
+      titles: '部影片', queueEmpty: '播放队列为空。', historyEmpty: '无观看历史。',
+      noCatalogTitles: '目录中暂无影片。',
+      resumeAt: '继续播放于', continueWatching: '继续观看',
+      resumeNow: '现已上线！', restart: '重新开始',
+      minutes: '分钟', minutesPlus: '+ 分钟', hour: '小时',
+      upcoming: '即将上映', upcomingTitle: '即将上映影片',
+      noUpcoming: '暂无预定上映安排。',
+      goTop: '返回顶部', otherCategory: '其他',
+      apiNA: 'API N/A', apiCalculating: '计算中...',
+      apiConsulting: '查询API中...', apiLoading: '加载API数据中...',
+      apiLoadingViews: '加载播放量...', apiGettingViews: '获取API中...',
+      apiLoadStats: '加载中...', apiCalcScore: '计算中...',
+      confirmDeleteCollection: '确定要删除合集 "{name}" 吗？',
+      confirmClearHistory: '确定要清空所有观看历史吗？',
+      confirmClearQueue: '确定要清空播放队列吗？',
+      featured2: '精选', availableNow: '现已可用', premiere: '首映',
+      finished: '已完结', comingSoon: '即将上映', notAvailable: '暂不可用',
+      playNow: '立即播放', inQueue: '已在队列', filterBy: '筛选条件',
+      addFav: '收藏', addToQueueTitle: '添加至队列', removeFromQueueTitle: '从队列移除',
+      play: '播放', removeFromHistory: '从历史记录移除',
+      year: '年', years: '年', month: '个月', months: '个月',
+      day: '天', days: '天', hourShort: '小时', minuteShort: '分', secondShort: '秒',
+      noResults: '未找到相关结果。',
+      myFavorites: '我的收藏',
+      noFavorites: '暂无收藏的视频。',
+      removeFav: '取消收藏',
+      favoritesSubtitle: '您的个人收藏列表',
+      playAllFavs: '全部播放'
+    },
+    ja: {
+      subtitle: 'ビッグスクリーン - 上映 schedule (上映作品)', keybinds: 'ショートカット (?)', favorites: 'お気に入り',
+      search: 'タイトル、監督で検索...', allCollections: '全コレクション',
+      filters: 'フィルター', manageCollections: 'コレクション管理', queue: '再生队列', history: '履歴',
+      grid: 'グリッド', list: 'リスト', toggleView: '表示切り替え',
+      featured: '注目作品', featuredSub: '厳選タイトル',
+      fullCatalog: '全カタログ', catalogSub: '全作品を探索',
+      advancedFilters: '高度なフィルター', sortBy: '並び替え', sortDefault: 'デフォルト',
+      sortTitleAsc: 'タイトル (A-Z)', sortTitleDesc: 'タイトル (Z-A)',
+      sortDateAsc: '公开日 (古い顺)', sortDateDesc: '公开日 (新着顺)',
+      sortScoreDesc: '評価 (高い顺)', sortScoreAsc: '評価 (低い顺)',
+      sortDurationAsc: '再生时间 (短い顺)', sortDurationDesc: '再生时间 (長い顺)',
+      durationFilter: '動画の長さ', ageFilter: '年齢制限',
+      ageAll: '全年齢', ageTP: '全年齢対象', age7: '+7歳', age12: '+12歳',
+      age16: '+16歳', age18: '+18歳', ageHide18: '+18を非表示', tagsFilter: 'タグ',
+      applyFilters: 'フィルターを適用', clearFilters: 'クリア',
+      myCollections: 'マイコレクション', newCollectionName: '新しいコレクション名...',
+      create: '作成', playQueue: '再生キュー', playQueueBtn: 'キューを再生',
+      clearQueue: 'クリア', watchHistory: '視聴履歴', clearHistory: '履歴を消去',
+      blockedTitle: '動画は利用できません', blockedDesc: 'このコンテンツは現在利用できません。',
+      watchOnYT: 'YouTubeで見る', like: '高評価', addToCollection: 'コレクション',
+      addToQueue: 'キュー', close: '閉じる', skipIntro: 'イントロをスキップ',
+      stateUnstarted: '未開始', stateEnded: '終了', statePlaying: '再生中',
+      statePaused: '一時停止', stateBuffering: '読み込み中', stateCued: '待機中', stateActive: 'アクティブ',
+      stateReady: '準備完了', stateLive: 'ライブ配信', stateStandard: '標準',
+      stateAutoAdaptive: '自動 (適応型)', stateStandardFormat: '標準 H.264 / AAC',
+      score: '評価', classification: 'レーティング', genre: 'ジャンル',
+      duration: '時間', views: '再生回数',
+      likesDislikes: '高評価 / 低評価', currentQuality: '現在の画質', apiFormats: 'APIフォーマット',
+      author: '作者 / チャンネル', tags: 'タグ', videoId: '動画ID', playerState: 'プレイヤー状態',
+      helpTitle: 'キーボードショートカット', helpSpace: '再生 / 一時停止',
+      helpArrows: '10秒巻き戻し / 早送り', helpEsc: 'モーダルを閉じる',
+      helpQuestion: 'ヘルプの開閉', understood: '了解',
+      loadingCatalog: 'カタログを読み込み中...', noCollections: 'コレクションがありません。',
+      titles: '作品', queueEmpty: 'キューは空です。', historyEmpty: '視聴履歴がありません。',
+      noCatalogTitles: 'カタログに作品がありません。',
+      resumeAt: 'から再開', continueWatching: '続きを見る',
+      resumeNow: '今すぐ視聴可能！', restart: '最初から見る',
+      minutes: '分', minutesPlus: '+ 分', hour: '時間',
+      upcoming: '公開予定', upcomingTitle: '近日公開作品',
+      noUpcoming: '公開予定の作品はありません。',
+      goTop: 'トップへ戻る', otherCategory: 'その他',
+      apiNA: 'API N/A', apiCalculating: '計算中...',
+      apiConsulting: 'API照会中...', apiLoading: 'データ読み込み中...',
+      apiLoadingViews: '再生回数を取得中...', apiGettingViews: 'API取得中...',
+      apiLoadStats: '読み込み中...', apiCalcScore: '計算中...',
+      confirmDeleteCollection: 'コレクション "{name}" を削除しますか？',
+      confirmClearHistory: '視聴履歴をすべて削除しますか？',
+      confirmClearQueue: 'キューを空にしますか？',
+      featured2: '注目', availableNow: '配信中', premiere: '初公開',
+      finished: '終了', comingSoon: '近日公開', notAvailable: '利用不可',
+      playNow: '今すぐ再生', inQueue: 'キュー追加済み', filterBy: '絞り込み',
+      addFav: 'お気に入り', addToQueueTitle: 'キューに追加', removeFromQueueTitle: 'キューから削除',
+      play: '再生', removeFromHistory: '履歴から削除',
+      year: '年', years: '年', month: 'ヶ月', months: 'ヶ月',
+      day: '日', days: '日', hourShort: '時間', minuteShort: '分', secondShort: '秒',
+      noResults: '検索結果が見つかりませんでした。',
+      myFavorites: 'マイお気に入り',
+      noFavorites: 'お気に入りの動画はありません。',
+      removeFav: 'お気に入りから削除',
+      favoritesSubtitle: '保存した作品の個人リスト',
+      playAllFavs: 'すべて再生'
+    },
+    ru: {
+      subtitle: 'Большие экраны - Афиша', keybinds: 'Горячие клавиши (?)', favorites: 'Избранное',
+      search: 'Поиск по названию, режиссеру...', allCollections: 'Все коллекции',
+      filters: 'Фильтры', manageCollections: 'Коллекции', queue: 'Очередь', history: 'История',
+      grid: 'Сетка', list: 'Список', toggleView: 'Сменить вид',
+      featured: 'Избранное', featuredSub: 'Выбранные фильмы',
+      fullCatalog: 'Полный каталог', catalogSub: 'Исследуйте всю подборку',
+      advancedFilters: 'Расширенные фильтры', sortBy: 'Сортировать по', sortDefault: 'По умолчанию',
+      sortTitleAsc: 'Название (А-Я)', sortTitleDesc: 'Название (Я-А)',
+      sortDateAsc: 'Дата выхода (старые)', sortDateDesc: 'Дата выхода (новые)',
+      sortScoreDesc: 'Рейтинг (высокий)', sortScoreAsc: 'Рейтинг (низкий)',
+      sortDurationAsc: 'Длительность (короткие)', sortDurationDesc: 'Длительность (длинные)',
+      durationFilter: 'Длительность видео', ageFilter: 'Возрастной рейтинг',
+      ageAll: 'Все возрасты', ageTP: '0+ (Для всех)', age7: '+7 лет', age12: '+12 лет',
+      age16: '+16 лет', age18: '+18 лет', ageHide18: 'Скрыть 18+', tagsFilter: 'Теги',
+      applyFilters: 'Применить фильтры', clearFilters: 'Очистить',
+      myCollections: 'Мои коллекции', newCollectionName: 'Название новой коллекции...',
+      create: 'Создать', playQueue: 'Очередь воспроизведения', playQueueBtn: 'Воспроизвести очередь',
+      clearQueue: 'Очистить', watchHistory: 'История просмотров', clearHistory: 'Очистить историю',
+      blockedTitle: 'Видео недоступно', blockedDesc: 'Этот контент сейчас недоступен.',
+      watchOnYT: 'Смотреть на YouTube', like: 'Нравится', addToCollection: 'В коллекцию',
+      addToQueue: 'В очередь', close: 'Закрыть', skipIntro: 'Пропустить интро',
+      stateUnstarted: 'Не начато', stateEnded: 'Завершено', statePlaying: 'Воспроизведение',
+      statePaused: 'Пауза', stateBuffering: 'Загрузка', stateCued: 'В очереди', stateActive: 'Активно',
+      stateReady: 'Готово', stateLive: 'Прямой эфир', stateStandard: 'Стандарт',
+      stateAutoAdaptive: 'Авто (Адаптивный)', stateStandardFormat: 'Стандарт H.264 / AAC',
+      score: 'Рейтинг', classification: 'Возраст', genre: 'Жанр',
+      duration: 'Длительность', views: 'Просмотры',
+      likesDislikes: 'Лайки / Дизлайки', currentQuality: 'Текущее качество', apiFormats: 'Форматы API',
+      author: 'Автор / Канал', tags: 'Теги', videoId: 'ID видео', playerState: 'Состояние плеера',
+      helpTitle: 'Горячие клавиши', helpSpace: 'Пауза / Воспроизведение',
+      helpArrows: 'Назад / Вперед на 10с', helpEsc: 'Закрыть плеер',
+      helpQuestion: 'Открыть / Закрыть справку', understood: 'Понятно',
+      loadingCatalog: 'Загрузка каталога...', noCollections: 'У вас пока нет коллекций.',
+      titles: 'фильмов', queueEmpty: 'Очередь пуста.', historyEmpty: 'История просмотров пуста.',
+      noCatalogTitles: 'В каталоге нет фильмов.',
+      resumeAt: 'Продолжить с', continueWatching: 'Продолжить просмотр',
+      resumeNow: 'Доступно сейчас!', restart: 'Начать сначала',
+      minutes: 'мин', minutesPlus: '+ мин', hour: 'ч',
+      upcoming: 'Скоро', upcomingTitle: 'Скоро в эфире',
+      noUpcoming: 'Запланированных релизов нет.',
+      goTop: 'Наверх', otherCategory: 'Другие',
+      apiNA: 'API Н/Д', apiCalculating: 'Вычисление...',
+      apiConsulting: 'Запрос к API...', apiLoading: 'Загрузка данных API...',
+      apiLoadingViews: 'Загрузка просмотров...', apiGettingViews: 'Получение API...',
+      apiLoadStats: 'Загрузка...', apiCalcScore: 'Вычисление...',
+      confirmDeleteCollection: 'Удалить коллекцию "{name}"?',
+      confirmClearHistory: 'Очистить всю историю просмотров?',
+      confirmClearQueue: 'Очистить очередь воспроизведения?',
+      featured2: 'Рекомендуем', availableNow: 'Доступно', premiere: 'ПРЕМЬЕРА',
+      finished: 'Завершено', comingSoon: 'Скоро', notAvailable: 'Недоступно',
+      playNow: 'Смотреть', inQueue: 'В ОЧЕРЕДИ', filterBy: 'Фильтр по',
+      addFav: 'Избранное', addToQueueTitle: 'Добавить в очередь', removeFromQueueTitle: 'Удалить из очереди',
+      play: 'Воспроизвести', removeFromHistory: 'Удалить из истории',
+      year: 'год', years: 'лет', month: 'месяц', months: 'месяцев',
+      day: 'день', days: 'дней', hourShort: 'ч', minuteShort: 'м', secondShort: 'с',
+      noResults: 'Результатов не найдено.',
+      myFavorites: 'Мое Избранное',
+      noFavorites: 'У вас нет избранных видео.',
+      removeFav: 'Удалить из избранного',
+      favoritesSubtitle: 'Ваш личный список сохраненных фильмов',
+      playAllFavs: 'Воспроизвести все'
+    },
+    ar: {
+      subtitle: 'الشاشات الكبيرة - المعروض حالياً', keybinds: 'اختصارات (?)', favorites: 'المفضلة',
+      search: 'البحث عن عنوان، مخرج...', allCollections: 'كل المجموعات',
+      filters: 'تصفية', manageCollections: 'المجموعات', queue: 'قائمة الانتظار', history: 'السجل',
+      grid: 'شبكة', list: 'قائمة', toggleView: 'تغيير العرض',
+      featured: 'مميز', featuredSub: 'عناوين مختارة',
+      fullCatalog: 'الكتالوج الكامل', catalogSub: 'استكشف التحديد الكامل',
+      advancedFilters: 'تصفية متقدمة', sortBy: 'ترتيب حسب', sortDefault: 'الافتراضي',
+      sortTitleAsc: 'العنوان (أ-ي)', sortTitleDesc: 'العنوان (ي-أ)',
+      sortDateAsc: 'تاريخ الإصدار (الأقدم)', sortDateDesc: 'تاريخ الإصدار (الأحدث)',
+      sortScoreDesc: 'التقييم (الأعلى إلى الأقل)', sortScoreAsc: 'التقييم (الأقل إلى الأعلى)',
+      sortDurationAsc: 'المدة (الأقصر)', sortDurationDesc: 'المدة (الأطول)',
+      durationFilter: 'مدة الفيديو', ageFilter: 'التصنيف العمري',
+      ageAll: 'جميع الأعمار', ageTP: 'عام (للكل)', age7: '+7 سنوات', age12: '+12 سنة',
+      age16: '+16 سنة', age18: '+18 سنة', ageHide18: 'إخفاء +18', tagsFilter: 'العلامات',
+      applyFilters: 'تطبيق التصفية', clearFilters: 'مسح',
+      myCollections: 'مجموعاتي', newCollectionName: 'اسم المجموعة الجديدة...',
+      create: 'إنشاء', playQueue: 'قائمة التشغيل', playQueueBtn: 'تشغيل القائمة',
+      clearQueue: 'مسح', watchHistory: 'سجل المشاهدة', clearHistory: 'مسح السجل',
+      blockedTitle: 'الفيديو غير متاح', blockedDesc: 'هذا المحتوى غير متاح حاليًا.',
+      watchOnYT: 'المشاهدة على YouTube', like: 'إعجاب', addToCollection: 'مجموعة',
+      addToQueue: 'القائمة', close: 'إغلاق', skipIntro: 'تخطي المقدمة',
+      stateUnstarted: 'لم يبدأ', stateEnded: 'انتهى', statePlaying: 'جاري التشغيل',
+      statePaused: 'متوقف مؤقتاً', stateBuffering: 'جاري التحميل', stateCued: 'في الانتظار', stateActive: 'نشط',
+      stateReady: 'جاهز', stateLive: 'بث مباشر', stateStandard: 'قياسي',
+      stateAutoAdaptive: 'تلقائي (تكيفي)', stateStandardFormat: 'قياسي H.264 / AAC',
+      score: 'التقييم', classification: 'التصنيف', genre: 'النوع',
+      duration: 'المدة', views: 'المشاهدات',
+      likesDislikes: 'إعجاب / عدم إعجاب', currentQuality: 'الجودة الحالية', apiFormats: 'صيغ API',
+      author: 'المؤلف / القناة', tags: 'العلامات', videoId: 'معرف الفيديو', playerState: 'حالة المشغل',
+      helpTitle: 'اختصارات لوحة المفاتيح', helpSpace: 'إيقاف / تشغيل الفيديو',
+      helpArrows: 'تراجع / تقديم 10 ثوانٍ', helpEsc: 'إغلاق النافذة',
+      helpQuestion: 'فتح / إغلاق المساعدة', understood: 'فهمت',
+      loadingCatalog: 'جاري تحميل الكتالوج...', noCollections: 'ليس لديك مجموعات بعد.',
+      titles: 'عناوين', queueEmpty: 'قائمة الانتظار فارغة.', historyEmpty: 'لا يوجد سجل مشاهدة.',
+      noCatalogTitles: 'لا توجد عناوين في الكتالوج.',
+      resumeAt: 'استئناف عند', continueWatching: 'متابعة المشاهدة',
+      resumeNow: 'متاح الآن!', restart: 'إعادة التشغيل',
+      minutes: 'دقيقة', minutesPlus: '+ دقيقة', hour: 'ساعة',
+      upcoming: 'قريباً', upcomingTitle: 'الإصدارات القادمة',
+      noUpcoming: 'لا توجد إصدارات قادمة مجدولة.',
+      goTop: 'الاعلى', otherCategory: 'أخرى',
+      apiNA: 'API غير متاح', apiCalculating: 'جاري الحساب...',
+      apiConsulting: 'جاري الاستعلام...', apiLoading: 'جاري تحميل البيانات...',
+      apiLoadingViews: 'جاري تحميل المشاهدات...', apiGettingViews: 'جاري جلب البيانات...',
+      apiLoadStats: 'جاري التحميل...', apiCalcScore: 'جاري الحساب...',
+      confirmDeleteCollection: 'حذف المجموعة "{name}"؟',
+      confirmClearHistory: 'مسح كل سجل المشاهدة؟',
+      confirmClearQueue: 'تفريغ قائمة الانتظار؟',
+      featured2: 'مميز', availableNow: 'متاح', premiere: 'العرض الأول',
+      finished: 'انتهى', comingSoon: 'قريباً', notAvailable: 'غير متاح',
+      playNow: 'تشغيل الآن', inQueue: 'في الانتظار', filterBy: 'تصفية حسب',
+      addFav: 'المفضلة', addToQueueTitle: 'إضافة إلى القائمة', removeFromQueueTitle: 'إزالة من القائمة',
+      play: 'تشغيل', removeFromHistory: 'إزالة من السجل',
+      year: 'سنة', years: 'سنوات', month: 'شهر', months: 'أشهر',
+      day: 'يوم', days: 'أيام', hourShort: 'س', minuteShort: 'د', secondShort: 'ث',
+      noResults: 'لم يتم العثور على نتائج.',
+      myFavorites: 'مفضلاتي',
+      noFavorites: 'ليس لديك فيديوهات مفضلة.',
+      removeFav: 'إزالة من المفضلة',
+      favoritesSubtitle: 'قائمتك الشخصية للتقييمات المحفوظة',
+      playAllFavs: 'تشغيل الكل'
+    },
+    hi: {
+      subtitle: 'बड़े पर्दे - अब सिनेमाघरों में', keybinds: 'कीबाइंड्स (?)', favorites: 'पसंदीदा',
+      search: 'शीर्षक, निर्देशक द्वारा खोजें...', allCollections: 'सभी संग्रह',
+      filters: 'फ़िल्टर', manageCollections: 'संग्रह', queue: 'कतार', history: 'इतिहास',
+      grid: 'ग्रिड', list: 'सूची', toggleView: 'दृश्य बदलें',
+      featured: 'प्रमुख', featuredSub: 'चयनित शीर्षक',
+      fullCatalog: 'पूरा कैटलॉग', catalogSub: 'पूरे चयन का अन्वेषण करें',
+      advancedFilters: 'उन्नत फ़िल्टर', sortBy: 'इसके अनुसार क्रमबद्ध करें', sortDefault: 'डिफ़ॉल्ट',
+      sortTitleAsc: 'शीर्षक (A-Z)', sortTitleDesc: 'शीर्षक (Z-A)',
+      sortDateAsc: 'रिलीज़ की तारीख (सबसे पुरानी)', sortDateDesc: 'रिलीज़ की तारीख (नवीनतम)',
+      sortScoreDesc: 'स्कोर (उच्च से कम)', sortScoreAsc: 'स्कोर (कम से उच्च)',
+      sortDurationAsc: 'अवधि (सबसे छोटी)', sortDurationDesc: 'अवधि (सबसे लंबी)',
+      durationFilter: 'वीडियो अवधि', ageFilter: 'आयु रेटिंग',
+      ageAll: 'सभी उम्र', ageTP: 'TP (सभी के लिए)', age7: '+7 वर्ष', age12: '+12 वर्ष',
+      age16: '+16 वर्ष', age18: '+18 वर्ष', ageHide18: '+18 छुपाएं', tagsFilter: 'टैग',
+      applyFilters: 'फ़िल्टर लागू करें', clearFilters: 'साफ़ करें',
+      myCollections: 'मेरे संग्रह', newCollectionName: 'नए संग्रह का नाम...',
+      create: 'बनाएं', playQueue: 'प्ले कतार', playQueueBtn: 'कतार चलाएं',
+      clearQueue: 'साफ़ करें', watchHistory: 'देखने का इतिहास', clearHistory: 'इतिहास साफ़ करें',
+      blockedTitle: 'वीडियो उपलब्ध नहीं है', blockedDesc: 'यह सामग्री वर्तमान में उपलब्ध नहीं है।',
+      watchOnYT: 'YouTube पर देखें', like: 'पसंद करें', addToCollection: 'संग्रह',
+      addToQueue: 'कतार', close: 'बंद करें', skipIntro: 'इंट्रो छोड़ें',
+      stateUnstarted: 'प्रारंभ नहीं हुआ', stateEnded: 'समाप्त', statePlaying: 'चल रहा है',
+      statePaused: 'रुका हुआ', stateBuffering: 'लोड हो रहा है', stateCued: 'कतार में', stateActive: 'सक्रिय',
+      stateReady: 'तैयार', stateLive: 'लाइव स्ट्रीम', stateStandard: 'मानक',
+      stateAutoAdaptive: 'ऑटो (अनुकूली)', stateStandardFormat: 'मानक H.264 / AAC',
+      score: 'स्कोर', classification: 'रेटिंग', genre: 'शैली',
+      duration: 'अवधि', views: 'दृश्य',
+      likesDislikes: 'पसंद / नापसंद', currentQuality: 'वर्तमान गुणवत्ता', apiFormats: 'API प्रारूप',
+      author: 'लेखक / चैनल', tags: 'टैग', videoId: 'वीडियो ID', playerState: 'प्लेयर स्थिति',
+      helpTitle: 'कीबोर्ड शॉर्टकट', helpSpace: 'वीडियो रोकें / चलाएं',
+      helpArrows: '10 सेकंड पीछे / आगे करें', helpEsc: 'प्लेबैक मॉडल बंद करें',
+      helpQuestion: 'यह सहायता खोलें / बंद करें', understood: 'समझ गया',
+      loadingCatalog: 'कैटलॉग लोड हो रहा है...', noCollections: 'आपके पास अभी तक कोई संग्रह नहीं है।',
+      titles: 'शीर्षक', queueEmpty: 'कतार खाली है।', historyEmpty: 'कोई देखने का इतिहास नहीं है।',
+      noCatalogTitles: 'कैटलॉग में कोई शीर्षक नहीं है।',
+      resumeAt: 'यहाँ से फिर शुरू करें', continueWatching: 'देखना जारी रखें',
+      resumeNow: 'अब उपलब्ध है!', restart: 'पुनः प्रारंभ करें',
+      minutes: 'मिनट', minutesPlus: '+ मिनट', hour: 'घंटा',
+      upcoming: 'आगामी', upcomingTitle: 'आगामी रिलीज़',
+      noUpcoming: 'कोई आगामी रिलीज़ निर्धारित नहीं है।',
+      goTop: 'ऊपर जाएं', otherCategory: 'अन्य',
+      apiNA: 'API N/A', apiCalculating: 'गणना हो रही है...',
+      apiConsulting: 'API खोज रहे हैं...', apiLoading: 'API डेटा लोड हो रहा है...',
+      apiLoadingViews: 'दृश्य लोड हो रहे हैं...', apiGettingViews: 'API प्राप्त कर रहे हैं...',
+      apiLoadStats: 'लोड हो रहा है...', apiCalcScore: 'गणना हो रही है...',
+      confirmDeleteCollection: 'संग्रह "{name}" हटाएं?',
+      confirmClearHistory: 'क्या सभी देखने का इतिहास साफ़ करें?',
+      confirmClearQueue: 'प्ले कतार खाली करें?',
+      featured2: 'विशेष रुप से प्रदर्शित', availableNow: 'उपलब्ध है', premiere: 'प्रीमियर',
+      finished: 'समाप्त', comingSoon: 'जल्द आ रहा है', notAvailable: 'उपलब्ध नहीं है',
+      playNow: 'अभी चलाएं', inQueue: 'कतार में', filterBy: 'इसके द्वारा फ़िल्टर करें',
+      addFav: 'पसंदीदा', addToQueueTitle: 'कतार में जोड़ें', removeFromQueueTitle: 'कतार से हटाएं',
+      play: 'चलाएं', removeFromHistory: 'इतिहास से हटाएं',
+      year: 'साल', years: 'साल', month: 'महीना', months: 'महीने',
+      day: 'दिन', days: 'दिन', hourShort: 'घं', minuteShort: 'मि', secondShort: 'से',
+      noResults: 'कोई परिणाम नहीं मिला।',
+      myFavorites: 'मेरी पसंदीदा',
+      noFavorites: 'आपके पास कोई पसंदीदा वीडियो नहीं है।',
+      removeFav: 'पसंदीदा से हटाएं',
+      favoritesSubtitle: 'सहेजे गए शीर्षकों की आपकी व्यक्तिगत सूची',
+      playAllFavs: 'सभी चलाएं'
+    },
+    ko: {
+      subtitle: '대형 스크린 - 상영작', keybinds: '단축키 (?)', favorites: '즐겨찾기',
+      search: '제목, 감독으로 검색...', allCollections: '모든 컬렉션',
+      filters: '필터', manageCollections: '컬렉션 관리', queue: '재생 대기열', history: '시청 기록',
+      grid: '그리드', list: '목록', toggleView: '보기 전환',
+      featured: '추천 작품', featuredSub: '엄선된 타이틀',
+      fullCatalog: '전체 카탈로그', catalogSub: '전체 선택 탐색',
+      advancedFilters: '고급 필터', sortBy: '정렬 기준', sortDefault: '기본값',
+      sortTitleAsc: '제목 (가-하)', sortTitleDesc: '제목 (하-가)',
+      sortDateAsc: '개봉일 (오래된 순)', sortDateDesc: '개봉일 (최신순)',
+      sortScoreDesc: '평점 (높은 순)', sortScoreAsc: '평점 (낮은 순)',
+      sortDurationAsc: '재생 시간 (짧은 순)', sortDurationDesc: '재생 시간 (긴 순)',
+      durationFilter: '동영상 길이', ageFilter: '연령 등급',
+      ageAll: '모든 연령', ageTP: '전체 관람가', age7: '+7세', age12: '+12세',
+      age16: '+16세', age18: '+18세', ageHide18: '+18 숨기기', tagsFilter: '태그',
+      applyFilters: '필터 적용', clearFilters: '초기화',
+      myCollections: '내 컬렉션', newCollectionName: '새 컬렉션 이름...',
+      create: '생성', playQueue: '재생 대기열', playQueueBtn: '대기열 재생',
+      clearQueue: '비우기', watchHistory: '시청 기록', clearHistory: '기록 삭제',
+      blockedTitle: '동영상을 사용할 수 없음', blockedDesc: '이 콘텐츠는 현재 사용할 수 없습니다.',
+      watchOnYT: 'YouTube에서 보기', like: '좋아요', addToCollection: '컬렉션',
+      addToQueue: '대기열', close: '닫기', skipIntro: '인트로 건너뛰기',
+      stateUnstarted: '시작되지 않음', stateEnded: '종료됨', statePlaying: '재생 중',
+      statePaused: '일시정지됨', stateBuffering: '버퍼링 중', stateCued: '대기 중', stateActive: '활성',
+      stateReady: '준비됨', stateLive: '라이브 스트리밍', stateStandard: '표준',
+      stateAutoAdaptive: '자동 (가변)', stateStandardFormat: '표준 H.264 / AAC',
+      score: '평점', classification: '등급', genre: '장르',
+      duration: '재생 시간', views: '조회수',
+      likesDislikes: '좋아요 / 싫어요', currentQuality: '현재 화질', apiFormats: 'API 형식',
+      author: '작성자 / 채널', tags: '태그', videoId: '동영상 ID', playerState: '플레이어 상태',
+      helpTitle: '키보드 단축키', helpSpace: '일시정지 / 재생',
+      helpArrows: '10초 되감기 / 빨리감기', helpEsc: '창 닫기',
+      helpQuestion: '도움말 열기 / 닫기', understood: '확인',
+      loadingCatalog: '카탈로그 로딩 중...', noCollections: '생성된 컬렉션이 없습니다.',
+      titles: '개 타이틀', queueEmpty: '대기열이 비어 있습니다.', historyEmpty: '시청 기록이 없습니다.',
+      noCatalogTitles: '카탈로그에 타이틀이 없습니다.',
+      resumeAt: '이어보기:', continueWatching: '계속 시청하기',
+      resumeNow: '지금 시청 가능!', restart: '처음부터 다시보기',
+      minutes: '분', minutesPlus: '+ 분', hour: '시간',
+      upcoming: '개봉 예정', upcomingTitle: '개봉 예정작',
+      noUpcoming: '예정된 개봉작이 없습니다.',
+      goTop: '맨 위로', otherCategory: '기타',
+      apiNA: 'API N/A', apiCalculating: '계산 중...',
+      apiConsulting: 'API 조회 중...', apiLoading: '데이터 로딩 중...',
+      apiLoadingViews: '조회수 로딩 중...', apiGettingViews: 'API 가져오는 중...',
+      apiLoadStats: '로딩 중...', apiCalcScore: '계산 중...',
+      confirmDeleteCollection: '컬렉션 "{name}"을(를) 삭제하시겠습니까?',
+      confirmClearHistory: '모든 시청 기록을 삭제하시겠습니까?',
+      confirmClearQueue: '재생 대기열을 비우시겠습니까?',
+      featured2: '추천', availableNow: '시청 가능', premiere: '프리미어',
+      finished: '종영', comingSoon: '곧 개봉', notAvailable: '사용 불가',
+      playNow: '지금 재생', inQueue: '대기열에 있음', filterBy: '필터링 기준',
+      addFav: '즐겨찾기', addToQueueTitle: '대기열에 추가', removeFromQueueTitle: '대기열에서 제거',
+      play: '재생', removeFromHistory: '기록에서 제거',
+      year: '년', years: '년', month: '개월', months: '개월',
+      day: '일', days: '일', hourShort: '시간', minuteShort: '분', secondShort: '초',
+      noResults: '검색 결과가 없습니다.',
+      myFavorites: '내 즐겨찾기',
+      noFavorites: '즐겨찾기한 동영상이 없습니다.',
+      removeFav: '즐겨찾기에서 제거',
+      favoritesSubtitle: '저장된 타이틀 개인 목록',
+      playAllFavs: '모두 재생'
+    },
+    nl: {
+      subtitle: 'Grote Schermen - Nu in de bioscoop', keybinds: 'Sneltoetsen (?)', favorites: 'Favorieten',
+      search: 'Zoek op titel, regisseur...', allCollections: 'Alle collecties',
+      filters: 'Filters', manageCollections: 'Collecties', queue: 'Wachtrij', history: 'Geschiedenis',
+      grid: 'Raster', list: 'Lijst', toggleView: 'Weergave wijzigen',
+      featured: 'Uitgelicht', featuredSub: 'Geselecteerde titels',
+      fullCatalog: 'Volledige catalogus', catalogSub: 'Ontdek de volledige selectie',
+      advancedFilters: 'Geavanceerde filters', sortBy: 'Sorteren op', sortDefault: 'Standaard',
+      sortTitleAsc: 'Titel (A-Z)', sortTitleDesc: 'Titel (Z-A)',
+      sortDateAsc: 'Releasedatum (oudste)', sortDateDesc: 'Releasedatum (nieuwste)',
+      sortScoreDesc: 'Score (hoog naar laag)', sortScoreAsc: 'Score (laag naar hoog)',
+      sortDurationAsc: 'Duur (kortste)', sortDurationDesc: 'Duur (langste)',
+      durationFilter: 'Videoduur', ageFilter: 'Leeftijdsbeoordeling',
+      ageAll: 'Alle leeftijden', ageTP: 'AL (Alle leeftijden)', age7: '+7 jaar', age12: '+12 jaar',
+      age16: '+16 jaar', age18: '+18 jaar', ageHide18: 'Verberg +18', tagsFilter: 'Tags',
+      applyFilters: 'Filters toepassen', clearFilters: 'Wis filters',
+      myCollections: 'Mijn collecties', newCollectionName: 'Naam nieuwe collectie...',
+      create: 'Maken', playQueue: 'Wachtrij afspelen', playQueueBtn: 'Speel wachtrij',
+      clearQueue: 'Wissen', watchHistory: 'Kijkgeschiedenis', clearHistory: 'Geschiedenis wissen',
+      blockedTitle: 'Video niet beschikbaar', blockedDesc: 'Deze inhoud is momenteel niet beschikbaar.',
+      watchOnYT: 'Bekijk op YouTube', like: 'Vind ik leuk', addToCollection: 'Collectie',
+      addToQueue: 'Wachtrij', close: 'Sluiten', skipIntro: 'Intro overslaan',
+      stateUnstarted: 'Niet gestart', stateEnded: 'Afgelopen', statePlaying: 'Afspelen',
+      statePaused: 'Gepauzeerd', stateBuffering: 'Laden', stateCued: 'In wachtrij', stateActive: 'Actief',
+      stateReady: 'Gereed', stateLive: 'Live stream', stateStandard: 'Standaard',
+      stateAutoAdaptive: 'Auto (Adaptief)', stateStandardFormat: 'Standaard H.264 / AAC',
+      score: 'Score', classification: 'Beoordeling', genre: 'Genre',
+      duration: 'Duur', views: 'Weergaven',
+      likesDislikes: 'Likes / Dislikes', currentQuality: 'Huidige kwaliteit', apiFormats: 'API-formaten',
+      author: 'Auteur / Kanaal', tags: 'Tags', videoId: 'Video-ID', playerState: 'Spelerstatus',
+      helpTitle: 'Sneltoetsen', helpSpace: 'Pauzeer / Speel video',
+      helpArrows: '10s terug / vooruit', helpEsc: 'Sluit venster',
+      helpQuestion: 'Open / Sluit help', understood: 'Begrepen',
+      loadingCatalog: 'Catalogus laden...', noCollections: 'Je hebt nog geen collecties.',
+      titles: 'titels', queueEmpty: 'De wachtrij is leeg.', historyEmpty: 'Geen kijkgeschiedenis.',
+      noCatalogTitles: 'Geen titels in de catalogus.',
+      resumeAt: 'Hervat op', continueWatching: 'Verder kijken',
+      resumeNow: 'Nu beschikbaar!', restart: 'Opnieuw starten',
+      minutes: 'min', minutesPlus: '+ min', hour: 'u',
+      upcoming: 'Binnenkort', upcomingTitle: 'Binnenkort verwachte releases',
+      noUpcoming: 'Geen komende releases gepland.',
+      goTop: 'Naar boven', otherCategory: 'Overige',
+      apiNA: 'API N.v.t.', apiCalculating: 'Berekenen...',
+      apiConsulting: 'API raadplegen...', apiLoading: 'API-gegevens laden...',
+      apiLoadingViews: 'Weergaven laden...', apiGettingViews: 'API ophalen...',
+      apiLoadStats: 'Laden...', apiCalcScore: 'Berekenen...',
+      confirmDeleteCollection: 'Collectie "{name}" verwijderen?',
+      confirmClearHistory: 'Gehele kijkgeschiedenis wissen?',
+      confirmClearQueue: 'Wachtrij leegmaken?',
+      featured2: 'Uitgelicht', availableNow: 'Beschikbaar', premiere: 'PRIMEUR',
+      finished: 'Afgelopen', comingSoon: 'Binnenkort', notAvailable: 'Niet beschikbaar',
+      playNow: 'Nu afspelen', inQueue: 'IN WACHTRIJ', filterBy: 'Filteren op',
+      addFav: 'Favoriet', addToQueueTitle: 'Toevoegen aan wachtrij', removeFromQueueTitle: 'Verwijderen uit wachtrij',
+      play: 'Afspelen', removeFromHistory: 'Verwijderen uit geschiedenis',
+      year: 'jaar', years: 'jaar', month: 'maand', months: 'maanden',
+      day: 'dag', days: 'dagen', hourShort: 'u', minuteShort: 'm', secondShort: 's',
+      noResults: 'Geen resultaten gevonden.',
+      myFavorites: 'Mijn Favorieten',
+      noFavorites: 'Je hebt geen favoriete video\'s.',
+      removeFav: 'Verwijderen uit favorieten',
+      favoritesSubtitle: 'Je persoonlijke lijst met opgeslagen titels',
+      playAllFavs: 'Alles afspelen'
+    },
+    pl: {
+      subtitle: 'Wielkie Ekrany - Repertuar', keybinds: 'Skróty (?)', favorites: 'Ulubione',
+      search: 'Szukaj według tytułu, reżysera...', allCollections: 'Wszystkie kolekcje',
+      filters: 'Filtry', manageCollections: 'Kolekcje', queue: 'Kolejka', history: 'Historia',
+      grid: 'Siatka', list: 'Lista', toggleView: 'Zmień widok',
+      featured: 'Polecane', featuredSub: 'Wybrane tytuły',
+      fullCatalog: 'Pełny katalog', catalogSub: 'Przeglądaj pełną selekcję',
+      advancedFilters: 'Zaawansowane filtry', sortBy: 'Sortuj według', sortDefault: 'Domyślnie',
+      sortTitleAsc: 'Tytuł (A-Z)', sortTitleDesc: 'Tytuł (Z-A)',
+      sortDateAsc: 'Data premery (najstarsze)', sortDateDesc: 'Data premiery (najnowsze)',
+      sortScoreDesc: 'Ocena (od najwyższej)', sortScoreAsc: 'Ocena (od najniższej)',
+      sortDurationAsc: 'Czas (najkrótsze)', sortDurationDesc: 'Czas (najdłuższe)',
+      durationFilter: 'Czas trwania wideo', ageFilter: 'Kategoria wiekowa',
+      ageAll: 'Wszystkie wieki', ageTP: 'BO (Bez ograniczeń)', age7: '+7 lat', age12: '+12 lat',
+      age16: '+16 lat', age18: '+18 lat', ageHide18: 'Ukryj +18', tagsFilter: 'Tagi',
+      applyFilters: 'Zastosuj filtry', clearFilters: 'Wyczyść',
+      myCollections: 'Moje kolekcje', newCollectionName: 'Nazwa новой kolekcji...',
+      create: 'Utwórz', playQueue: 'Kolejka odtwarzania', playQueueBtn: 'Odtwórz kolejkę',
+      clearQueue: 'Wyczyść', watchHistory: 'Historia oglądania', clearHistory: 'Wyczyść historię',
+      blockedTitle: 'Wideo niedostępne', blockedDesc: 'Ta zawartość jest obecnie niedostępna.',
+      watchOnYT: 'Oglądaj w YouTube', like: 'Polub', addToCollection: 'Kolekcja',
+      addToQueue: 'Kolejka', close: 'Zamknij', skipIntro: 'Pomiń intro',
+      stateUnstarted: 'Nie rozpoczęto', stateEnded: 'Zakończono', statePlaying: 'Odtwarzanie',
+      statePaused: 'Wstrzymano', stateBuffering: 'Buforowanie', stateCued: 'W kolejce', stateActive: 'Aktywny',
+      stateReady: 'Gotowy', stateLive: 'Transmisja na żywo', stateStandard: 'Standard',
+      stateAutoAdaptive: 'Auto (Adaptacyjny)', stateStandardFormat: 'Standard H.264 / AAC',
+      score: 'Ocena', classification: 'Kategoria', genre: 'Gatunek',
+      duration: 'Czas trwania', views: 'Wyświetlenia',
+      likesDislikes: 'Polubienia / Niepolubienia', currentQuality: 'Aktualna jakość', apiFormats: 'Formaty API',
+      author: 'Autor / Kanał', tags: 'Tagi', videoId: 'ID wideo', playerState: 'Stan odtwarzacza',
+      helpTitle: 'Skróty klawiszowe', helpSpace: 'Pauza / Odtwarzaj wideo',
+      helpArrows: 'Cofnij / Do przodu 10s', helpEsc: 'Zamknij okno odtwarzania',
+      helpQuestion: 'Otwórz / Zamknij pomoc', understood: 'Zrozumiano',
+      loadingCatalog: 'Ładowanie katalogu...', noCollections: 'Nie masz jeszcze utworzonych kolekcji.',
+      titles: 'tytułów', queueEmpty: 'Kolejka jest pusta.', historyEmpty: 'Brak historii oglądania.',
+      noCatalogTitles: 'Brak tytułów w katalogu.',
+      resumeAt: 'Wznów od', continueWatching: 'Kontynuuj oglądanie',
+      resumeNow: 'Dostępne teraz!', restart: 'Uruchom ponownie',
+      minutes: 'min', minutesPlus: '+ min', hour: 'godz.',
+      upcoming: 'Nadchodzące', upcomingTitle: 'Nadchodzące premery',
+      noUpcoming: 'Brak zaplanowanych nadchodzących premier.',
+      goTop: 'Do góry', otherCategory: 'Inne',
+      apiNA: 'API N/D', apiCalculating: 'Obliczanie...',
+      apiConsulting: 'Zapytanie API...', apiLoading: 'Ładowanie danych API...',
+      apiLoadingViews: 'Ładowanie wyświetleń...', apiGettingViews: 'Pobieranie API...',
+      apiLoadStats: 'Ładowanie...', apiCalcScore: 'Obliczanie...',
+      confirmDeleteCollection: 'Usunąć kolekcję "{name}"?',
+      confirmClearHistory: 'Wyczyścić całą historię oglądania?',
+      confirmClearQueue: 'Opróżnić kolejkę odtwarzania?',
+      featured2: 'Polecane', availableNow: 'Dostępne', premiere: 'PREMIERA',
+      finished: 'Zakończono', comingSoon: 'Wkrótce', notAvailable: 'Niedostępne',
+      playNow: 'Odtwórz teraz', inQueue: 'W KOLEJCE', filterBy: 'Filtruj według',
+      addFav: 'Ulubione', addToQueueTitle: 'Dodaj do kolejki', removeFromQueueTitle: 'Usuń z kolejki',
+      play: 'Odtwórz', removeFromHistory: 'Usuń z historii',
+      year: 'rok', years: 'lat', month: 'miesiąc', months: 'miesięcy',
+      day: 'dzień', days: 'dni', hourShort: 'g', minuteShort: 'm', secondShort: 's',
+      noResults: 'Brak wyników.',
+      myFavorites: 'Moje Ulubione',
+      noFavorites: 'Brak ulubionych filmów.',
+      removeFav: 'Usuń z ulubionych',
+      favoritesSubtitle: 'Twoja osobista lista zapisanych tytułów',
+      playAllFavs: 'Odtwórz wszystko'
+    },
+    tr: {
+      subtitle: 'Büyük Ekranlar - Vizyondakiler', keybinds: 'Kısayollar (?)', favorites: 'Favoriler',
+      search: 'Başlık, yönetmen ara...', allCollections: 'Tüm koleksiyonlar',
+      filters: 'Filtreler', manageCollections: 'Koleksiyonlar', queue: 'Kuyruk', history: 'Geçmiş',
+      grid: 'Izgara', list: 'Liste', toggleView: 'Görünümü Değiştir',
+      featured: 'Öne Çıkanlar', featuredSub: 'Seçilen başlıklar',
+      fullCatalog: 'Tüm Katalog', catalogSub: 'Tüm seçkiyi keşfedin',
+      advancedFilters: 'Gelişmiş Filtreler', sortBy: 'Sırala', sortDefault: 'Varsayılan',
+      sortTitleAsc: 'Başlık (A-Z)', sortTitleDesc: 'Başlık (Z-A)',
+      sortDateAsc: 'Yayın tarihi (en eski)', sortDateDesc: 'Yayın tarihi (en yeni)',
+      sortScoreDesc: 'Puan (yüksekten düşüğe)', sortScoreAsc: 'Puan (düşükten yükseğe)',
+      sortDurationAsc: 'Süre (en kısa)', sortDurationDesc: 'Süre (en uzun)',
+      durationFilter: 'Video süresi', ageFilter: 'Yaş sınırı',
+      ageAll: 'Tüm yaşlar', ageTP: 'Genel İzleyici', age7: '+7 yaş', age12: '+12 yaş',
+      age16: '+16 yaş', age18: '+18 yaş', ageHide18: '+18 Gizle', tagsFilter: 'Etiketler',
+      applyFilters: 'Filtreleri Uygula', clearFilters: 'Temizle',
+      myCollections: 'Koleksiyonlarım', newCollectionName: 'Yeni koleksiyon adı...',
+      create: 'Oluştur', playQueue: 'Oynatma Kuyruğu', playQueueBtn: 'Kuyruğu Oynat',
+      clearQueue: 'Temizle', watchHistory: 'İzleme Geçmişi', clearHistory: 'Geçmişi Temizle',
+      blockedTitle: 'Video Kullanılamıyor', blockedDesc: 'Bu içerik şu anda mevcut değil.',
+      watchOnYT: 'YouTube\'da İzle', like: 'Beğen', addToCollection: 'Koleksiyon',
+      addToQueue: 'Kuyruk', close: 'Kapat', skipIntro: 'Girişi Atla',
+      stateUnstarted: 'Başlamadı', stateEnded: 'Bitti', statePlaying: 'Oynatılıyor',
+      statePaused: 'Duraklatıldı', stateBuffering: 'Yükleniyor', stateCued: 'Kuyrukta', stateActive: 'Etkin',
+      stateReady: 'Hazır', stateLive: 'Canlı Yayın', stateStandard: 'Standart',
+      stateAutoAdaptive: 'Otomatik (Uyarlanabilir)', stateStandardFormat: 'Standart H.264 / AAC',
+      score: 'Puan', classification: 'Sınıflandırma', genre: 'Tür',
+      duration: 'Süre', views: 'Görüntülenme',
+      likesDislikes: 'Beğeni / Beğenmeme', currentQuality: 'Mevcut Kalite', apiFormats: 'API Formatları',
+      author: 'Yazar / Kanal', tags: 'Etiketler', videoId: 'Video ID', playerState: 'Oynatıcı Durumu',
+      helpTitle: 'Klavye Kısayolları', helpSpace: 'Videoyu Duraklat / Oynat',
+      helpArrows: '10s Geri / İleri', helpEsc: 'Pencereyi Kapat',
+      helpQuestion: 'Yardımı Aç / Kapat', understood: 'Anladım',
+      loadingCatalog: 'Katalog yükleniyor...', noCollections: 'Henüz koleksiyonunuz yok.',
+      titles: 'başlık', queueEmpty: 'Kuyruk boş.', historyEmpty: 'İzleme geçmişi yok.',
+      noCatalogTitles: 'Katalogda başlık yok.',
+      resumeAt: 'Kaldığı yer:', continueWatching: 'İzlemeye Devam Et',
+      resumeNow: 'Şimdi yayında!', restart: 'Yeniden Başlat',
+      minutes: 'dk', minutesPlus: '+ dk', hour: 'sa',
+      upcoming: 'Yakında', upcomingTitle: 'Gelecek Programlar',
+      noUpcoming: 'Planlanan gelecek yayın yok.',
+      goTop: 'Yukarı Çık', otherCategory: 'Diğer',
+      apiNA: 'API N/A', apiCalculating: 'Hesaplanıyor...',
+      apiConsulting: 'API\'ye danışılıyor...', apiLoading: 'API verileri yükleniyor...',
+      apiLoadingViews: 'Görüntülenmeler yükleniyor...', apiGettingViews: 'API alınıyor...',
+      apiLoadStats: 'Yükleniyor...', apiCalcScore: 'Hesaplanıyor...',
+      confirmDeleteCollection: '"{name}" koleksiyonu silinsin mi?',
+      confirmClearHistory: 'Tüm izleme geçmişi temizlensin mi?',
+      confirmClearQueue: 'Oynatma kuyruğu boşaltılsın mı?',
+      featured2: 'Öne Çıkan', availableNow: 'Yayında', premiere: 'PRÖMİYER',
+      finished: 'Bitti', comingSoon: 'Yakında', notAvailable: 'Mevcut değil',
+      playNow: 'Şimdi Oynat', inQueue: 'KUYRUKTA', filterBy: 'Filtrele:',
+      addFav: 'Favori', addToQueueTitle: 'Kuyruğa Ekle', removeFromQueueTitle: 'Kuyruktan Çıkar',
+      play: 'Oynat', removeFromHistory: 'Geçmişten Çıkar',
+      year: 'yıl', years: 'yıl', month: 'ay', months: 'ay',
+      day: 'gün', days: 'gün', hourShort: 'sa', minuteShort: 'dk', secondShort: 'sn',
+      noResults: 'Sonuç bulunamadı.',
+      myFavorites: 'Favorilerim',
+      noFavorites: 'Favori videonuz yok.',
+      removeFav: 'Favorilerden Çıkar',
+      favoritesSubtitle: 'Kaydedilen başlıklar kişisel listeniz',
+      playAllFavs: 'Tümünü Oynat'
+    }
+  };
+
+  let currentLang = localStorage.getItem('cinemateca_lang') || 'es';
+  function t(key, vars) {
+    let str = (I18N[currentLang] && I18N[currentLang][key]) || (I18N['es'][key]) || key;
+    if (vars) {
+      Object.keys(vars).forEach(k => { str = str.replace(`{${k}}`, vars[k]); });
+    }
+    return str;
+  }
+
+  function applyStaticI18n() {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (key) {
+        const hasIcon = el.querySelector('i') !== null;
+        if (hasIcon) {
+          let textNode = null;
+          el.childNodes.forEach(node => {
+            if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) textNode = node;
+          });
+          if (textNode) textNode.textContent = ' ' + t(key);
+        } else {
+          el.textContent = t(key);
+        }
+      }
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      if (key) el.placeholder = t(key);
+    });
+    document.querySelectorAll('[data-i18n-title]').forEach(el => {
+      const key = el.getAttribute('data-i18n-title');
+      if (key) el.title = t(key);
+    });
+    document.getElementById('lang-select').value = currentLang;
+  }
+
+  function applyLanguage() {
+    applyStaticI18n();
+    populateCollectionsSelect();
+    updateUI();
+    renderCollectionsList();
+    renderQueueList();
+    renderHistoryList();
+    renderUpcomingList();
+    renderTagsCloud();
+    renderFavoritesList();
+    updateDurationLabels();
+    if (currentVideoId) syncVideoMetadata();
+  }
+
+  function updateDurationLabels() {
+    const minLabel = document.getElementById('duration-min-label');
+    const maxLabel = document.getElementById('duration-max-label');
+    if (minLabel) minLabel.textContent = durationMin === 0 ? '0 ' + t('minutes') : formatTimeLong(durationMin);
+    if (maxLabel) maxLabel.textContent = durationMax >= 3600 ? '60+ ' + t('minutes') : formatTimeLong(durationMax);
+  }
+
+  document.getElementById('lang-select').addEventListener('change', (e) => {
+    currentLang = e.target.value;
+    localStorage.setItem('cinemateca_lang', currentLang);
+    document.documentElement.lang = currentLang;
+    applyLanguage();
+  });
+
+  /* ====== DATOS ====== */
   let CATALOGO = [];
   let FAVORITOS = JSON.parse(localStorage.getItem('cinemateca_favs') || '[]');
   let COLECCIONES = JSON.parse(localStorage.getItem('cinemateca_collections') || '{"Favoritos": []}');
+  let HISTORIAL = JSON.parse(localStorage.getItem('cinemateca_history') || '[]');
+  let WATCH_PROGRESS = JSON.parse(localStorage.getItem('cinemateca_progress') || '{}');
+  let QUEUE = JSON.parse(localStorage.getItem('cinemateca_queue') || '[]');
 
   let viewMode = 'grid';
   let filterCollection = 'ALL';
   let searchQuery = '';
+  let sortBy = 'default';
+  let durationMin = 0;
+  let durationMax = 3600;
+  let ageFilter = 'all';
+  let activeTags = [];
 
   let player = null;
   let currentVideoId = null;
   let editingColName = null;
   let introCheckInterval = null;
+  let progressSaveInterval = null;
+  let isPlayingQueue = false;
+  let queueIndex = 0;
 
   let apiVideoStats = {};
+  let videoDurations = {};
 
   try {
     CATALOGO = JSON.parse(document.getElementById('cartelera-data').textContent);
   } catch(e) { console.error('JSON Error', e); }
 
+  /* ====== UTILIDADES ====== */
   function formatTime(seconds) {
     if (isNaN(seconds) || seconds <= 0) return '00:00';
     const m = Math.floor(seconds / 60);
@@ -500,134 +1900,294 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
     return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   }
 
+  function formatTimeLong(seconds) {
+    if (isNaN(seconds) || seconds <= 0) return '0 ' + t('minutes');
+    const m = Math.floor(seconds / 60);
+    if (m < 60) return `${m} ${t('minutes')}`;
+    const h = Math.floor(m / 60);
+    const rm = m % 60;
+    return `${h}${t('hour')} ${rm}${t('minutes')}`;
+  }
+
   function getFormattedReleaseDate(unixTimestamp) {
     if (!unixTimestamp || unixTimestamp <= 0) return '';
     const date = new Date(unixTimestamp * 1000);
-    return date.toLocaleString('es-ES', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    const locale = currentLang === 'es' ? 'es-ES' : currentLang === 'fr' ? 'fr-FR' : 'en-US';
+    return date.toLocaleString(locale, {
+      day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
     });
   }
 
-  /* CÁLCULO PRECISO Y ADAPTATIVO: Años, Meses, Días, Horas, Minutos, Segundos */
   function getRemainingTime(unixTimestamp) {
     const now = new Date();
     const target = new Date(unixTimestamp * 1000);
-
     if (target <= now) return null;
-
     let years = target.getFullYear() - now.getFullYear();
     let months = target.getMonth() - now.getMonth();
     let days = target.getDate() - now.getDate();
     let hours = target.getHours() - now.getHours();
     let minutes = target.getMinutes() - now.getMinutes();
     let seconds = target.getSeconds() - now.getSeconds();
-
-    if (seconds < 0) {
-      seconds += 60;
-      minutes--;
-    }
-    if (minutes < 0) {
-      minutes += 60;
-      hours--;
-    }
-    if (hours < 0) {
-      hours += 24;
-      days--;
-    }
-    if (days < 0) {
-      const prevMonth = new Date(target.getFullYear(), target.getMonth(), 0);
-      days += prevMonth.getDate();
-      months--;
-    }
-    if (months < 0) {
-      months += 12;
-      years--;
-    }
-
+    if (seconds < 0) { seconds += 60; minutes--; }
+    if (minutes < 0) { minutes += 60; hours--; }
+    if (hours < 0) { hours += 24; days--; }
+    if (days < 0) { const prevMonth = new Date(target.getFullYear(), target.getMonth(), 0); days += prevMonth.getDate(); months--; }
+    if (months < 0) { months += 12; years--; }
     const parts = [];
-    if (years > 0) parts.push(`${years} ${years === 1 ? 'año' : 'años'}`);
-    if (months > 0) parts.push(`${months} ${months === 1 ? 'mes' : 'meses'}`);
-    if (days > 0) parts.push(`${days} ${days === 1 ? 'día' : 'días'}`);
-
-    parts.push(`${hours.toString().padStart(2, '0')}h`);
-    parts.push(`${minutes.toString().padStart(2, '0')}m`);
-    parts.push(`${seconds.toString().padStart(2, '0')}s`);
-
+    if (years > 0) parts.push(`${years} ${years === 1 ? t('year') : t('years')}`);
+    if (months > 0) parts.push(`${months} ${months === 1 ? t('month') : t('months')}`);
+    if (days > 0) parts.push(`${days} ${days === 1 ? t('day') : t('days')}`);
+    parts.push(`${hours.toString().padStart(2, '0')}${t('hourShort')}`);
+    parts.push(`${minutes.toString().padStart(2, '0')}${t('minuteShort')}`);
+    parts.push(`${seconds.toString().padStart(2, '0')}${t('secondShort')}`);
     return parts.join(' ');
   }
 
-  /* ESTADO DE REPRODUCCIÓN (Inicio / Fin) */
   function getPlayState(item) {
     const now = Math.floor(Date.now() / 1000);
-    
-    if (item.disponibleUnixInicio && item.disponibleUnixInicio > 0 && now < item.disponibleUnixInicio) {
+    if (item.disponibleUnixInicio && item.disponibleUnixInicio > 0 && now < item.disponibleUnixInicio)
       return { canPlay: false, status: 'NOT_STARTED' };
-    }
-    if (item.disponibleUnixFin && item.disponibleUnixFin > 0 && now > item.disponibleUnixFin) {
+    if (item.disponibleUnixFin && item.disponibleUnixFin > 0 && now > item.disponibleUnixFin)
       return { canPlay: false, status: 'EXPIRED' };
-    }
-    
     return { canPlay: true, status: 'AVAILABLE' };
   }
 
   function getClasificacionHTML(clasifStr) {
     const code = (clasifStr || 'TP').toUpperCase().trim();
     let colorClass = 'clasif-tp';
-
     if (code.includes('18')) colorClass = 'clasif-18';
     else if (code.includes('16')) colorClass = 'clasif-16';
     else if (code.includes('12')) colorClass = 'clasif-12';
     else if (code.includes('7'))  colorClass = 'clasif-7';
-
     return `<span class="clasif-badge ${colorClass}">${code}</span>`;
   }
 
   function getIntroRange(id) {
     const item = CATALOGO.find(v => v.id === id);
-    return {
-      start: item && item.introStart !== undefined ? item.introStart : 0,
-      end: item && item.introEnd !== undefined ? item.introEnd : 0
-    };
+    return { start: item?.introStart ?? 0, end: item?.introEnd ?? 0 };
   }
 
-  function getApiStats(id) {
-    return apiVideoStats[id] || null;
-  }
+  function getApiStats(id) { return apiVideoStats[id] || null; }
 
   function calculateApiScore(id) {
     const stats = getApiStats(id);
     if (stats && stats.likes !== undefined && stats.dislikes !== undefined) {
       const total = stats.likes + stats.dislikes;
-      if (total > 0) {
-        const ratio = stats.likes / total;
-        return (ratio * 10).toFixed(1);
-      }
+      if (total > 0) return (stats.likes / total * 10).toFixed(1);
     }
-    return 'API N/A';
+    return t('apiNA');
   }
 
+  /* ====== PERSISTENCIA ====== */
   function saveCollections() {
     localStorage.setItem('cinemateca_collections', JSON.stringify(COLECCIONES));
     populateCollectionsSelect();
     renderCollectionsList();
   }
+  function saveHistory() { localStorage.setItem('cinemateca_history', JSON.stringify(HISTORIAL)); }
+  function saveProgress() { localStorage.setItem('cinemateca_progress', JSON.stringify(WATCH_PROGRESS)); }
+  function saveQueue() { localStorage.setItem('cinemateca_queue', JSON.stringify(QUEUE)); }
 
   function isFav(id) { return FAVORITOS.includes(id); }
+
   function toggleFav(id) {
     if (isFav(id)) FAVORITOS = FAVORITOS.filter(f => f !== id);
     else FAVORITOS.push(id);
     localStorage.setItem('cinemateca_favs', JSON.stringify(FAVORITOS));
     updateUI();
     updateModalLikeButton();
+    renderFavoritesList(); // Actualizar modal si está abierto
   }
 
+  function addToHistory(id) {
+    const item = CATALOGO.find(v => v.id === id);
+    if (!item) return;
+    HISTORIAL = HISTORIAL.filter(h => h.id !== id);
+    HISTORIAL.unshift({ id, titulo: item.titulo, timestamp: Date.now(), duracion: videoDurations[id] || 0 });
+    if (HISTORIAL.length > 50) HISTORIAL = HISTORIAL.slice(0, 50);
+    saveHistory();
+  }
+
+  function removeFromHistory(id) {
+    HISTORIAL = HISTORIAL.filter(h => h.id !== id);
+    saveHistory();
+    if (WATCH_PROGRESS[id]) { delete WATCH_PROGRESS[id]; saveProgress(); }
+    renderHistoryList();
+    updateUI();
+  }
+
+  function clearHistory() {
+    if (!confirm(t('confirmClearHistory'))) return;
+    HISTORIAL = [];
+    saveHistory();
+    renderHistoryList();
+    updateUI();
+  }
+
+  function addToQueue(id) {
+    if (QUEUE.includes(id)) return;
+    QUEUE.push(id);
+    saveQueue();
+    updateQueueBadge();
+    renderQueueList();
+    updateUI();
+  }
+
+  function removeFromQueue(indexOrId) {
+    let idx = (typeof indexOrId === 'number') ? indexOrId : QUEUE.indexOf(indexOrId);
+    if (idx === -1) return;
+    QUEUE.splice(idx, 1);
+    saveQueue();
+    updateQueueBadge();
+    renderQueueList();
+    updateUI();
+  }
+
+  function toggleQueueItem(id) {
+    if (QUEUE.includes(id)) removeFromQueue(id);
+    else addToQueue(id);
+  }
+
+  function clearQueue() {
+    if (!confirm(t('confirmClearQueue'))) return;
+    QUEUE = []; isPlayingQueue = false; queueIndex = 0;
+    saveQueue();
+    updateQueueBadge(); renderQueueList(); updateUI();
+  }
+
+  function updateQueueBadge() {
+    const badge = document.getElementById('queue-count-badge');
+    if (!badge) return;
+    if (QUEUE.length > 0) { badge.style.display = 'inline'; badge.textContent = QUEUE.length; }
+    else { badge.style.display = 'none'; badge.textContent = '0'; }
+  }
+
+  function getProgress(id) { return WATCH_PROGRESS[id] || null; }
+
+  function saveWatchProgress(id, time, duration) {
+    if (!id || time === undefined) return;
+    WATCH_PROGRESS[id] = { time, duration, updated: Date.now() };
+    saveProgress();
+  }
+
+  /* ====== FAVORITOS (RENDER) ====== */
+  function renderFavoritesList() {
+    const container = document.getElementById('favorites-list-container');
+    const countEl = document.getElementById('fav-modal-count');
+    if (!container) return;
+
+    if (countEl) countEl.textContent = `(${FAVORITOS.length})`;
+
+    container.innerHTML = '';
+
+    if (FAVORITOS.length === 0) {
+      container.innerHTML = `<p class="empty-state"><i class="fa-regular fa-heart"></i>${t('noFavorites')}</p>`;
+      return;
+    }
+
+    // Solo mostrar los que existen en el catálogo
+    const favItems = FAVORITOS
+      .map(id => CATALOGO.find(v => v.id === id))
+      .filter(Boolean);
+
+    favItems.forEach(item => {
+      const score = calculateApiScore(item.id);
+      const inQueue = QUEUE.includes(item.id);
+      const progress = getProgress(item.id);
+      const clasifBadgeHTML = getClasificacionHTML(item.clasificacion);
+      const playState = getPlayState(item);
+
+      let statusBadge = '';
+      if (playState.status === 'NOT_STARTED') {
+        statusBadge = `<span class="badge badge--timer"><i class="fa-solid fa-hourglass-half"></i> ${t('premiere')}</span>`;
+      } else if (playState.status === 'EXPIRED') {
+        statusBadge = `<span class="badge badge--expired"><i class="fa-solid fa-ban"></i> ${t('finished')}</span>`;
+      }
+
+      let resumeInfo = '';
+      if (progress && progress.time > 5 && progress.duration > 0) {
+        resumeInfo = `<span style="color:var(--accent); font-size:.7rem;"><i class="fa-solid fa-play"></i> ${t('resumeAt')} ${formatTime(progress.time)}</span>`;
+      }
+
+      const div = document.createElement('div');
+      div.className = 'fav-item';
+      div.setAttribute('data-fav-open', item.id);
+      div.innerHTML = `
+        <div class="fav-item__thumb">
+          <img src="https://i.ytimg.com/vi/${item.id}/mqdefault.jpg" alt="${item.titulo}" loading="lazy">
+          <div class="fav-item__play-overlay">
+            <i class="fa-solid fa-${playState.canPlay ? 'play' : 'lock'}"></i>
+          </div>
+        </div>
+        <div class="fav-item__info">
+          <h4>${item.titulo}</h4>
+          <div class="fav-item__meta">
+            <span>${item.genero || '—'}</span> · ${clasifBadgeHTML} · <span><i class="fa-solid fa-star" style="color:var(--accent);"></i> ${score}</span>
+            ${statusBadge}
+          </div>
+          ${resumeInfo}
+          ${item.etiquetas && item.etiquetas.length ? '<div class="card-tags">' + item.etiquetas.slice(0,3).map(tag => `<span class="card-tag" style="cursor:default;"><i class="fa-solid fa-hashtag"></i>${tag}</span>`).join('') + '</div>' : ''}
+        </div>
+        <div class="fav-item__actions">
+          <button class="btn" style="padding:6px 10px; font-size:.72rem;" data-fav-play="${item.id}" title="${t('play')}">
+            <i class="fa-solid fa-play"></i>
+          </button>
+          <button class="btn ${inQueue ? 'btn--primary' : ''}" style="padding:6px 10px; font-size:.72rem;" data-fav-queue="${item.id}" title="${inQueue ? t('removeFromQueueTitle') : t('addToQueueTitle')}">
+            <i class="fa-solid fa-list"></i>
+          </button>
+          <button class="btn btn--danger" style="padding:6px 10px; font-size:.72rem;" data-fav-remove="${item.id}" title="${t('removeFav')}">
+            <i class="fa-solid fa-heart-broken"></i>
+          </button>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+
+    // Click en el item (no en botones) → abre el vídeo
+    container.querySelectorAll('[data-fav-open]').forEach(el => {
+      el.onclick = (e) => {
+        if (e.target.closest('button')) return;
+        const id = el.getAttribute('data-fav-open');
+        document.getElementById('favorites-modal').hidden = true;
+        openVideo(id);
+      };
+    });
+
+    // Botón reproducir
+    container.querySelectorAll('[data-fav-play]').forEach(btn => {
+      btn.onclick = (e) => {
+        e.stopPropagation();
+        const id = btn.getAttribute('data-fav-play');
+        document.getElementById('favorites-modal').hidden = true;
+        openVideo(id);
+      };
+    });
+
+    // Botón cola
+    container.querySelectorAll('[data-fav-queue]').forEach(btn => {
+      btn.onclick = (e) => {
+        e.stopPropagation();
+        const id = btn.getAttribute('data-fav-queue');
+        toggleQueueItem(id);
+        renderFavoritesList();
+      };
+    });
+
+    // Botón quitar de favoritos
+    container.querySelectorAll('[data-fav-remove]').forEach(btn => {
+      btn.onclick = (e) => {
+        e.stopPropagation();
+        const id = btn.getAttribute('data-fav-remove');
+        toggleFav(id);
+        // renderFavoritesList se llama dentro de toggleFav
+      };
+    });
+  }
+
+  /* ====== COLECCIONES ====== */
   function populateCollectionsSelect() {
     const select = document.getElementById('collection-select');
-    select.innerHTML = '<option value="ALL">Todas las colecciones</option>';
+    select.innerHTML = `<option value="ALL">${t('allCollections')}</option>`;
     Object.keys(COLECCIONES).forEach(col => {
       const opt = document.createElement('option');
       opt.value = col;
@@ -642,7 +2202,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
     container.innerHTML = '';
     const keys = Object.keys(COLECCIONES);
     if (keys.length === 0) {
-      container.innerHTML = '<p style="font-size:.85rem; color:var(--muted); text-align:center; margin:12px 0;">No tienes colecciones creadas.</p>';
+      container.innerHTML = `<p class="empty-state"><i class="fa-solid fa-folder-open"></i>${t('noCollections')}</p>`;
       return;
     }
 
@@ -654,18 +2214,18 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
         item.innerHTML = `
           <input type="text" id="edit-col-input" value="${colName}" style="flex:1; padding:4px 8px; font-size:.85rem; background:var(--surface); border:1px solid var(--accent); border-radius:6px; color:#fff;">
           <div class="collection-item__actions">
-            <button class="btn btn--primary" style="padding:4px 10px;" id="save-col-rename-btn">✓</button>
-            <button class="btn" style="padding:4px 10px;" id="cancel-col-rename-btn">✕</button>
+            <button class="btn btn--primary" style="padding:4px 10px;" id="save-col-rename-btn"><i class="fa-solid fa-check"></i></button>
+            <button class="btn" style="padding:4px 10px;" id="cancel-col-rename-btn"><i class="fa-solid fa-xmark"></i></button>
           </div>`;
       } else {
         item.innerHTML = `
           <div class="collection-item__info">
             <span class="collection-item__name">${colName}</span>
-            <span class="collection-item__count">${COLECCIONES[colName].length} títulos</span>
+            <span class="collection-item__count">${COLECCIONES[colName].length} ${t('titles')}</span>
           </div>
           <div class="collection-item__actions">
-            <button class="btn" style="padding:4px 8px; font-size:.75rem;" data-rename-col="${colName}">✎</button>
-            <button class="btn btn--danger" style="padding:4px 8px; font-size:.75rem;" data-delete-col="${colName}">🗑</button>
+            <button class="btn" style="padding:4px 8px; font-size:.75rem;" data-rename-col="${colName}" title="${t('create')}"><i class="fa-solid fa-pen"></i></button>
+            <button class="btn btn--danger" style="padding:4px 8px; font-size:.75rem;" data-delete-col="${colName}" title="Delete"><i class="fa-solid fa-trash"></i></button>
           </div>`;
       }
       container.appendChild(item);
@@ -678,6 +2238,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
     container.querySelectorAll('[data-delete-col]').forEach(b => {
       b.onclick = () => {
         const name = b.getAttribute('data-delete-col');
+        if (!confirm(t('confirmDeleteCollection', { name }))) return;
         delete COLECCIONES[name];
         if (filterCollection === name) filterCollection = 'ALL';
         saveCollections();
@@ -697,135 +2258,335 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
           editingColName = null;
           saveCollections();
           updateUI();
-        } else {
-          editingColName = null;
-          renderCollectionsList();
-        }
+        } else { editingColName = null; renderCollectionsList(); }
       };
     }
 
     const cancelRenameBtn = document.getElementById('cancel-col-rename-btn');
-    if (cancelRenameBtn) {
-      cancelRenameBtn.onclick = () => { editingColName = null; renderCollectionsList(); };
-    }
+    if (cancelRenameBtn) cancelRenameBtn.onclick = () => { editingColName = null; renderCollectionsList(); };
   }
 
+  /* ====== COLA ====== */
+  function renderQueueList() {
+    const container = document.getElementById('queue-list-container');
+    if (!container) return;
+    container.innerHTML = '';
+    if (QUEUE.length === 0) {
+      container.innerHTML = `<p class="empty-state"><i class="fa-solid fa-list"></i>${t('queueEmpty')}</p>`;
+      return;
+    }
+    QUEUE.forEach((id, index) => {
+      const item = CATALOGO.find(v => v.id === id);
+      const div = document.createElement('div');
+      div.className = 'queue-item';
+      div.innerHTML = `
+        <span class="queue-item__num">${index + 1}</span>
+        <span class="queue-item__title">${item ? item.titulo : id}</span>
+        <button class="btn" style="padding:2px 8px; font-size:.7rem;" data-remove-queue="${index}" title="${t('removeFromQueueTitle')}"><i class="fa-solid fa-xmark"></i></button>
+      `;
+      container.appendChild(div);
+    });
+    container.querySelectorAll('[data-remove-queue]').forEach(btn => {
+      btn.onclick = (e) => { e.stopPropagation(); removeFromQueue(parseInt(btn.getAttribute('data-remove-queue'))); };
+    });
+  }
+
+  /* ====== HISTORIAL ====== */
+  function renderHistoryList() {
+    const container = document.getElementById('history-list-container');
+    if (!container) return;
+    container.innerHTML = '';
+    if (HISTORIAL.length === 0) {
+      container.innerHTML = `<p class="empty-state"><i class="fa-solid fa-clock-rotate-left"></i>${t('historyEmpty')}</p>`;
+      return;
+    }
+    const locale = currentLang === 'es' ? 'es-ES' : currentLang === 'fr' ? 'fr-FR' : 'en-US';
+    HISTORIAL.forEach(h => {
+      const item = CATALOGO.find(v => v.id === h.id);
+      if (!item) return;
+      const progress = getProgress(h.id);
+      const pct = progress && progress.duration ? (progress.time / progress.duration * 100) : 0;
+      const div = document.createElement('div');
+      div.className = 'history-item';
+      div.innerHTML = `
+        <div class="history-item__thumb"><img src="https://i.ytimg.com/vi/${h.id}/default.jpg" alt=""></div>
+        <div class="history-item__info">
+          <h4>${h.titulo}</h4>
+          <p>${new Date(h.timestamp).toLocaleString(locale)} · ${formatTime(progress?.time || 0)} / ${formatTime(progress?.duration || 0)}</p>
+          <div class="history-item__progress"><div class="history-item__progress-bar" style="width:${pct}%"></div></div>
+        </div>
+        <div class="history-item__actions">
+          <button class="btn" style="padding:4px 10px; font-size:.7rem;" data-play-history="${h.id}" title="${t('play')}"><i class="fa-solid fa-play"></i></button>
+          <button class="btn btn--danger" style="padding:4px 10px; font-size:.7rem;" data-remove-history="${h.id}" title="${t('removeFromHistory')}"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+    container.querySelectorAll('[data-play-history]').forEach(btn => {
+      btn.onclick = () => { openVideo(btn.getAttribute('data-play-history')); document.getElementById('history-modal').hidden = true; };
+    });
+    container.querySelectorAll('[data-remove-history]').forEach(btn => {
+      btn.onclick = (e) => { e.stopPropagation(); removeFromHistory(btn.getAttribute('data-remove-history')); };
+    });
+  }
+
+  /* ====== PRÓXIMOS ====== */
+  function getUpcoming() {
+    const now = Math.floor(Date.now() / 1000);
+    return CATALOGO.filter(v => {
+      if (v.disponible === false) return false;
+      if (!v.disponibleUnixInicio || v.disponibleUnixInicio <= 0) return false;
+      return v.disponibleUnixInicio > now;
+    }).sort((a, b) => (a.disponibleUnixInicio || 0) - (b.disponibleUnixInicio || 0));
+  }
+
+  function renderUpcomingList() {
+    const container = document.getElementById('upcoming-list-container');
+    if (!container) return;
+    const upcoming = getUpcoming();
+    container.innerHTML = '';
+    if (upcoming.length === 0) {
+      container.innerHTML = `<p class="empty-state"><i class="fa-solid fa-calendar-xmark"></i>${t('noUpcoming')}</p>`;
+      return;
+    }
+    upcoming.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'upcoming-item';
+      div.setAttribute('data-upcoming-id', item.id);
+      div.innerHTML = `
+        <div class="upcoming-item__thumb"><img src="https://i.ytimg.com/vi/${item.id}/hqdefault.jpg" alt="${item.titulo}" loading="lazy"></div>
+        <div class="upcoming-item__info">
+          <h4>${item.titulo}</h4>
+          <span class="upc-date"><i class="fa-regular fa-calendar"></i> ${getFormattedReleaseDate(item.disponibleUnixInicio)}</span>
+          <span class="upc-countdown" data-countdown="${item.id}">${getRemainingTime(item.disponibleUnixInicio) || '—'}</span>
+          <span class="upc-desc">${item.descripcion || ''}</span>
+        </div>
+        <i class="fa-solid fa-chevron-right" style="color:var(--muted); flex-shrink:0;"></i>
+      `;
+      container.appendChild(div);
+    });
+
+    container.querySelectorAll('[data-upcoming-id]').forEach(el => {
+      el.onclick = () => {
+        const id = el.getAttribute('data-upcoming-id');
+        document.getElementById('upcoming-modal').hidden = true;
+        openVideo(id);
+      };
+    });
+  }
+
+  /* ====== FILTRADO ====== */
   function getProcessedData() {
     return CATALOGO.filter(item => {
       if (item.disponible === false) return false;
-
       if (filterCollection !== 'ALL') {
         const list = COLECCIONES[filterCollection] || [];
         if (!list.includes(item.id)) return false;
       }
       if (searchQuery) {
         const q = searchQuery.toLowerCase();
-        return item.titulo.toLowerCase().includes(q) || (item.director || '').toLowerCase().includes(q);
+        if (!item.titulo.toLowerCase().includes(q) && !(item.director || '').toLowerCase().includes(q)) return false;
+      }
+      const dur = videoDurations[item.id] || 0;
+      if (dur > 0 && (dur < durationMin || dur > durationMax)) return false;
+      if (ageFilter !== 'all') {
+        const clasif = (item.clasificacion || 'TP').toUpperCase();
+        if (ageFilter === 'hide18' && clasif.includes('18')) return false;
+        if (ageFilter === 'TP' && !clasif.includes('TP')) return false;
+        if (ageFilter === '+7' && !clasif.includes('7') && !clasif.includes('TP')) return false;
+        if (ageFilter === '+12' && !clasif.includes('12') && !clasif.includes('TP') && !clasif.includes('7')) return false;
+        if (ageFilter === '+16' && !clasif.includes('16')) return false;
+        if (ageFilter === '+18' && !clasif.includes('18')) return false;
+      }
+      if (activeTags.length > 0) {
+        const itemTags = (item.etiquetas || []).map(t => t.toLowerCase());
+        if (!activeTags.every(tag => itemTags.includes(tag.toLowerCase()))) return false;
       }
       return true;
+    }).sort((a, b) => {
+      switch (sortBy) {
+        case 'title-asc': return a.titulo.localeCompare(b.titulo);
+        case 'title-desc': return b.titulo.localeCompare(a.titulo);
+        case 'date-asc': return (a.disponibleUnixInicio || 0) - (b.disponibleUnixInicio || 0);
+        case 'date-desc': return (b.disponibleUnixInicio || 0) - (a.disponibleUnixInicio || 0);
+        case 'score-desc': {
+          const sa = parseFloat(calculateApiScore(a.id)) || 0;
+          const sb = parseFloat(calculateApiScore(b.id)) || 0;
+          return sb - sa;
+        }
+        case 'score-asc': {
+          const sa = parseFloat(calculateApiScore(a.id)) || 0;
+          const sb = parseFloat(calculateApiScore(b.id)) || 0;
+          return sa - sb;
+        }
+        case 'duration-asc': return (videoDurations[a.id] || 0) - (videoDurations[b.id] || 0);
+        case 'duration-desc': return (videoDurations[b.id] || 0) - (videoDurations[a.id] || 0);
+        default: return 0;
+      }
     });
   }
 
+  /* ====== TARJETAS ====== */
   function renderCard(v, isFeatured = false) {
     const slide = document.createElement('article');
     slide.className = 'slide';
     const score = calculateApiScore(v.id);
     const clasifBadgeHTML = getClasificacionHTML(v.clasificacion);
-    
     const playState = getPlayState(v);
+    const progress = getProgress(v.id);
+    const inQueue = QUEUE.includes(v.id);
     let statusBadge = '';
     let playButtonHTML = '';
+    let resumeHTML = '';
+
+    if (progress && progress.time > 5 && progress.duration > 0) {
+      const pct = Math.round(progress.time / progress.duration * 100);
+      resumeHTML = `<div class="resume-banner"><i class="fa-solid fa-play"></i> <span>${t('resumeAt')} <strong>${formatTime(progress.time)}</strong> (${pct}%)</span></div>`;
+    }
 
     if (playState.status === 'NOT_STARTED') {
       const releaseDateText = getFormattedReleaseDate(v.disponibleUnixInicio);
-      statusBadge = `<span class="badge badge--timer">⏳ ESTRENO: ${releaseDateText}</span>`;
-      playButtonHTML = `<button class="btn btn--disabled">Próximamente</button>`;
+      statusBadge = `<span class="badge badge--timer"><i class="fa-solid fa-hourglass-half"></i> ${t('premiere')}: ${releaseDateText}</span>`;
+      playButtonHTML = `<button class="btn btn--disabled"><i class="fa-solid fa-clock"></i> ${t('comingSoon')}</button>`;
     } else if (playState.status === 'EXPIRED') {
-      statusBadge = `<span class="badge badge--expired">⛔ Finalizado</span>`;
-      playButtonHTML = `<button class="btn btn--disabled">No disponible</button>`;
+      statusBadge = `<span class="badge badge--expired"><i class="fa-solid fa-ban"></i> ${t('finished')}</span>`;
+      playButtonHTML = `<button class="btn btn--disabled"><i class="fa-solid fa-ban"></i> ${t('notAvailable')}</button>`;
     } else {
-      playButtonHTML = `<button class="btn btn--primary">Reproducir Ahora</button>`;
+      playButtonHTML = `<button class="btn btn--primary"><i class="fa-solid fa-play"></i> ${t('playNow')}</button>`;
+    }
+
+    const queueBadgeHTML = inQueue ? `<span class="queue-badge"><i class="fa-solid fa-list"></i> ${t('inQueue')}</span>` : '';
+
+    let tagsHTML = '';
+    if (v.etiquetas && v.etiquetas.length > 0) {
+      tagsHTML = '<div class="card-tags">' + v.etiquetas.map(tag =>
+        `<button class="card-tag" data-tag-filter="${tag}" title="${t('filterBy')} ${tag}"><i class="fa-solid fa-hashtag"></i>${tag}</button>`
+      ).join('') + '</div>';
     }
 
     const cardActionsHTML = `
       <div class="card-actions">
-        <button class="fav-toggle ${isFav(v.id) ? 'is-fav' : ''}" data-fav="${v.id}" title="Favorito">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        <button class="fav-toggle ${isFav(v.id) ? 'is-fav' : ''}" data-fav="${v.id}" title="${t('addFav')}">
+          <i class="fa-solid fa-heart"></i>
+        </button>
+        <button class="fav-toggle ${inQueue ? 'is-fav' : ''}" data-queue="${v.id}" title="${inQueue ? t('removeFromQueueTitle') : t('addToQueueTitle')}" style="font-size:.75rem;">
+          <i class="fa-solid fa-list"></i>
         </button>
       </div>`;
 
     if (isFeatured) {
       slide.innerHTML = `
         <div class="fcard" data-video-id="${v.id}">
+          ${queueBadgeHTML}
           ${cardActionsHTML}
-          <div class="fcard__media"><img src="https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg" alt="${v.titulo}"></div>
+          <div class="fcard__media"><img src="https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg" alt="${v.titulo}" loading="lazy"></div>
           <div class="fcard__body">
             <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
-              <span class="badge badge--gold">★ Destacado</span>
+              <span class="badge badge--gold"><i class="fa-solid fa-star"></i> ${t('featured2')}</span>
               ${statusBadge}
               ${clasifBadgeHTML}
             </div>
             <h3 class="fcard__title">${v.titulo}</h3>
             <p class="fcard__desc">${v.descripcion}</p>
-            <div style="margin-top:6px;">
-              ${playButtonHTML}
-            </div>
+            ${tagsHTML}
+            ${resumeHTML}
+            <div style="margin-top:6px;">${playButtonHTML}</div>
           </div>
         </div>`;
     } else {
       slide.innerHTML = `
         <div class="scard" data-video-id="${v.id}">
           <div class="scard__thumb">
+            ${queueBadgeHTML}
             ${cardActionsHTML}
-            <img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="${v.titulo}">
-            <div class="scard__overlay"><span class="scard__play">${playState.canPlay ? '▶' : '🔒'}</span></div>
+            <img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="${v.titulo}" loading="lazy">
+            <div class="scard__overlay"><span class="scard__play"><i class="fa-solid fa-${playState.canPlay ? 'play' : 'lock'}"></i></span></div>
           </div>
           <div>
             <h3 class="scard__title">${v.titulo}</h3>
             <div class="scard__meta">
-              <span>${v.genero}</span> · 
-              ${clasifBadgeHTML} · 
-              <span>★ ${score}</span>
+              <span>${v.genero}</span> · ${clasifBadgeHTML} · <span><i class="fa-solid fa-star" style="color:var(--accent);"></i> ${score}</span>
               ${statusBadge ? `<br>${statusBadge}` : ''}
             </div>
+            ${tagsHTML}
+            ${resumeHTML}
           </div>
         </div>`;
     }
     return slide;
   }
 
+  function groupByCategory(items) {
+    const groups = {};
+    items.forEach(v => {
+      const cat = v.genero || t('otherCategory');
+      if (!groups[cat]) groups[cat] = [];
+      groups[cat].push(v);
+    });
+    return groups;
+  }
+
+  /* ====== ACTUALIZACIÓN UI ====== */
   function updateUI() {
     const data = getProcessedData();
     const destTrack = document.getElementById('track-destacados');
-    const catTrack = document.getElementById('track-catalogo');
+    const catContainer = document.getElementById('track-catalogo');
 
     destTrack.innerHTML = '';
-    catTrack.innerHTML = '';
+    catContainer.innerHTML = '';
 
-    if (viewMode === 'list') catTrack.classList.add('track--list-mode');
-    else catTrack.classList.remove('track--list-mode');
+    const featured = data.filter(d => d.destacado);
+    const catalog = data.filter(d => !d.destacado);
 
-    data.filter(d => d.destacado).forEach(v => destTrack.appendChild(renderCard(v, true)));
-    data.filter(d => !d.destacado).forEach(v => catTrack.appendChild(renderCard(v, false)));
+    featured.forEach(v => destTrack.appendChild(renderCard(v, true)));
 
-    document.getElementById('fav-count').textContent = `${FAVORITOS.length} Favoritos`;
-    document.getElementById('footer-status').textContent = `Mostrando ${data.length} de ${CATALOGO.filter(x => x.disponible !== false).length} títulos`;
+    const grouped = groupByCategory(catalog);
+    const categoryKeys = Object.keys(grouped).sort();
+
+    if (categoryKeys.length === 0) {
+      catContainer.innerHTML = `<p class="empty-state"><i class="fa-solid fa-film"></i>${t('noCatalogTitles')}</p>`;
+    } else {
+      categoryKeys.forEach(cat => {
+        const block = document.createElement('div');
+        block.className = 'category-block';
+
+        const head = document.createElement('div');
+        head.className = 'category-block__head';
+        head.innerHTML = `
+          <h3><i class="fa-solid fa-clapperboard"></i> ${cat}</h3>
+          <span class="cat-count">${grouped[cat].length} ${t('titles')}</span>
+        `;
+        block.appendChild(head);
+
+        const track = document.createElement('div');
+        track.className = 'track track--grid';
+        if (viewMode === 'list') track.classList.add('track--list-mode');
+
+        grouped[cat].forEach(v => track.appendChild(renderCard(v, false)));
+        block.appendChild(track);
+        catContainer.appendChild(block);
+      });
+    }
+
+    document.getElementById('fav-count').innerHTML = `${FAVORITOS.length} <span data-i18n="favorites">${t('favorites')}</span>`;
+    document.getElementById('footer-status').textContent = `${data.length} / ${CATALOGO.filter(x => x.disponible !== false).length} ${t('titles')}`;
+    updateQueueBadge();
   }
 
   function updateModalLikeButton() {
     const likeBtn = document.getElementById('modal-like-btn');
     const likeText = document.getElementById('modal-like-text');
     if (!currentVideoId || !likeBtn) return;
-
     if (isFav(currentVideoId)) {
       likeBtn.classList.add('is-fav');
-      likeText.textContent = 'En Favoritos';
+      likeText.textContent = t('favorites');
     } else {
       likeBtn.classList.remove('is-fav');
-      likeText.textContent = 'Me Gusta';
+      likeText.textContent = t('like');
     }
   }
 
+  /* ====== API YOUTUBE ====== */
   function fetchApiLikesAndDislikes(id) {
     fetch(`https://returnyoutubedislikeapi.com/votes?videoId=${id}`)
       .then(res => res.json())
@@ -838,6 +2599,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
           };
           syncVideoMetadata();
           updateUI();
+          renderFavoritesList();
         }
       })
       .catch(() => {
@@ -850,131 +2612,155 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
 
   function syncVideoMetadata() {
     if (!currentVideoId) return;
-
     const localData = CATALOGO.find(item => item.id === currentVideoId) || {};
     let apiData = null;
+    try { if (player && typeof player.getVideoData === 'function') apiData = player.getVideoData(); } catch(e) {}
 
-    try {
-      if (player && typeof player.getVideoData === 'function') {
-        apiData = player.getVideoData();
-      }
-    } catch(e) {}
-
-    const title = (apiData && apiData.title) ? apiData.title : (localData.titulo || 'Vídeo de YouTube');
+    const title = (apiData && apiData.title) ? apiData.title : (localData.titulo || 'YouTube');
     const author = (apiData && apiData.author) ? apiData.author : (localData.director || 'Canal Oficial');
-    
+
     document.getElementById('modal-title-text').textContent = title;
-    document.getElementById('modal-desc').textContent = localData.descripcion || 'Sin descripción disponible para este título.';
+    document.getElementById('modal-desc').textContent = localData.descripcion || '—';
 
     const apiStats = getApiStats(currentVideoId);
     if (apiStats) {
-      const score = calculateApiScore(currentVideoId);
-      document.getElementById('stat-score').textContent = `★ ${score} / 10`;
+      document.getElementById('stat-score').textContent = `★ ${calculateApiScore(currentVideoId)} / 10`;
       document.getElementById('stat-likes-dislikes').textContent = `👍 ${apiStats.likes.toLocaleString()} / 👎 ${apiStats.dislikes.toLocaleString()}`;
-      document.getElementById('stat-views').textContent = apiStats.views ? apiStats.views.toLocaleString() + ' vistas' : 'Obteniendo API...';
+      document.getElementById('stat-views').textContent = apiStats.views ? apiStats.views.toLocaleString() + ' ' + t('views').toLowerCase() : t('apiGettingViews');
     } else {
-      document.getElementById('stat-score').textContent = 'Consultando API...';
-      document.getElementById('stat-likes-dislikes').textContent = 'Cargando datos API...';
-      document.getElementById('stat-views').textContent = 'Cargando vistas API...';
+      document.getElementById('stat-score').textContent = t('apiConsulting');
+      document.getElementById('stat-likes-dislikes').textContent = t('apiLoading');
+      document.getElementById('stat-views').textContent = t('apiLoadingViews');
     }
 
     document.getElementById('stat-classification').innerHTML = getClasificacionHTML(localData.clasificacion);
-    document.getElementById('stat-genre').textContent = localData.genero || 'General';
+    document.getElementById('stat-genre').textContent = localData.genero || '—';
     document.getElementById('stat-author').textContent = author;
     document.getElementById('stat-id').textContent = currentVideoId;
-    document.getElementById('stat-tags').textContent = localData.etiquetas ? localData.etiquetas.join(', ') : 'Ninguna';
+    document.getElementById('stat-tags').textContent = localData.etiquetas ? localData.etiquetas.join(', ') : '—';
 
     try {
       const durSec = player.getDuration();
-      document.getElementById('stat-duration').textContent = durSec > 0 ? `${formatTime(durSec)} (${Math.round(durSec)}s)` : 'Streaming Live';
+      if (durSec > 0) videoDurations[currentVideoId] = durSec;
+      document.getElementById('stat-duration').textContent = durSec > 0 ? `${formatTime(durSec)} (${Math.round(durSec)}s)` : t('stateLive');
 
       const quality = player.getPlaybackQuality();
-      document.getElementById('stat-quality').textContent = quality ? quality.toUpperCase() : 'Auto';
+      document.getElementById('stat-quality').textContent = quality ? quality.toUpperCase() : t('stateStandard');
 
       const availableQualities = player.getAvailableQualityLevels();
-      if (availableQualities && availableQualities.length > 0) {
+      if (availableQualities && availableQualities.length > 0)
         document.getElementById('stat-qualities-list').textContent = availableQualities.slice(0, 4).join(', ').toUpperCase();
-      } else {
-        document.getElementById('stat-qualities-list').textContent = 'Estándar H.264 / AAC';
-      }
+      else
+        document.getElementById('stat-qualities-list').textContent = t('stateStandardFormat');
 
-      const stateMap = { '-1': 'Sin iniciar', '0': 'Finalizado', '1': 'Reproduciendo', '2': 'Pausado', '3': 'Cargando', '5': 'En cola' };
-      const st = player.getPlayerState();
-      document.getElementById('stat-player-state').textContent = stateMap[st] || 'Activo';
-
+      const stateMap = {
+        '-1': t('stateUnstarted'), '0': t('stateEnded'), '1': t('statePlaying'),
+        '2': t('statePaused'), '3': t('stateBuffering'), '5': t('stateCued')
+      };
+      document.getElementById('stat-player-state').textContent = stateMap[player.getPlayerState()] || t('stateActive');
     } catch(e) {
-      document.getElementById('stat-duration').textContent = 'Disponible en reproducción';
-      document.getElementById('stat-quality').textContent = 'Estándar';
-      document.getElementById('stat-qualities-list').textContent = 'Auto (Adaptativo)';
-      document.getElementById('stat-player-state').textContent = 'Listo';
+      document.getElementById('stat-duration').textContent = '—';
+      document.getElementById('stat-quality').textContent = t('stateStandard');
+      document.getElementById('stat-qualities-list').textContent = t('stateAutoAdaptive');
+      document.getElementById('stat-player-state').textContent = t('stateReady');
     }
-
     updateModalLikeButton();
   }
 
+  /* ====== INTRO / PROGRESO ====== */
   function startIntroMonitor() {
     if (introCheckInterval) clearInterval(introCheckInterval);
-
     introCheckInterval = setInterval(() => {
       if (!player || typeof player.getCurrentTime !== 'function') return;
-
       const currentTime = player.getCurrentTime();
       const range = getIntroRange(currentVideoId);
       const skipBtn = document.getElementById('skip-intro-btn');
-
       if (range.end > range.start && currentTime >= range.start && currentTime < range.end) {
         skipBtn.style.display = 'inline-flex';
-        skipBtn.textContent = `⏭ Saltar Intro (${Math.ceil(range.end - currentTime)}s)`;
+        skipBtn.innerHTML = `<i class="fa-solid fa-forward"></i> ${t('skipIntro')} (${Math.ceil(range.end - currentTime)}s)`;
       } else {
         skipBtn.style.display = 'none';
       }
     }, 500);
   }
 
+  function startProgressSaver() {
+    if (progressSaveInterval) clearInterval(progressSaveInterval);
+    progressSaveInterval = setInterval(() => {
+      if (!player || !currentVideoId || typeof player.getCurrentTime !== 'function') return;
+      try {
+        const time = player.getCurrentTime();
+        const dur = player.getDuration();
+        if (time > 2 && dur > 0) saveWatchProgress(currentVideoId, time, dur);
+      } catch(e) {}
+    }, 3000);
+  }
+
   function skipIntro() {
     if (!player || typeof player.seekTo !== 'function') return;
     const range = getIntroRange(currentVideoId);
-
-    if (range.end > 0) {
-      player.seekTo(range.end, true);
-    }
+    if (range.end > 0) player.seekTo(range.end, true);
   }
 
+  /* ====== REPRODUCTOR ====== */
   function createPlayer(id) {
     player = new YT.Player('yt-player', {
       host: 'https://www.youtube-nocookie.com',
       videoId: id,
-      playerVars: { 
-        autoplay: 1, 
-        rel: 0,
-        enablejsapi: 1,
-        origin: window.location.origin,
-        widget_referrer: window.location.origin
-      },
+      playerVars: { autoplay: 1, rel: 0, enablejsapi: 1, origin: window.location.origin, widget_referrer: window.location.origin },
       events: {
         'onReady': () => {
           syncVideoMetadata();
           startIntroMonitor();
+          startProgressSaver();
+          const prog = getProgress(id);
+          if (prog && prog.time > 5 && prog.duration > 0) {
+            player.seekTo(prog.time, true);
+            showResumeBanner(prog.time, prog.duration);
+          }
         },
-        'onStateChange': () => {
+        'onStateChange': (event) => {
           syncVideoMetadata();
+          if (event.data === YT.PlayerState.ENDED) handleVideoEnded();
         }
       }
     });
   }
 
+  function showResumeBanner(time, duration) {
+    const container = document.getElementById('resume-banner-container');
+    container.innerHTML = `
+      <div class="resume-banner">
+        <i class="fa-solid fa-play"></i>
+        <span>${t('continueWatching')} — <strong>${formatTime(time)}</strong> / ${formatTime(duration)}</span>
+        <button class="btn btn--primary" style="padding:4px 12px; font-size:.72rem;" id="resume-from-start"><i class="fa-solid fa-rotate-left"></i> ${t('restart')}</button>
+      </div>`;
+    document.getElementById('resume-from-start').onclick = () => {
+      if (player && player.seekTo) player.seekTo(0, true);
+      container.innerHTML = '';
+    };
+  }
+
+  function handleVideoEnded() {
+    if (currentVideoId) saveWatchProgress(currentVideoId, 0, videoDurations[currentVideoId] || 1);
+    if (isPlayingQueue && QUEUE.length > 0) {
+      queueIndex++;
+      if (queueIndex < QUEUE.length) openVideo(QUEUE[queueIndex]);
+      else { isPlayingQueue = false; queueIndex = 0; document.getElementById('modal').hidden = true; }
+    }
+  }
+
   function openVideo(id) {
     currentVideoId = id;
-
     const item = CATALOGO.find(v => v.id === id) || {};
     const playState = getPlayState(item);
-
     const ytBtn = document.getElementById('watch-on-yt-btn');
 
-    document.getElementById('modal-title-text').textContent = item.titulo || 'Cargando título...';
-    document.getElementById('modal-desc').textContent = item.descripcion || 'Obteniendo metadatos...';
+    document.getElementById('modal-title-text').textContent = item.titulo || '...';
+    document.getElementById('modal-desc').textContent = item.descripcion || '...';
     document.getElementById('modal').hidden = false;
     document.getElementById('skip-intro-btn').style.display = 'none';
+    document.getElementById('resume-banner-container').innerHTML = '';
 
     const blockedScreen = document.getElementById('player-blocked-screen');
     const blockedTitle = document.getElementById('blocked-title');
@@ -982,23 +2768,17 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
     const playerCountdown = document.getElementById('player-countdown');
 
     if (!playState.canPlay) {
-      if (ytBtn) {
-        ytBtn.removeAttribute('href');
-        ytBtn.classList.add('btn--disabled');
-        ytBtn.style.pointerEvents = 'none';
-      }
-
+      if (ytBtn) { ytBtn.removeAttribute('href'); ytBtn.classList.add('btn--disabled'); ytBtn.style.pointerEvents = 'none'; }
       blockedScreen.style.display = 'flex';
       if (player && typeof player.stopVideo === 'function') player.stopVideo();
-
       if (playState.status === 'NOT_STARTED') {
-        blockedTitle.textContent = '🔒 Vídeo No Disponible Aún';
-        blockedDesc.textContent = 'Este contenido estará accesible cuando venza la fecha de estreno programada:';
+        blockedTitle.innerHTML = `<i class="fa-solid fa-lock"></i> ${t('blockedTitle')}`;
+        blockedDesc.textContent = t('blockedDesc');
         playerCountdown.style.display = 'block';
         playerCountdown.textContent = getRemainingTime(item.disponibleUnixInicio) || '0s';
       } else if (playState.status === 'EXPIRED') {
-        blockedTitle.textContent = '⛔ Contenido Finalizado';
-        blockedDesc.textContent = 'El período de disponibilidad para este vídeo ha concluido y ya no se puede reproducir.';
+        blockedTitle.innerHTML = `<i class="fa-solid fa-ban"></i> ${t('blockedTitle')}`;
+        blockedDesc.textContent = t('blockedDesc');
         playerCountdown.style.display = 'none';
       }
     } else {
@@ -1007,8 +2787,8 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
         ytBtn.classList.remove('btn--disabled');
         ytBtn.style.pointerEvents = 'auto';
       }
-
       blockedScreen.style.display = 'none';
+      addToHistory(id);
       fetchApiLikesAndDislikes(id);
 
       if (!player) {
@@ -1016,30 +2796,35 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
           const script = document.createElement('script');
           script.src = "https://www.youtube.com/iframe_api";
           document.head.appendChild(script);
-          window.onYouTubeIframeAPIReady = () => {
-            createPlayer(id);
-          };
-        } else {
-          createPlayer(id);
-        }
+          window.onYouTubeIframeAPIReady = () => createPlayer(id);
+        } else createPlayer(id);
       } else if (player.loadVideoById) {
         player.loadVideoById(id);
         syncVideoMetadata();
         startIntroMonitor();
+        startProgressSaver();
+        const prog = getProgress(id);
+        if (prog && prog.time > 5 && prog.duration > 0) {
+          setTimeout(() => { player.seekTo(prog.time, true); showResumeBanner(prog.time, prog.duration); }, 1500);
+        }
       }
     }
-
     syncVideoMetadata();
   }
 
+  /* ====== EVENTOS ====== */
   document.getElementById('skip-intro-btn').addEventListener('click', skipIntro);
-  document.getElementById('modal-like-btn').addEventListener('click', () => {
-    if (currentVideoId) toggleFav(currentVideoId);
-  });
+  document.getElementById('modal-like-btn').addEventListener('click', () => { if (currentVideoId) toggleFav(currentVideoId); });
+  document.getElementById('add-to-queue-modal-btn').addEventListener('click', () => { if (currentVideoId) toggleQueueItem(currentVideoId); });
 
   document.getElementById('view-mode-toggle').addEventListener('click', () => {
     viewMode = viewMode === 'grid' ? 'list' : 'grid';
-    document.getElementById('view-mode-toggle').textContent = viewMode === 'grid' ? '🔲 Cuadrícula' : '📄 Lista';
+    const btn = document.getElementById('view-mode-toggle');
+    if (viewMode === 'grid') {
+      btn.innerHTML = `<i class="fa-solid fa-table-cells"></i> <span data-i18n="grid">${t('grid')}</span>`;
+    } else {
+      btn.innerHTML = `<i class="fa-solid fa-list"></i> <span data-i18n="list">${t('list')}</span>`;
+    }
     updateUI();
   });
 
@@ -1056,11 +2841,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
   document.getElementById('create-col-btn').addEventListener('click', () => {
     const input = document.getElementById('new-col-name-input');
     const name = input.value.trim();
-    if (name && !COLECCIONES[name]) {
-      COLECCIONES[name] = [];
-      input.value = '';
-      saveCollections();
-    }
+    if (name && !COLECCIONES[name]) { COLECCIONES[name] = []; input.value = ''; saveCollections(); }
   });
 
   document.getElementById('add-to-col-modal-btn').addEventListener('click', () => {
@@ -1075,9 +2856,132 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
   document.getElementById('close-help-btn').addEventListener('click', () => document.getElementById('help-modal').hidden = true);
   document.getElementById('close-help-bg').addEventListener('click', () => document.getElementById('help-modal').hidden = true);
 
+  /* ====== FAVORITOS: ABRIR MODAL ====== */
+  document.getElementById('fav-filter-btn').addEventListener('click', () => {
+    renderFavoritesList();
+    document.getElementById('favorites-modal').hidden = false;
+  });
+
+  document.querySelectorAll('[data-close-favorites]').forEach(el => {
+    el.addEventListener('click', () => document.getElementById('favorites-modal').hidden = true);
+  });
+
+  document.getElementById('upcoming-btn').addEventListener('click', () => {
+    renderUpcomingList();
+    document.getElementById('upcoming-modal').hidden = false;
+  });
+  document.getElementById('float-upcoming-btn').addEventListener('click', () => {
+    renderUpcomingList();
+    document.getElementById('upcoming-modal').hidden = false;
+  });
+  document.querySelectorAll('[data-close-upcoming]').forEach(el => {
+    el.addEventListener('click', () => document.getElementById('upcoming-modal').hidden = true);
+  });
+
+  function goTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+  document.getElementById('go-top-btn').addEventListener('click', goTop);
+  document.getElementById('float-top-btn').addEventListener('click', goTop);
+
+  document.getElementById('filters-btn').addEventListener('click', () => {
+    renderTagsCloud();
+    document.getElementById('filters-modal').hidden = false;
+  });
+  document.querySelectorAll('[data-close-filters]').forEach(el => {
+    el.addEventListener('click', () => document.getElementById('filters-modal').hidden = true);
+  });
+
+  document.getElementById('sort-select').addEventListener('change', (e) => { sortBy = e.target.value; });
+  document.getElementById('age-select').addEventListener('change', (e) => { ageFilter = e.target.value; });
+
+  document.getElementById('duration-min').addEventListener('input', (e) => {
+    durationMin = parseInt(e.target.value);
+    updateDurationLabels();
+  });
+  document.getElementById('duration-max').addEventListener('input', (e) => {
+    durationMax = parseInt(e.target.value);
+    updateDurationLabels();
+  });
+
+  document.getElementById('apply-filters-btn').addEventListener('click', () => {
+    document.getElementById('filters-modal').hidden = true;
+    updateUI();
+  });
+
+  document.getElementById('clear-filters-btn').addEventListener('click', () => {
+    sortBy = 'default'; durationMin = 0; durationMax = 3600; ageFilter = 'all'; activeTags = [];
+    document.getElementById('sort-select').value = 'default';
+    document.getElementById('age-select').value = 'all';
+    document.getElementById('duration-min').value = 0;
+    document.getElementById('duration-max').value = 3600;
+    updateDurationLabels();
+    renderTagsCloud();
+    updateUI();
+  });
+
+  document.getElementById('queue-btn').addEventListener('click', () => {
+    renderQueueList();
+    document.getElementById('queue-modal').hidden = false;
+  });
+  document.querySelectorAll('[data-close-queue]').forEach(el => {
+    el.addEventListener('click', () => document.getElementById('queue-modal').hidden = true);
+  });
+  document.getElementById('clear-queue-btn').addEventListener('click', clearQueue);
+  document.getElementById('play-queue-btn').addEventListener('click', () => {
+    if (QUEUE.length === 0) return;
+    isPlayingQueue = true;
+    queueIndex = 0;
+    document.getElementById('queue-modal').hidden = true;
+    openVideo(QUEUE[0]);
+  });
+
+  document.getElementById('history-btn').addEventListener('click', () => {
+    renderHistoryList();
+    document.getElementById('history-modal').hidden = false;
+  });
+  document.querySelectorAll('[data-close-history]').forEach(el => {
+    el.addEventListener('click', () => document.getElementById('history-modal').hidden = true);
+  });
+  document.getElementById('clear-history-btn').addEventListener('click', clearHistory);
+
+  function renderTagsCloud() {
+    const container = document.getElementById('tags-cloud');
+    const allTags = new Set();
+    CATALOGO.forEach(v => (v.etiquetas || []).forEach(tag => allTags.add(tag)));
+    container.innerHTML = '';
+    allTags.forEach(tag => {
+      const chip = document.createElement('button');
+      chip.className = 'tag-chip' + (activeTags.includes(tag) ? ' active' : '');
+      chip.innerHTML = `<i class="fa-solid fa-hashtag"></i>${tag}`;
+      chip.onclick = () => {
+        if (activeTags.includes(tag)) activeTags = activeTags.filter(t => t !== tag);
+        else activeTags.push(tag);
+        renderTagsCloud();
+      };
+      container.appendChild(chip);
+    });
+  }
+
   document.addEventListener('click', (e) => {
+    const tagBtn = e.target.closest('[data-tag-filter]');
+    if (tagBtn) {
+      e.stopPropagation();
+      const tag = tagBtn.getAttribute('data-tag-filter');
+      if (!activeTags.includes(tag)) activeTags.push(tag);
+      renderTagsCloud();
+      updateUI();
+      document.getElementById('filters-modal').hidden = false;
+      return;
+    }
+
     const favBtn = e.target.closest('[data-fav]');
     if (favBtn) { e.stopPropagation(); toggleFav(favBtn.getAttribute('data-fav')); return; }
+
+    const queueBtn = e.target.closest('[data-queue]');
+    if (queueBtn) {
+      e.stopPropagation();
+      toggleQueueItem(queueBtn.getAttribute('data-queue'));
+      return;
+    }
 
     const card = e.target.closest('[data-video-id]');
     if (card) openVideo(card.getAttribute('data-video-id'));
@@ -1085,7 +2989,15 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
     if (e.target.closest('[data-close]')) {
       document.getElementById('modal').hidden = true;
       if (introCheckInterval) clearInterval(introCheckInterval);
+      if (progressSaveInterval) clearInterval(progressSaveInterval);
       if (player && player.pauseVideo) player.pauseVideo();
+      if (currentVideoId && player && player.getCurrentTime) {
+        try {
+          const time = player.getCurrentTime();
+          const dur = player.getDuration();
+          if (time > 2 && dur > 0) saveWatchProgress(currentVideoId, time, dur);
+        } catch(ex) {}
+      }
     }
   });
 
@@ -1107,22 +3019,46 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       } else if (e.key === 'Escape') {
         document.getElementById('modal').hidden = true;
         if (introCheckInterval) clearInterval(introCheckInterval);
+        if (progressSaveInterval) clearInterval(progressSaveInterval);
         player.pauseVideo();
       }
     }
   });
 
-  populateCollectionsSelect();
+  /* ====== INICIALIZACIÓN ====== */
+  document.documentElement.lang = currentLang;
+  applyLanguage();
   updateUI();
+  updateQueueBadge();
+  renderTagsCloud();
+  renderUpcomingList();
 
   CATALOGO.forEach(v => {
     if (v.disponible !== false) fetchApiLikesAndDislikes(v.id);
   });
 
-  /* TIMER DINÁMICO EN TIEMPO REAL */
+  window.addEventListener('beforeunload', () => {
+    if (currentVideoId && player && player.getCurrentTime) {
+      try {
+        const time = player.getCurrentTime();
+        const dur = player.getDuration();
+        if (time > 2 && dur > 0) saveWatchProgress(currentVideoId, time, dur);
+      } catch(e) {}
+    }
+  });
+
   setInterval(() => {
     const d = new Date();
-    document.getElementById('clock').textContent = d.toTimeString().substring(0, 5);
+    document.getElementById('clock').innerHTML = `<i class="fa-regular fa-clock"></i> ${d.toTimeString().substring(0, 5)}`;
+
+    document.querySelectorAll('[data-countdown]').forEach(el => {
+      const id = el.getAttribute('data-countdown');
+      const item = CATALOGO.find(v => v.id === id);
+      if (!item) return;
+      const remaining = getRemainingTime(item.disponibleUnixInicio);
+      if (remaining) el.textContent = remaining;
+      else { el.textContent = t('resumeNow'); updateUI(); }
+    });
 
     if (currentVideoId) {
       const currentItem = CATALOGO.find(v => v.id === currentVideoId);
@@ -1131,12 +3067,8 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
         if (playState.status === 'NOT_STARTED') {
           const remaining = getRemainingTime(currentItem.disponibleUnixInicio);
           const playerCountdown = document.getElementById('player-countdown');
-          if (remaining && playerCountdown) {
-            playerCountdown.textContent = remaining;
-          } else {
-            openVideo(currentVideoId);
-            updateUI();
-          }
+          if (remaining && playerCountdown) playerCountdown.textContent = remaining;
+          else { openVideo(currentVideoId); updateUI(); }
         }
       }
     }
