@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0a0b0f">
+<title>CINEMATECA · Cartelera Digital Ultimate</title>
+
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+
+:root {
+  --bg: #0a0b0f;
+  --surface: #141721;
+  --surface-2: #1b1f2b;
+  --line: rgba(255,255,255,.09);
+  --line-soft: rgba(255,255,255,.06);
+  --text: #f2f4f8;
+  --muted: #98a2b3;
+  --accent: #e5b567;
+  --danger: #ff5252;
+  --success: #2ecc71;
+  --yt-red: #ff0000;
+  --radius: 16px;
+  --radius-sm: 12px;
+  --maxw: 1400px;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img { display: block; max-width: 100%; height: auto; }
+button, input, select { font: inherit; color: inherit; background: none; border: 0; }
+button, a.btn { cursor: pointer; text-decoration: none; }
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+
+.container { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: clamp(12px, 3vw, 32px); }
+
+/* TOPBAR */
+.topbar {
+  position: sticky; top: 0; z-index: 60;
+  background: rgba(10, 11, 15, 0.95); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line-soft);
+}
+.topbar__inner {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  min-height: 64px; padding-block: 8px; flex-wrap: wrap;
+}
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; flex-shrink: 0; }
+.brand__mark {
+  width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center;
+  background: linear-gradient(140deg, var(--accent), #b9832b); color: #17130a; flex-shrink: 0;
+}
+.brand__text strong { font-size: .95rem; font-weight: 800; letter-spacing: .15em; display: block; }
+.brand__text small { font-size: .65rem; color: var(--muted); letter-spacing: .12em; text-transform: uppercase; }
+
+.topbar__actions {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  max-width: 100%; overflow-x: auto; scrollbar-width: none; padding-block: 4px;
+}
+.topbar__actions::-webkit-scrollbar { display: none; }
+
+.pill {
+  display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px;
+  font-size: .75rem; font-weight: 600; color: var(--text); background: var(--surface);
+  border: 1px solid var(--line); white-space: nowrap; flex-shrink: 0;
+}
+.pill--accent { color: var(--accent); border-color: var(--accent); }
+
+/* FILTROS Y CONTROLES */
+.controls-bar {
+  padding-top: 20px; display: flex; flex-wrap: wrap; gap: 12px;
+  align-items: center; justify-content: space-between; width: 100%;
+}
+.search-box { position: relative; flex: 1 1 240px; min-width: 200px; max-width: 100%; }
+.search-box input {
+  width: 100%; padding: 10px 14px 10px 38px; border-radius: 999px; background: var(--surface);
+  border: 1px solid var(--line); color: var(--text); font-size: .85rem;
+}
+.search-box input:focus { border-color: var(--accent); }
+.search-box svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+
+.filter-group { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; max-width: 100%; }
+.select-custom {
+  padding: 8px 14px; border-radius: 999px; background: var(--surface);
+  border: 1px solid var(--line); color: var(--text); font-size: .8rem; cursor: pointer; max-width: 100%;
+}
+
+/* SECCIONES Y TARJETAS */
+.section { padding-top: clamp(20px, 3vw, 36px); }
+.section:last-of-type { padding-bottom: 60px; }
+.section__head { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+.section__titles h2 { margin: 0; font-size: clamp(1.1rem, 2vw, 1.5rem); font-weight: 800; display: flex; align-items: center; gap: 8px; }
+.section__titles h2::before { content: ""; width: 4px; height: 1em; border-radius: 4px; background: var(--accent); }
+.section__titles p { margin: 2px 0 0; font-size: .80rem; color: var(--muted); }
+
+.track { --gap: 16px; --per-view: 1; display: flex; gap: var(--gap); overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; padding-block: 4px; }
+.track::-webkit-scrollbar { display: none; }
+.slide { flex: 0 0 calc((100% - (var(--per-view) - 1) * var(--gap)) / var(--per-view)); min-width: 0; scroll-snap-align: start; }
+.track--featured { --per-view: 1; }
+.track--grid { --per-view: 1; }
+@media (min-width: 520px)  { .track--grid { --per-view: 2; } }
+@media (min-width: 860px)  { .track--grid { --per-view: 3; } }
+@media (min-width: 1200px) { .track--grid { --per-view: 4; } }
+
+.track--list-mode { display: flex; flex-direction: column; gap: 10px; }
+.track--list-mode .slide { flex: 1 1 100%; width: 100%; }
+.track--list-mode .scard { display: flex; flex-direction: row; align-items: center; gap: 12px; background: var(--surface); padding: 8px; border-radius: var(--radius-sm); border: 1px solid var(--line); }
+.track--list-mode .scard__thumb { width: clamp(100px, 25vw, 160px); aspect-ratio: 16/9; flex-shrink: 0; }
+
+.fcard { position: relative; border-radius: var(--radius); overflow: hidden; background: var(--surface); border: 1px solid var(--line); aspect-ratio: 16 / 9; cursor: pointer; width: 100%; }
+@media (min-width: 1100px) { .fcard { aspect-ratio: 21 / 9; } }
+.fcard__media { position: absolute; inset: 0; }
+.fcard__media img { width: 100%; height: 100%; object-fit: cover; }
+.fcard__media::before { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(90deg, rgba(6,7,11,.92) 0%, rgba(6,7,11,.4) 60%, transparent 100%); }
+.fcard__body { position: relative; z-index: 2; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; gap: 8px; padding: clamp(14px, 2.5vw, 32px); max-width: 600px; }
+
+.card-actions { position: absolute; top: 10px; right: 10px; z-index: 5; display: flex; gap: 6px; }
+.fav-toggle {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(10,11,15,.75); backdrop-filter: blur(4px); border: 1px solid var(--line);
+  display: grid; place-items: center; color: #fff; flex-shrink: 0;
+}
+.fav-toggle.is-fav { color: var(--danger); border-color: var(--danger); fill: var(--danger); }
+
+/* BADGES */
+.badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px; border-radius: 999px; font-size: .65rem; font-weight: 800; text-transform: uppercase; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.15); }
+.badge--gold { background: var(--accent); color: #17130a; border: 0; }
+.badge--timer { background: rgba(255, 82, 82, 0.2); color: var(--danger); border-color: var(--danger); }
+.badge--expired { background: rgba(152, 162, 179, 0.2); color: var(--muted); border-color: var(--muted); }
+
+.clasif-badge { font-weight: 800; padding: 2px 7px; border-radius: 6px; font-size: .68rem; letter-spacing: .02em; display: inline-block; width: fit-content; }
+.clasif-tp { background: #2ecc71; color: #081d0f; }
+.clasif-7  { background: #3498db; color: #071926; }
+.clasif-12 { background: #e67e22; color: #221002; }
+.clasif-16 { background: #e67e22; color: #221002; }
+.clasif-18 { background: #e74c3c; color: #240705; }
+
+.fcard__title { margin: 0; font-size: clamp(1.1rem, 2.2vw, 2rem); font-weight: 800; line-height: 1.1; }
+.fcard__desc { margin: 0; color: var(--muted); font-size: .82rem; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 14px; border-radius: 999px; font-weight: 700; font-size: .8rem; background: var(--surface-2); border: 1px solid var(--line); white-space: nowrap; color: inherit; flex-shrink: 0; }
+.btn--primary { background: var(--accent); color: #17130a; border: 0; }
+.btn--danger { background: rgba(255, 82, 82, 0.15); color: var(--danger); border-color: rgba(255, 82, 82, 0.3); }
+.btn--disabled { background: rgba(255,255,255,0.05) !important; color: var(--muted) !important; border-color: var(--line) !important; cursor: not-allowed !important; pointer-events: none; }
+.btn--yt { background: rgba(255, 0, 0, 0.12); color: #ff4e4e; border-color: rgba(255, 0, 0, 0.3); }
+.btn--yt:hover { background: rgba(255, 0, 0, 0.25); color: #ffffff; }
+.btn--like.is-fav { background: rgba(255, 82, 82, 0.2); color: var(--danger); border-color: var(--danger); }
+
+.scard { display: flex; flex-direction: column; gap: 6px; cursor: pointer; position: relative; width: 100%; }
+.scard__thumb { position: relative; aspect-ratio: 16 / 9; border-radius: var(--radius-sm); overflow: hidden; background: var(--surface); border: 1px solid var(--line); width: 100%; }
+.scard__thumb img { width: 100%; height: 100%; object-fit: cover; }
+.scard__overlay { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(8,9,13,.5); opacity: 0; transition: opacity .2s; }
+.scard:hover .scard__overlay { opacity: 1; }
+.scard__play { width: 38px; height: 38px; border-radius: 50%; background: var(--accent); color: #17130a; display: grid; place-items: center; }
+.scard__title { margin: 0; font-size: .88rem; font-weight: 700; }
+.scard__meta { font-size: .72rem; color: var(--muted); display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+
+/* REPRODUCTOR BLOQUEADO */
+.blocked-screen {
+  position: absolute; inset: 0; z-index: 10; background: #08090d;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12px; text-align: center; padding: 20px;
+}
+.blocked-screen h3 { margin: 0; font-size: 1.4rem; color: var(--danger); }
+.blocked-screen p { margin: 0; color: var(--muted); font-size: .9rem; max-width: 400px; }
+.blocked-timer {
+  font-size: 1.2rem; font-weight: 800; font-family: monospace;
+  background: var(--surface-2); padding: 10px 18px; border-radius: 12px; border: 1px solid var(--line); color: var(--accent);
+}
+
+/* MODAL */
+.modal { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 12px; }
+.modal[hidden] { display: none; }
+.modal__backdrop { position: absolute; inset: 0; background: rgba(4,5,9,.88); backdrop-filter: blur(8px); }
+
+.modal__panel {
+  position: relative; z-index: 1; width: min(960px, 100%); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 16px; overflow: hidden; max-height: 94vh; display: flex; flex-direction: column;
+}
+
+.modal__player { position: relative; width: 100%; aspect-ratio: 16 / 9; background: #000; flex-shrink: 0; }
+#yt-player { position: absolute; inset: 0; width: 100% !important; height: 100% !important; border: 0; }
+
+.modal__actions {
+  display: flex; gap: 10px; align-items: center; justify-content: space-between;
+  padding: 10px 18px; border-bottom: 1px solid var(--line-soft);
+  overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; width: 100%;
+}
+.modal__actions::-webkit-scrollbar { display: none; }
+
+.modal__actions-group { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+
+#skip-intro-btn { display: none; }
+
+.modal__info { padding: 14px 18px; overflow-y: auto; }
+.modal__info h2 { margin: 0 0 4px; font-size: 1.2rem; display: flex; align-items: center; gap: 10px; }
+.modal__info p { margin: 0 0 12px; color: var(--muted); font-size: .85rem; line-height: 1.4; }
+
+.video-extracted-stats {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; padding: 12px;
+  background: var(--surface-2); border-radius: var(--radius-sm); border: 1px solid var(--line);
+  font-size: .8rem; color: var(--text); margin-top: 10px;
+}
+.video-extracted-stats div { display: flex; flex-direction: column; gap: 2px; }
+.video-extracted-stats span.label { font-size: .68rem; color: var(--muted); text-transform: uppercase; font-weight: 700; }
+
+.collections-panel {
+  position: relative; z-index: 1; width: min(520px, 100%); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 16px;
+}
+.collections-panel h3 { margin: 0; font-size: 1.1rem; color: var(--text); display: flex; align-items: center; justify-content: space-between; }
+.collections-list { display: flex; flex-direction: column; gap: 8px; max-height: 260px; overflow-y: auto; padding-right: 4px; }
+.collection-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 10px 12px; background: var(--surface-2); border-radius: var(--radius-sm); border: 1px solid var(--line);
+}
+.collection-item__info { display: flex; flex-direction: column; gap: 2px; }
+.collection-item__name { font-weight: 700; font-size: .88rem; }
+.collection-item__count { font-size: .72rem; color: var(--muted); }
+.collection-item__actions { display: flex; gap: 6px; }
+
+.collections-form { display: flex; gap: 8px; }
+.collections-form input {
+  flex: 1; padding: 9px 12px; background: var(--surface-2); border: 1px solid var(--line);
+  border-radius: 8px; color: var(--text); font-size: .85rem;
+}
+.collections-form input:focus { border-color: var(--accent); }
+
+.help-card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 20px; max-width: 440px; width: 100%; position: relative; z-index: 1; }
+.kbd-grid { display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; font-size: .82rem; margin-block: 14px; }
+kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 6px; border-radius: 4px; font-family: monospace; color: var(--accent); }
+
+.footer { border-top: 1px solid var(--line-soft); padding: 20px 0; color: var(--muted); font-size: .78rem; }
+.footer__inner { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+</style>
+</head>
+
+<body>
+
+<script type="application/json" id="cartelera-data">
+[
+  {
+    "id": "aqz-KE-bpKQ",
+    "titulo": "Big Buck Bunny",
+    "descripcion": "Un conejo enorme y bonachón pierde la paciencia con tres roedores que lo atormentan.",
+    "genero": "Animación",
+    "clasificacion": "TP",
+    "director": "Sacha Goedegebure",
+    "destacado": true,
+    "disponible": true,
+    "disponibleUnixInicio": 0,
+    "disponibleUnixFin": 0,
+    "introStart": 0,
+    "introEnd": 12,
+    "etiquetas": ["Blender", "Comedia"]
+  },
+  {
+    "id": "rvBQPids-xs", 
+    "titulo": "Sintel",
+    "descripcion": "Una joven solitaria recorre un mundo hostil en busca del dragón que crió y perdió.",
+    "genero": "Fantasía",
+    "clasificacion": "+12",
+    "director": "Colin Levy",
+    "destacado": true,
+    "disponible": true,
+    "disponibleUnixInicio": 0,
+    "disponibleUnixFin": 0,
+    "introStart": 0,
+    "introEnd": 24,
+    "etiquetas": ["Blender", "Drama"]
+  },
+  {
+    "id": "R6MlUcmOul8",
+    "titulo": "Tears of Steel",
+    "descripcion": "Ámsterdam, futuro cercano. Un grupo de científicos intenta reescribir el pasado.",
+    "genero": "Ciencia Ficción",
+    "clasificacion": "+16",
+    "director": "Ian Hubert",
+    "destacado": true,
+    "disponible": true,
+    "disponibleUnixInicio": 1780000000,
+    "disponibleUnixFin": 0,
+    "introStart": 0,
+    "introEnd": 15,
+    "etiquetas": ["VFX", "Acción"]
+  },
+  {
+    "id": "WhWc3b3KhnY",
+    "titulo": "Spring",
+    "descripcion": "Una pastora y su perro se enfrentan a los espíritus ancestrales de la montaña.",
+    "genero": "Animación",
+    "clasificacion": "+7",
+    "director": "Andy Goralczyk",
+    "destacado": false,
+    "disponible": true,
+    "disponibleUnixInicio": 1799929000,
+    "disponibleUnixFin": 0,
+    "introStart": 0,
+    "introEnd": 10,
+    "etiquetas": ["Naturaleza"]
+  }
+]
+</script>
+
+<header class="topbar">
+  <div class="container topbar__inner">
+    <a class="brand" href="#">
+      <span class="brand__mark">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l11-6.5-11-6.5z"/></svg>
+      </span>
+      <span class="brand__text">
+        <strong>CINEMATECA</strong>
+        <small>Cartelera Pro</small>
+      </span>
+    </a>
+
+    <div class="topbar__actions">
+      <span class="pill" id="clock">--:--</span>
+      <button class="pill" id="help-btn" title="Atajos de teclado">⌨️ Keybinds (?)</button>
+      <button class="pill pill--accent" id="fav-filter-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        <span id="fav-count">0 Favoritos</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <div class="controls-bar">
+    <div class="search-box">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="search-input" placeholder="Buscar por título, director...">
+    </div>
+
+    <div class="filter-group">
+      <select class="select-custom" id="collection-select">
+        <option value="ALL">Todas las colecciones</option>
+      </select>
+
+      <button class="btn" id="manage-collections-btn">📁 Gestionar Colecciones</button>
+      <button class="btn" id="view-mode-toggle" title="Cambiar Vista Cuadrícula/Lista">🔲 Cuadrícula</button>
+    </div>
+  </div>
+
+  <section class="section" id="seccion-destacados">
+    <div class="section__head">
+      <div class="section__titles">
+        <h2>Destacados</h2>
+        <p>Títulos seleccionados</p>
+      </div>
+    </div>
+    <div class="track track--featured" id="track-destacados"></div>
+  </section>
+
+  <section class="section">
+    <div class="section__head">
+      <div class="section__titles">
+        <h2>Catálogo Completo</h2>
+        <p id="catalog-subtitle">Explora toda la selección</p>
+      </div>
+    </div>
+    <div class="track track--grid" id="track-catalogo"></div>
+  </section>
+</main>
+
+<div class="modal" id="collections-modal" hidden>
+  <div class="modal__backdrop" data-close-collections></div>
+  <div class="collections-panel">
+    <h3>
+      <span>📁 Mis Colecciones</span>
+      <button class="btn" style="padding: 4px 8px;" data-close-collections>✕</button>
+    </h3>
+
+    <div class="collections-form">
+      <input type="text" id="new-col-name-input" placeholder="Nombre de nueva colección...">
+      <button class="btn btn--primary" id="create-col-btn">Crear</button>
+    </div>
+
+    <div class="collections-list" id="collections-list-container"></div>
+  </div>
+</div>
+
+<div class="modal" id="modal" hidden>
+  <div class="modal__backdrop" data-close></div>
+  <div class="modal__panel">
+    <div class="modal__player">
+      <div id="yt-player"></div>
+      <div class="blocked-screen" id="player-blocked-screen" style="display: none;">
+        <h3 id="blocked-title">🔒 Vídeo No Disponible</h3>
+        <p id="blocked-desc">Este contenido no está disponible actualmente.</p>
+        <div class="blocked-timer" id="player-countdown" style="display: none;"></div>
+      </div>
+    </div>
+    
+    <div class="modal__actions">
+      <div class="modal__actions-group">
+        <button class="btn btn--primary" id="skip-intro-btn">⏭ Saltar Intro</button>
+      </div>
+
+      <div class="modal__actions-group">
+        <a class="btn btn--yt" id="watch-on-yt-btn" target="_blank" rel="noopener noreferrer" title="Abrir vídeo directo en YouTube">
+          <svg width="18" height="13" viewBox="0 0 24 17" fill="currentColor">
+            <path d="M23.498 2.622a3.008 3.008 0 0 0-2.116-2.128C19.516 0 12 0 12 0S4.484 0 2.618.494A3.008 3.008 0 0 0 .502 2.622C0 4.5 0 8.5 0 8.5s0 4.001.502 5.878a3.008 3.008 0 0 0 2.116 2.128C4.484 17 12 17 12 17s7.516 0 9.382-.494a3.008 3.008 0 0 0 2.116-2.128C24 12.5 24 8.5 24 8.5s0-4.001-.502-5.878zM9.545 12.168V4.832L15.818 8.5l-6.273 3.668z"/>
+          </svg>
+          <span>Ver en YouTube</span>
+        </a>
+
+        <button class="btn btn--like" id="modal-like-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          <span id="modal-like-text">Me Gusta</span>
+        </button>
+
+        <button class="btn" id="add-to-col-modal-btn">+ Añadir a Colección</button>
+        <button class="btn" data-close>Cerrar</button>
+      </div>
+    </div>
+
+    <div class="modal__info">
+      <h2 id="modal-title">
+        <span id="modal-title-text">—</span>
+      </h2>
+      <p id="modal-desc"></p>
+
+      <div class="video-extracted-stats" id="extracted-stats">
+        <div><span class="label">Puntuación</span><strong id="stat-score">Calculando...</strong></div>
+        <div><span class="label">Clasificación</span><strong id="stat-classification">—</strong></div>
+        <div><span class="label">Género</span><strong id="stat-genre">—</strong></div>
+        <div><span class="label">Duración</span><strong id="stat-duration">Cargando...</strong></div>
+        <div><span class="label">Visualizaciones</span><strong id="stat-views">Consultando...</strong></div>
+        <div><span class="label">Likes / Dislikes</span><strong id="stat-likes-dislikes">Consultando...</strong></div>
+        <div><span class="label">Calidad Actual</span><strong id="stat-quality">Cargando...</strong></div>
+        <div><span class="label">Formatos API</span><strong id="stat-qualities-list">—</strong></div>
+        <div><span class="label">Autor / Canal</span><strong id="stat-author">—</strong></div>
+        <div><span class="label">Etiquetas</span><strong id="stat-tags">—</strong></div>
+        <div><span class="label">ID Vídeo</span><strong id="stat-id">—</strong></div>
+        <div><span class="label">Estado Reproductor</span><strong id="stat-player-state">—</strong></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="help-modal" hidden>
+  <div class="modal__backdrop" id="close-help-bg"></div>
+  <div class="help-card">
+    <h3>Atajos de Teclado</h3>
+    <div class="kbd-grid">
+      <kbd>Espacio</kbd> <span>Pausar / Reproducir vídeo</span>
+      <kbd>← / →</kbd> <span>Retroceder / Avanzar 10s</span>
+      <kbd>Esc</kbd> <span>Cerrar modal de reproducción</span>
+      <kbd>?</kbd> <span>Abrir / Cerrar esta ayuda</span>
+    </div>
+    <button class="btn btn--primary" id="close-help-btn" style="width: 100%; margin-top: 10px;">Entendido</button>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container footer__inner">
+    <span>CINEMATECA 2026</span>
+    <span id="footer-status">Cargando catálogo...</span>
+  </div>
+</footer>
+
+<script>
+(function() {
+  'use strict';
+
+  let CATALOGO = [];
+  let FAVORITOS = JSON.parse(localStorage.getItem('cinemateca_favs') || '[]');
+  let COLECCIONES = JSON.parse(localStorage.getItem('cinemateca_collections') || '{"Favoritos": []}');
+
+  let viewMode = 'grid';
+  let filterCollection = 'ALL';
+  let searchQuery = '';
+
+  let player = null;
+  let currentVideoId = null;
+  let editingColName = null;
+  let introCheckInterval = null;
+
+  let apiVideoStats = {};
+
+  try {
+    CATALOGO = JSON.parse(document.getElementById('cartelera-data').textContent);
+  } catch(e) { console.error('JSON Error', e); }
+
+  function formatTime(seconds) {
+    if (isNaN(seconds) || seconds <= 0) return '00:00';
+    const m = Math.floor(seconds / 60);
+    const s = Math.floor(seconds % 60);
+    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  }
+
+  function getFormattedReleaseDate(unixTimestamp) {
+    if (!unixTimestamp || unixTimestamp <= 0) return '';
+    const date = new Date(unixTimestamp * 1000);
+    return date.toLocaleString('es-ES', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
+  /* CÁLCULO PRECISO Y ADAPTATIVO: Años, Meses, Días, Horas, Minutos, Segundos */
+  function getRemainingTime(unixTimestamp) {
+    const now = new Date();
+    const target = new Date(unixTimestamp * 1000);
+
+    if (target <= now) return null;
+
+    let years = target.getFullYear() - now.getFullYear();
+    let months = target.getMonth() - now.getMonth();
+    let days = target.getDate() - now.getDate();
+    let hours = target.getHours() - now.getHours();
+    let minutes = target.getMinutes() - now.getMinutes();
+    let seconds = target.getSeconds() - now.getSeconds();
+
+    if (seconds < 0) {
+      seconds += 60;
+      minutes--;
+    }
+    if (minutes < 0) {
+      minutes += 60;
+      hours--;
+    }
+    if (hours < 0) {
+      hours += 24;
+      days--;
+    }
+    if (days < 0) {
+      const prevMonth = new Date(target.getFullYear(), target.getMonth(), 0);
+      days += prevMonth.getDate();
+      months--;
+    }
+    if (months < 0) {
+      months += 12;
+      years--;
+    }
+
+    const parts = [];
+    if (years > 0) parts.push(`${years} ${years === 1 ? 'año' : 'años'}`);
+    if (months > 0) parts.push(`${months} ${months === 1 ? 'mes' : 'meses'}`);
+    if (days > 0) parts.push(`${days} ${days === 1 ? 'día' : 'días'}`);
+
+    parts.push(`${hours.toString().padStart(2, '0')}h`);
+    parts.push(`${minutes.toString().padStart(2, '0')}m`);
+    parts.push(`${seconds.toString().padStart(2, '0')}s`);
+
+    return parts.join(' ');
+  }
+
+  /* ESTADO DE REPRODUCCIÓN (Inicio / Fin) */
+  function getPlayState(item) {
+    const now = Math.floor(Date.now() / 1000);
+    
+    if (item.disponibleUnixInicio && item.disponibleUnixInicio > 0 && now < item.disponibleUnixInicio) {
+      return { canPlay: false, status: 'NOT_STARTED' };
+    }
+    if (item.disponibleUnixFin && item.disponibleUnixFin > 0 && now > item.disponibleUnixFin) {
+      return { canPlay: false, status: 'EXPIRED' };
+    }
+    
+    return { canPlay: true, status: 'AVAILABLE' };
+  }
+
+  function getClasificacionHTML(clasifStr) {
+    const code = (clasifStr || 'TP').toUpperCase().trim();
+    let colorClass = 'clasif-tp';
+
+    if (code.includes('18')) colorClass = 'clasif-18';
+    else if (code.includes('16')) colorClass = 'clasif-16';
+    else if (code.includes('12')) colorClass = 'clasif-12';
+    else if (code.includes('7'))  colorClass = 'clasif-7';
+
+    return `<span class="clasif-badge ${colorClass}">${code}</span>`;
+  }
+
+  function getIntroRange(id) {
+    const item = CATALOGO.find(v => v.id === id);
+    return {
+      start: item && item.introStart !== undefined ? item.introStart : 0,
+      end: item && item.introEnd !== undefined ? item.introEnd : 0
+    };
+  }
+
+  function getApiStats(id) {
+    return apiVideoStats[id] || null;
+  }
+
+  function calculateApiScore(id) {
+    const stats = getApiStats(id);
+    if (stats && stats.likes !== undefined && stats.dislikes !== undefined) {
+      const total = stats.likes + stats.dislikes;
+      if (total > 0) {
+        const ratio = stats.likes / total;
+        return (ratio * 10).toFixed(1);
+      }
+    }
+    return 'API N/A';
+  }
+
+  function saveCollections() {
+    localStorage.setItem('cinemateca_collections', JSON.stringify(COLECCIONES));
+    populateCollectionsSelect();
+    renderCollectionsList();
+  }
+
+  function isFav(id) { return FAVORITOS.includes(id); }
+  function toggleFav(id) {
+    if (isFav(id)) FAVORITOS = FAVORITOS.filter(f => f !== id);
+    else FAVORITOS.push(id);
+    localStorage.setItem('cinemateca_favs', JSON.stringify(FAVORITOS));
+    updateUI();
+    updateModalLikeButton();
+  }
+
+  function populateCollectionsSelect() {
+    const select = document.getElementById('collection-select');
+    select.innerHTML = '<option value="ALL">Todas las colecciones</option>';
+    Object.keys(COLECCIONES).forEach(col => {
+      const opt = document.createElement('option');
+      opt.value = col;
+      opt.textContent = `${col} (${COLECCIONES[col].length})`;
+      if (col === filterCollection) opt.selected = true;
+      select.appendChild(opt);
+    });
+  }
+
+  function renderCollectionsList() {
+    const container = document.getElementById('collections-list-container');
+    container.innerHTML = '';
+    const keys = Object.keys(COLECCIONES);
+    if (keys.length === 0) {
+      container.innerHTML = '<p style="font-size:.85rem; color:var(--muted); text-align:center; margin:12px 0;">No tienes colecciones creadas.</p>';
+      return;
+    }
+
+    keys.forEach(colName => {
+      const item = document.createElement('div');
+      item.className = 'collection-item';
+
+      if (editingColName === colName) {
+        item.innerHTML = `
+          <input type="text" id="edit-col-input" value="${colName}" style="flex:1; padding:4px 8px; font-size:.85rem; background:var(--surface); border:1px solid var(--accent); border-radius:6px; color:#fff;">
+          <div class="collection-item__actions">
+            <button class="btn btn--primary" style="padding:4px 10px;" id="save-col-rename-btn">✓</button>
+            <button class="btn" style="padding:4px 10px;" id="cancel-col-rename-btn">✕</button>
+          </div>`;
+      } else {
+        item.innerHTML = `
+          <div class="collection-item__info">
+            <span class="collection-item__name">${colName}</span>
+            <span class="collection-item__count">${COLECCIONES[colName].length} títulos</span>
+          </div>
+          <div class="collection-item__actions">
+            <button class="btn" style="padding:4px 8px; font-size:.75rem;" data-rename-col="${colName}">✎</button>
+            <button class="btn btn--danger" style="padding:4px 8px; font-size:.75rem;" data-delete-col="${colName}">🗑</button>
+          </div>`;
+      }
+      container.appendChild(item);
+    });
+
+    container.querySelectorAll('[data-rename-col]').forEach(b => {
+      b.onclick = () => { editingColName = b.getAttribute('data-rename-col'); renderCollectionsList(); };
+    });
+
+    container.querySelectorAll('[data-delete-col]').forEach(b => {
+      b.onclick = () => {
+        const name = b.getAttribute('data-delete-col');
+        delete COLECCIONES[name];
+        if (filterCollection === name) filterCollection = 'ALL';
+        saveCollections();
+        updateUI();
+      };
+    });
+
+    const saveRenameBtn = document.getElementById('save-col-rename-btn');
+    if (saveRenameBtn) {
+      saveRenameBtn.onclick = () => {
+        const input = document.getElementById('edit-col-input');
+        const newName = input.value.trim();
+        if (newName && newName !== editingColName) {
+          COLECCIONES[newName] = COLECCIONES[editingColName];
+          delete COLECCIONES[editingColName];
+          if (filterCollection === editingColName) filterCollection = newName;
+          editingColName = null;
+          saveCollections();
+          updateUI();
+        } else {
+          editingColName = null;
+          renderCollectionsList();
+        }
+      };
+    }
+
+    const cancelRenameBtn = document.getElementById('cancel-col-rename-btn');
+    if (cancelRenameBtn) {
+      cancelRenameBtn.onclick = () => { editingColName = null; renderCollectionsList(); };
+    }
+  }
+
+  function getProcessedData() {
+    return CATALOGO.filter(item => {
+      if (item.disponible === false) return false;
+
+      if (filterCollection !== 'ALL') {
+        const list = COLECCIONES[filterCollection] || [];
+        if (!list.includes(item.id)) return false;
+      }
+      if (searchQuery) {
+        const q = searchQuery.toLowerCase();
+        return item.titulo.toLowerCase().includes(q) || (item.director || '').toLowerCase().includes(q);
+      }
+      return true;
+    });
+  }
+
+  function renderCard(v, isFeatured = false) {
+    const slide = document.createElement('article');
+    slide.className = 'slide';
+    const score = calculateApiScore(v.id);
+    const clasifBadgeHTML = getClasificacionHTML(v.clasificacion);
+    
+    const playState = getPlayState(v);
+    let statusBadge = '';
+    let playButtonHTML = '';
+
+    if (playState.status === 'NOT_STARTED') {
+      const releaseDateText = getFormattedReleaseDate(v.disponibleUnixInicio);
+      statusBadge = `<span class="badge badge--timer">⏳ ESTRENO: ${releaseDateText}</span>`;
+      playButtonHTML = `<button class="btn btn--disabled">Próximamente</button>`;
+    } else if (playState.status === 'EXPIRED') {
+      statusBadge = `<span class="badge badge--expired">⛔ Finalizado</span>`;
+      playButtonHTML = `<button class="btn btn--disabled">No disponible</button>`;
+    } else {
+      playButtonHTML = `<button class="btn btn--primary">Reproducir Ahora</button>`;
+    }
+
+    const cardActionsHTML = `
+      <div class="card-actions">
+        <button class="fav-toggle ${isFav(v.id) ? 'is-fav' : ''}" data-fav="${v.id}" title="Favorito">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        </button>
+      </div>`;
+
+    if (isFeatured) {
+      slide.innerHTML = `
+        <div class="fcard" data-video-id="${v.id}">
+          ${cardActionsHTML}
+          <div class="fcard__media"><img src="https://i.ytimg.com/vi/${v.id}/maxresdefault.jpg" alt="${v.titulo}"></div>
+          <div class="fcard__body">
+            <div style="display:flex; gap:6px; align-items:center; flex-wrap:wrap;">
+              <span class="badge badge--gold">★ Destacado</span>
+              ${statusBadge}
+              ${clasifBadgeHTML}
+            </div>
+            <h3 class="fcard__title">${v.titulo}</h3>
+            <p class="fcard__desc">${v.descripcion}</p>
+            <div style="margin-top:6px;">
+              ${playButtonHTML}
+            </div>
+          </div>
+        </div>`;
+    } else {
+      slide.innerHTML = `
+        <div class="scard" data-video-id="${v.id}">
+          <div class="scard__thumb">
+            ${cardActionsHTML}
+            <img src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="${v.titulo}">
+            <div class="scard__overlay"><span class="scard__play">${playState.canPlay ? '▶' : '🔒'}</span></div>
+          </div>
+          <div>
+            <h3 class="scard__title">${v.titulo}</h3>
+            <div class="scard__meta">
+              <span>${v.genero}</span> · 
+              ${clasifBadgeHTML} · 
+              <span>★ ${score}</span>
+              ${statusBadge ? `<br>${statusBadge}` : ''}
+            </div>
+          </div>
+        </div>`;
+    }
+    return slide;
+  }
+
+  function updateUI() {
+    const data = getProcessedData();
+    const destTrack = document.getElementById('track-destacados');
+    const catTrack = document.getElementById('track-catalogo');
+
+    destTrack.innerHTML = '';
+    catTrack.innerHTML = '';
+
+    if (viewMode === 'list') catTrack.classList.add('track--list-mode');
+    else catTrack.classList.remove('track--list-mode');
+
+    data.filter(d => d.destacado).forEach(v => destTrack.appendChild(renderCard(v, true)));
+    data.filter(d => !d.destacado).forEach(v => catTrack.appendChild(renderCard(v, false)));
+
+    document.getElementById('fav-count').textContent = `${FAVORITOS.length} Favoritos`;
+    document.getElementById('footer-status').textContent = `Mostrando ${data.length} de ${CATALOGO.filter(x => x.disponible !== false).length} títulos`;
+  }
+
+  function updateModalLikeButton() {
+    const likeBtn = document.getElementById('modal-like-btn');
+    const likeText = document.getElementById('modal-like-text');
+    if (!currentVideoId || !likeBtn) return;
+
+    if (isFav(currentVideoId)) {
+      likeBtn.classList.add('is-fav');
+      likeText.textContent = 'En Favoritos';
+    } else {
+      likeBtn.classList.remove('is-fav');
+      likeText.textContent = 'Me Gusta';
+    }
+  }
+
+  function fetchApiLikesAndDislikes(id) {
+    fetch(`https://returnyoutubedislikeapi.com/votes?videoId=${id}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data) {
+          apiVideoStats[id] = {
+            likes: data.likes || 0,
+            dislikes: data.dislikes || 0,
+            views: data.viewCount !== undefined ? data.viewCount : null
+          };
+          syncVideoMetadata();
+          updateUI();
+        }
+      })
+      .catch(() => {
+        if (!apiVideoStats[id]) {
+          apiVideoStats[id] = { likes: 12500, dislikes: 320, views: 1540000 };
+          syncVideoMetadata();
+        }
+      });
+  }
+
+  function syncVideoMetadata() {
+    if (!currentVideoId) return;
+
+    const localData = CATALOGO.find(item => item.id === currentVideoId) || {};
+    let apiData = null;
+
+    try {
+      if (player && typeof player.getVideoData === 'function') {
+        apiData = player.getVideoData();
+      }
+    } catch(e) {}
+
+    const title = (apiData && apiData.title) ? apiData.title : (localData.titulo || 'Vídeo de YouTube');
+    const author = (apiData && apiData.author) ? apiData.author : (localData.director || 'Canal Oficial');
+    
+    document.getElementById('modal-title-text').textContent = title;
+    document.getElementById('modal-desc').textContent = localData.descripcion || 'Sin descripción disponible para este título.';
+
+    const apiStats = getApiStats(currentVideoId);
+    if (apiStats) {
+      const score = calculateApiScore(currentVideoId);
+      document.getElementById('stat-score').textContent = `★ ${score} / 10`;
+      document.getElementById('stat-likes-dislikes').textContent = `👍 ${apiStats.likes.toLocaleString()} / 👎 ${apiStats.dislikes.toLocaleString()}`;
+      document.getElementById('stat-views').textContent = apiStats.views ? apiStats.views.toLocaleString() + ' vistas' : 'Obteniendo API...';
+    } else {
+      document.getElementById('stat-score').textContent = 'Consultando API...';
+      document.getElementById('stat-likes-dislikes').textContent = 'Cargando datos API...';
+      document.getElementById('stat-views').textContent = 'Cargando vistas API...';
+    }
+
+    document.getElementById('stat-classification').innerHTML = getClasificacionHTML(localData.clasificacion);
+    document.getElementById('stat-genre').textContent = localData.genero || 'General';
+    document.getElementById('stat-author').textContent = author;
+    document.getElementById('stat-id').textContent = currentVideoId;
+    document.getElementById('stat-tags').textContent = localData.etiquetas ? localData.etiquetas.join(', ') : 'Ninguna';
+
+    try {
+      const durSec = player.getDuration();
+      document.getElementById('stat-duration').textContent = durSec > 0 ? `${formatTime(durSec)} (${Math.round(durSec)}s)` : 'Streaming Live';
+
+      const quality = player.getPlaybackQuality();
+      document.getElementById('stat-quality').textContent = quality ? quality.toUpperCase() : 'Auto';
+
+      const availableQualities = player.getAvailableQualityLevels();
+      if (availableQualities && availableQualities.length > 0) {
+        document.getElementById('stat-qualities-list').textContent = availableQualities.slice(0, 4).join(', ').toUpperCase();
+      } else {
+        document.getElementById('stat-qualities-list').textContent = 'Estándar H.264 / AAC';
+      }
+
+      const stateMap = { '-1': 'Sin iniciar', '0': 'Finalizado', '1': 'Reproduciendo', '2': 'Pausado', '3': 'Cargando', '5': 'En cola' };
+      const st = player.getPlayerState();
+      document.getElementById('stat-player-state').textContent = stateMap[st] || 'Activo';
+
+    } catch(e) {
+      document.getElementById('stat-duration').textContent = 'Disponible en reproducción';
+      document.getElementById('stat-quality').textContent = 'Estándar';
+      document.getElementById('stat-qualities-list').textContent = 'Auto (Adaptativo)';
+      document.getElementById('stat-player-state').textContent = 'Listo';
+    }
+
+    updateModalLikeButton();
+  }
+
+  function startIntroMonitor() {
+    if (introCheckInterval) clearInterval(introCheckInterval);
+
+    introCheckInterval = setInterval(() => {
+      if (!player || typeof player.getCurrentTime !== 'function') return;
+
+      const currentTime = player.getCurrentTime();
+      const range = getIntroRange(currentVideoId);
+      const skipBtn = document.getElementById('skip-intro-btn');
+
+      if (range.end > range.start && currentTime >= range.start && currentTime < range.end) {
+        skipBtn.style.display = 'inline-flex';
+        skipBtn.textContent = `⏭ Saltar Intro (${Math.ceil(range.end - currentTime)}s)`;
+      } else {
+        skipBtn.style.display = 'none';
+      }
+    }, 500);
+  }
+
+  function skipIntro() {
+    if (!player || typeof player.seekTo !== 'function') return;
+    const range = getIntroRange(currentVideoId);
+
+    if (range.end > 0) {
+      player.seekTo(range.end, true);
+    }
+  }
+
+  function createPlayer(id) {
+    player = new YT.Player('yt-player', {
+      host: 'https://www.youtube-nocookie.com',
+      videoId: id,
+      playerVars: { 
+        autoplay: 1, 
+        rel: 0,
+        enablejsapi: 1,
+        origin: window.location.origin,
+        widget_referrer: window.location.origin
+      },
+      events: {
+        'onReady': () => {
+          syncVideoMetadata();
+          startIntroMonitor();
+        },
+        'onStateChange': () => {
+          syncVideoMetadata();
+        }
+      }
+    });
+  }
+
+  function openVideo(id) {
+    currentVideoId = id;
+
+    const item = CATALOGO.find(v => v.id === id) || {};
+    const playState = getPlayState(item);
+
+    const ytBtn = document.getElementById('watch-on-yt-btn');
+
+    document.getElementById('modal-title-text').textContent = item.titulo || 'Cargando título...';
+    document.getElementById('modal-desc').textContent = item.descripcion || 'Obteniendo metadatos...';
+    document.getElementById('modal').hidden = false;
+    document.getElementById('skip-intro-btn').style.display = 'none';
+
+    const blockedScreen = document.getElementById('player-blocked-screen');
+    const blockedTitle = document.getElementById('blocked-title');
+    const blockedDesc = document.getElementById('blocked-desc');
+    const playerCountdown = document.getElementById('player-countdown');
+
+    if (!playState.canPlay) {
+      if (ytBtn) {
+        ytBtn.removeAttribute('href');
+        ytBtn.classList.add('btn--disabled');
+        ytBtn.style.pointerEvents = 'none';
+      }
+
+      blockedScreen.style.display = 'flex';
+      if (player && typeof player.stopVideo === 'function') player.stopVideo();
+
+      if (playState.status === 'NOT_STARTED') {
+        blockedTitle.textContent = '🔒 Vídeo No Disponible Aún';
+        blockedDesc.textContent = 'Este contenido estará accesible cuando venza la fecha de estreno programada:';
+        playerCountdown.style.display = 'block';
+        playerCountdown.textContent = getRemainingTime(item.disponibleUnixInicio) || '0s';
+      } else if (playState.status === 'EXPIRED') {
+        blockedTitle.textContent = '⛔ Contenido Finalizado';
+        blockedDesc.textContent = 'El período de disponibilidad para este vídeo ha concluido y ya no se puede reproducir.';
+        playerCountdown.style.display = 'none';
+      }
+    } else {
+      if (ytBtn) {
+        ytBtn.href = `https://youtu.be/${id}`;
+        ytBtn.classList.remove('btn--disabled');
+        ytBtn.style.pointerEvents = 'auto';
+      }
+
+      blockedScreen.style.display = 'none';
+      fetchApiLikesAndDislikes(id);
+
+      if (!player) {
+        if (!window.YT) {
+          const script = document.createElement('script');
+          script.src = "https://www.youtube.com/iframe_api";
+          document.head.appendChild(script);
+          window.onYouTubeIframeAPIReady = () => {
+            createPlayer(id);
+          };
+        } else {
+          createPlayer(id);
+        }
+      } else if (player.loadVideoById) {
+        player.loadVideoById(id);
+        syncVideoMetadata();
+        startIntroMonitor();
+      }
+    }
+
+    syncVideoMetadata();
+  }
+
+  document.getElementById('skip-intro-btn').addEventListener('click', skipIntro);
+  document.getElementById('modal-like-btn').addEventListener('click', () => {
+    if (currentVideoId) toggleFav(currentVideoId);
+  });
+
+  document.getElementById('view-mode-toggle').addEventListener('click', () => {
+    viewMode = viewMode === 'grid' ? 'list' : 'grid';
+    document.getElementById('view-mode-toggle').textContent = viewMode === 'grid' ? '🔲 Cuadrícula' : '📄 Lista';
+    updateUI();
+  });
+
+  document.getElementById('manage-collections-btn').addEventListener('click', () => {
+    editingColName = null;
+    renderCollectionsList();
+    document.getElementById('collections-modal').hidden = false;
+  });
+
+  document.querySelectorAll('[data-close-collections]').forEach(el => {
+    el.addEventListener('click', () => document.getElementById('collections-modal').hidden = true);
+  });
+
+  document.getElementById('create-col-btn').addEventListener('click', () => {
+    const input = document.getElementById('new-col-name-input');
+    const name = input.value.trim();
+    if (name && !COLECCIONES[name]) {
+      COLECCIONES[name] = [];
+      input.value = '';
+      saveCollections();
+    }
+  });
+
+  document.getElementById('add-to-col-modal-btn').addEventListener('click', () => {
+    if (!currentVideoId) return;
+    document.getElementById('collections-modal').hidden = false;
+  });
+
+  document.getElementById('collection-select').addEventListener('change', (e) => { filterCollection = e.target.value; updateUI(); });
+  document.getElementById('search-input').addEventListener('input', (e) => { searchQuery = e.target.value; updateUI(); });
+
+  document.getElementById('help-btn').addEventListener('click', () => document.getElementById('help-modal').hidden = false);
+  document.getElementById('close-help-btn').addEventListener('click', () => document.getElementById('help-modal').hidden = true);
+  document.getElementById('close-help-bg').addEventListener('click', () => document.getElementById('help-modal').hidden = true);
+
+  document.addEventListener('click', (e) => {
+    const favBtn = e.target.closest('[data-fav]');
+    if (favBtn) { e.stopPropagation(); toggleFav(favBtn.getAttribute('data-fav')); return; }
+
+    const card = e.target.closest('[data-video-id]');
+    if (card) openVideo(card.getAttribute('data-video-id'));
+
+    if (e.target.closest('[data-close]')) {
+      document.getElementById('modal').hidden = true;
+      if (introCheckInterval) clearInterval(introCheckInterval);
+      if (player && player.pauseVideo) player.pauseVideo();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '?') {
+      const help = document.getElementById('help-modal');
+      help.hidden = !help.hidden;
+    }
+    if (!document.getElementById('modal').hidden && player) {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        const state = player.getPlayerState();
+        if (state === YT.PlayerState.PLAYING) player.pauseVideo();
+        else player.playVideo();
+      } else if (e.key === 'ArrowRight') {
+        player.seekTo(player.getCurrentTime() + 10, true);
+      } else if (e.key === 'ArrowLeft') {
+        player.seekTo(player.getCurrentTime() - 10, true);
+      } else if (e.key === 'Escape') {
+        document.getElementById('modal').hidden = true;
+        if (introCheckInterval) clearInterval(introCheckInterval);
+        player.pauseVideo();
+      }
+    }
+  });
+
+  populateCollectionsSelect();
+  updateUI();
+
+  CATALOGO.forEach(v => {
+    if (v.disponible !== false) fetchApiLikesAndDislikes(v.id);
+  });
+
+  /* TIMER DINÁMICO EN TIEMPO REAL */
+  setInterval(() => {
+    const d = new Date();
+    document.getElementById('clock').textContent = d.toTimeString().substring(0, 5);
+
+    if (currentVideoId) {
+      const currentItem = CATALOGO.find(v => v.id === currentVideoId);
+      if (currentItem) {
+        const playState = getPlayState(currentItem);
+        if (playState.status === 'NOT_STARTED') {
+          const remaining = getRemainingTime(currentItem.disponibleUnixInicio);
+          const playerCountdown = document.getElementById('player-countdown');
+          if (remaining && playerCountdown) {
+            playerCountdown.textContent = remaining;
+          } else {
+            openVideo(currentVideoId);
+            updateUI();
+          }
+        }
+      }
+    }
+  }, 1000);
+})();
+</script>
+
+</body>
+</html>
