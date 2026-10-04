@@ -43,13 +43,22 @@ html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
   --muted: #98a2b3;
   --accent: #e5b567;
   --danger: #ff5252;
+  --warning: #f59e0b;
   --success: #2ecc71;
   --yt-red: #ff0000;
   --radius: 16px;
   --radius-sm: 12px;
   --maxw: 1600px;
 }
-
+  
+#modal-desc {
+  white-space: pre-line;
+}
+  
+#title {
+  white-space: pre-line;
+}
+  
 body {
   margin: 0;
   min-height: 100vh;
@@ -196,6 +205,7 @@ button { font-family: inherit; }
 .badge--gold { background: var(--accent); color: #17130a; border: 0; }
 .badge--timer { background: rgba(255, 82, 82, 0.2); color: var(--danger); border-color: var(--danger); }
 .badge--expired { background: rgba(152, 162, 179, 0.2); color: var(--muted); border-color: var(--muted); }
+.badge--warning { background: rgba(245, 158, 11, 0.2); color: var(--warning); border-color: var(--waring); }
 
 .clasif-badge { font-weight: 800; padding: 2px 7px; border-radius: 6px; font-size: .68rem; letter-spacing: .02em; display: inline-block; width: fit-content; }
 .clasif-tp { background: #2ecc71; color: #081d0f; }
@@ -497,12 +507,17 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
   {
     "id": "vSk6ZSCSOuw",
     "titulo": "The Enchanted Treasure (Piano Version) - Grouvex",
-    "descripcion": "The Enchanted Treasure (Piano Version) - Grouvex [From the album: The Treasure]\nAlbum release on May 27, 2025\n----------------------------------------\n©Grouvex\n©Grouvex Studios Records\n©Grouvex Studios Animation",
+    "descripcion": `The Enchanted Treasure (Piano Version) - Grouvex [From the album: The Treasure]
+Album release on May 27, 2025
+----------------------------------------
+©Grouvex
+©Grouvex Studios Records
+©Grouvex Studios Animation`,
     "genero": "Música",
     "clasificacion": "TP",
     "director": "Grouvex",
     "destacado": true,
-    "disponible": true,
+    "disponible": false,
     "disponibleUnixInicio": 0,
     "disponibleUnixFin": 0,
     "introStart": 0,
@@ -512,13 +527,19 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
   {
     "id": "rvBQPids-xs", 
     "titulo": "Kiss the Sky – Grouvex. By Maren Morris (Piano Version)",
-    "descripcion": "Composer: ‪Grouvex\nArtist: ‪Grouvex‬\nOriginal Artist: ‪Maren Morris‬\nOriginal Composer: ‪Maren Morris‬  & Kris Bowers\n©Grouvex 2023-2024\n©Grouvex Studios 2023\n©Grouvex Studios Records 2023",
+    "descripcion": `Composer: Grouvex
+Artist: Grouvex
+Original Artist: Maren Morris
+Original Composer: Maren Morris  & Kris Bowers
+©Grouvex 2023-2024
+©Grouvex Studios 2023
+©Grouvex Studios Records 2023`,
     "genero": "Música",
     "clasificacion": "TP",
     "director": "Grouvex",
     "destacado": true,
-    "disponible": true,
-    "disponibleUnixInicio": 0,
+    "disponible": false,
+    "disponibleUnixInicio": 0, 
     "disponibleUnixFin": 0,
     "introStart": 0,
     "introEnd": 24,
@@ -527,12 +548,25 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
   {
     "id": "Xvgsr5lQ_3E",
     "titulo": "A New World",
-    "descripcion": "A New World · Grouvex · Maiki Dran\n\nA New World\n\n℗ Grouvex Studios Records\n\nReleased on: 2026-07-24\n\nProducer: Maiki Dran\nEngineer: Maiki Dran\nProducer: Grouvex\nGraphic Designer: Maiki Dran\nEngineer: Maiki Dran\nComposer: Maiki Dran",
+    "descripcion": `A New World · Grouvex · Maiki Dran
+
+A New World
+
+℗ Grouvex Studios Records
+
+Released on: 2026-07-24
+
+Producer: Maiki Dran
+Engineer: Maiki Dran
+Producer: Grouvex
+Graphic Designer: Maiki Dran
+Engineer: Maiki Dran
+Composer: Maiki Dran`,
     "genero": "Música",
     "clasificacion": "TP",
     "director": "Grouvex",
     "destacado": false,
-    "disponible": true,
+    "disponible": false,
     "disponibleUnixInicio": 1780000000,
     "disponibleUnixFin": 0,
     "introStart": 0,
@@ -547,7 +581,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
     "clasificacion": "+7",
     "director": "Andy Goralczyk",
     "destacado": false,
-    "disponible": true,
+    "disponible": false,
     "disponibleUnixInicio": 1799929000,
     "disponibleUnixFin": 0,
     "introStart": 0,
@@ -556,7 +590,6 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
   }
 ]
 </script>
-
 <header class="topbar">
   <div class="container topbar__inner">
     <a class="brand" href="#top">
@@ -834,7 +867,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
         <div><span class="label" data-i18n="views">Visualizaciones</span><strong id="stat-views">Consultando...</strong></div>
         <div><span class="label" data-i18n="likesDislikes">Likes / Dislikes</span><strong id="stat-likes-dislikes">Consultando...</strong></div>
         <div><span class="label" data-i18n="currentQuality">Calidad Actual</span><strong id="stat-quality">Cargando...</strong></div>
-        <div><span class="label" data-i18n="apiFormats">Formatos API</span><strong id="stat-qualities-list">—</strong></div>
+        <div><span class="label" data-i18n="apiFormats">Formatos</span><strong id="stat-qualities-list">—</strong></div>
         <div><span class="label" data-i18n="author">Autor / Canal</span><strong id="stat-author">—</strong></div>
         <div><span class="label" data-i18n="tags">Etiquetas</span><strong id="stat-tags">—</strong></div>
         <div><span class="label" data-i18n="playerState">Estado Reproductor</span><strong id="stat-player-state">—</strong></div>
@@ -859,7 +892,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
 
 <footer class="footer">
   <div class="container footer__inner">
-    <span>CINEMATECA 2026</span>
+    <span>GS-SCREENS 2026</span>
     <span id="footer-status" data-i18n="loadingCatalog">Cargando catálogo...</span>
   </div>
 </footer>
@@ -898,7 +931,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       stateAutoAdaptive: 'Auto (Adaptativo)', stateStandardFormat: 'Estándar H.264 / AAC',
       score: 'Puntuación', classification: 'Clasificación', genre: 'Género',
       duration: 'Duración', views: 'Visualizaciones',
-      likesDislikes: 'Likes / Dislikes', currentQuality: 'Calidad Actual', apiFormats: 'Formatos API',
+      likesDislikes: 'Likes / Dislikes', currentQuality: 'Calidad Actual', apiFormats: 'Formatos',
       author: 'Autor / Canal', tags: 'Etiquetas', videoId: 'ID Vídeo', playerState: 'Estado Reproductor',
       helpTitle: 'Atajos de Teclado', helpSpace: 'Pausar / Reproducir vídeo',
       helpArrows: 'Retroceder / Avanzar 10s', helpEsc: 'Cerrar modal de reproducción',
@@ -912,15 +945,15 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       upcoming: 'Próximos', upcomingTitle: 'Próximos Estrenos',
       noUpcoming: 'No hay próximos estrenos programados.',
       goTop: 'Ir arriba', otherCategory: 'Otros',
-      apiNA: 'API N/A', apiCalculating: 'Calculando...',
-      apiConsulting: 'Consultando API...', apiLoading: 'Cargando datos API...',
-      apiLoadingViews: 'Cargando vistas API...', apiGettingViews: 'Obteniendo API...',
+      apiNA: ' N/A', apiCalculating: 'Calculando...',
+      apiConsulting: 'Consultando ...', apiLoading: 'Cargando datos...',
+      apiLoadingViews: 'Cargando vistas ...', apiGettingViews: 'Obteniendo...',
       apiLoadStats: 'Cargando...', apiCalcScore: 'Calculando...',
       confirmDeleteCollection: '¿Eliminar la colección "{name}"?',
       confirmClearHistory: '¿Borrar todo el historial de reproducción?',
       confirmClearQueue: '¿Vaciar la cola de reproducción?',
       featured2: 'Destacado', availableNow: 'Disponible', premiere: 'ESTRENO',
-      finished: 'Finalizado', comingSoon: 'Próximamente', notAvailable: 'No disponible',
+      finished: 'Finalizado', comingSoon: 'Próximamente', notAvailable: 'No disponible', expiringSoon: 'Expira Pronto',
       playNow: 'Reproducir', inQueue: 'EN COLA', filterBy: 'Filtrar por',
       addFav: 'Favorito', addToQueueTitle: 'Añadir a la cola', removeFromQueueTitle: 'Quitar de la cola',
       play: 'Reproducir', removeFromHistory: 'Eliminar del historial',
@@ -961,7 +994,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       stateAutoAdaptive: 'Auto (Adaptive)', stateStandardFormat: 'Standard H.264 / AAC',
       score: 'Score', classification: 'Rating', genre: 'Genre',
       duration: 'Duration', views: 'Views',
-      likesDislikes: 'Likes / Dislikes', currentQuality: 'Current Quality', apiFormats: 'API Formats',
+      likesDislikes: 'Likes / Dislikes', currentQuality: 'Current Quality', apiFormats: 'Formats',
       author: 'Author / Channel', tags: 'Tags', videoId: 'Video ID', playerState: 'Player State',
       helpTitle: 'Keyboard Shortcuts', helpSpace: 'Pause / Play video',
       helpArrows: 'Rewind / Forward 10s', helpEsc: 'Close playback modal',
@@ -975,15 +1008,15 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       upcoming: 'Upcoming', upcomingTitle: 'Upcoming Releases',
       noUpcoming: 'No upcoming releases scheduled.',
       goTop: 'Go top', otherCategory: 'Others',
-      apiNA: 'API N/A', apiCalculating: 'Calculating...',
-      apiConsulting: 'Querying API...', apiLoading: 'Loading API data...',
-      apiLoadingViews: 'Loading API views...', apiGettingViews: 'Getting API...',
+      apiNA: ' N/A', apiCalculating: 'Calculating...',
+      apiConsulting: 'Querying...', apiLoading: 'Loading data...',
+      apiLoadingViews: 'Loading views...', apiGettingViews: 'Getting...',
       apiLoadStats: 'Loading...', apiCalcScore: 'Calculating...',
       confirmDeleteCollection: 'Delete collection "{name}"?',
       confirmClearHistory: 'Clear all watch history?',
       confirmClearQueue: 'Empty the play queue?',
       featured2: 'Featured', availableNow: 'Available', premiere: 'PREMIERE',
-      finished: 'Finished', comingSoon: 'Coming Soon', notAvailable: 'Not available',
+      finished: 'Finished', comingSoon: 'Coming Soon', notAvailable: 'Not available', expiringSoon: 'Expiring Soon',
       playNow: 'Play Now', inQueue: 'IN QUEUE', filterBy: 'Filter by',
       addFav: 'Favorite', addToQueueTitle: 'Add to queue', removeFromQueueTitle: 'Remove from queue',
       play: 'Play', removeFromHistory: 'Remove from history',
@@ -1024,7 +1057,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       stateAutoAdaptive: 'Auto (Adaptatif)', stateStandardFormat: 'Standard H.264 / AAC',
       score: 'Note', classification: 'Classification', genre: 'Genre',
       duration: 'Durée', views: 'Vues',
-      likesDislikes: 'J\'aime / Je n\'aime pas', currentQuality: 'Qualité Actuelle', apiFormats: 'Formats API',
+      likesDislikes: 'J\'aime / Je n\'aime pas', currentQuality: 'Qualité Actuelle', apiFormats: 'Formats',
       author: 'Auteur / Chaîne', tags: 'Étiquettes', videoId: 'ID Vidéo', playerState: 'État du Lecteur',
       helpTitle: 'Raccourcis Clavier', helpSpace: 'Pause / Lecture vidéo',
       helpArrows: 'Reculer / Avancer 10s', helpEsc: 'Fermer le modal de lecture',
@@ -1038,9 +1071,9 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       upcoming: 'À venir', upcomingTitle: 'Prochaines Sorties',
       noUpcoming: 'Aucune sortie à venir programmée.',
       goTop: 'Haut de page', otherCategory: 'Autres',
-      apiNA: 'API N/A', apiCalculating: 'Calcul...',
-      apiConsulting: 'Consultation API...', apiLoading: 'Chargement des données API...',
-      apiLoadingViews: 'Chargement des vues API...', apiGettingViews: 'Obtention API...',
+      apiNA: ' N/A', apiCalculating: 'Calcul...',
+      apiConsulting: 'Consultation ...', apiLoading: 'Chargement des données ...',
+      apiLoadingViews: 'Chargement des vues ...', apiGettingViews: 'Obtention ...',
       apiLoadStats: 'Chargement...', apiCalcScore: 'Calcul...',
       confirmDeleteCollection: 'Supprimer la collection "{name}" ?',
       confirmClearHistory: 'Effacer tout l\'historique de lecture ?',
@@ -1087,7 +1120,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       stateAutoAdaptive: 'Auto (Adaptiv)', stateStandardFormat: 'Standard H.264 / AAC',
       score: 'Bewertung', classification: 'Altersfreigabe', genre: 'Genre',
       duration: 'Dauer', views: 'Aufrufe',
-      likesDislikes: 'Likes / Dislikes', currentQuality: 'Aktuelle Qualität', apiFormats: 'API-Formate',
+      likesDislikes: 'Likes / Dislikes', currentQuality: 'Aktuelle Qualität', apiFormats: 'Formate',
       author: 'Autor / Kanal', tags: 'Tags', videoId: 'Video-ID', playerState: 'Player-Status',
       helpTitle: 'Tastenkombinationen', helpSpace: 'Video pausieren / abspielen',
       helpArrows: '10s zurück / vorspulen', helpEsc: 'Wiedergabefenster schließen',
@@ -1101,9 +1134,9 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       upcoming: 'Demnächst', upcomingTitle: 'Kommende Neuerscheinungen',
       noUpcoming: 'Keine kommenden Neuerscheinungen geplant.',
       goTop: 'Nach oben', otherCategory: 'Sonstige',
-      apiNA: 'API N/A', apiCalculating: 'Berechnung...',
-      apiConsulting: 'API wird abgefragt...', apiLoading: 'API-Daten werden geladen...',
-      apiLoadingViews: 'API-Aufrufe werden geladen...', apiGettingViews: 'API wird abgerufen...',
+      apiNA: ' N/A', apiCalculating: 'Berechnung...',
+      apiConsulting: ' wird abgefragt...', apiLoading: 'Daten werden geladen...',
+      apiLoadingViews: 'Aufrufe werden geladen...', apiGettingViews: ' wird abgerufen...',
       apiLoadStats: 'Laden...', apiCalcScore: 'Berechnung...',
       confirmDeleteCollection: 'Sammlung "{name}" löschen?',
       confirmClearHistory: 'Gesamten Wiedergabeverlauf löschen?',
@@ -1150,7 +1183,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       stateAutoAdaptive: 'Auto (Adattivo)', stateStandardFormat: 'Standard H.264 / AAC',
       score: 'Punteggio', classification: 'Classificazione', genre: 'Genere',
       duration: 'Durata', views: 'Visualizzazioni',
-      likesDislikes: 'Mi piace / Non mi piace', currentQuality: 'Qualità attuale', apiFormats: 'Formati API',
+      likesDislikes: 'Mi piace / Non mi piace', currentQuality: 'Qualità attuale', apiFormats: 'Formati ',
       author: 'Autore / Canale', tags: 'Tag', playerState: 'Stato player',
       helpTitle: 'Scorciatoie da tastiera', helpSpace: 'Metti in pausa / Riproduci video',
       helpArrows: 'Indietro / Avanti di 10s', helpEsc: 'Chiudi finestra di riproduzione',
@@ -1164,9 +1197,9 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       upcoming: 'Prossimamente', upcomingTitle: 'Prossime uscite',
       noUpcoming: 'Nessuna prossima uscita programmata.',
       goTop: 'Torna su', otherCategory: 'Altri',
-      apiNA: 'API N/D', apiCalculating: 'Calcolo in corso...',
-      apiConsulting: 'Consultazione API...', apiLoading: 'Caricamento dati API...',
-      apiLoadingViews: 'Caricamento visualizzazioni API...', apiGettingViews: 'Recupero API...',
+      apiNA: ' N/D', apiCalculating: 'Calcolo in corso...',
+      apiConsulting: 'Consultazione ...', apiLoading: 'Caricamento dati ...',
+      apiLoadingViews: 'Caricamento visualizzazioni ...', apiGettingViews: 'Recupero ...',
       apiLoadStats: 'Caricamento...', apiCalcScore: 'Calcolo in corso...',
       confirmDeleteCollection: 'Eliminare la collezione "{name}"?',
       confirmClearHistory: 'Cancellare tutta la cronologia di visione?',
@@ -1213,7 +1246,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       stateAutoAdaptive: 'Auto (Adaptativo)', stateStandardFormat: 'Padrão H.264 / AAC',
       score: 'Pontuação', classification: 'Classificação', genre: 'Género',
       duration: 'Duração', views: 'Visualizações',
-      likesDislikes: 'Gostos / Não gostos', currentQuality: 'Qualidade Atual', apiFormats: 'Formatos API',
+      likesDislikes: 'Gostos / Não gostos', currentQuality: 'Qualidade Atual', apiFormats: 'Formatos ',
       author: 'Autor / Canal', tags: 'Tags', playerState: 'Estado do Reprodutor',
       helpTitle: 'Atalhos de Teclado', helpSpace: 'Pausar / Reproduzir vídeo',
       helpArrows: 'Recuar / Avançar 10s', helpEsc: 'Fechar janela de reprodução',
@@ -1227,9 +1260,9 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       upcoming: 'Em breve', upcomingTitle: 'Próximas Estreias',
       noUpcoming: 'Não há próximas estreias agendadas.',
       goTop: 'Ir para o topo', otherCategory: 'Outros',
-      apiNA: 'API N/D', apiCalculating: 'A calcular...',
-      apiConsulting: 'A consultar API...', apiLoading: 'A carregar dados da API...',
-      apiLoadingViews: 'A carregar visualizações...', apiGettingViews: 'A obter API...',
+      apiNA: ' N/D', apiCalculating: 'A calcular...',
+      apiConsulting: 'A consultar ...', apiLoading: 'A carregar dados da ...',
+      apiLoadingViews: 'A carregar visualizações...', apiGettingViews: 'A obter ...',
       apiLoadStats: 'A carregar...', apiCalcScore: 'A calcular...',
       confirmDeleteCollection: 'Eliminar a coleção "{name}"?',
       confirmClearHistory: 'Limpar todo o histórico de visualização?',
@@ -1290,7 +1323,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       upcoming: '即将上映', upcomingTitle: '即将上映影片',
       noUpcoming: '暂无预定上映安排。',
       goTop: '返回顶部', otherCategory: '其他',
-      apiNA: 'API N/A', apiCalculating: '计算中...',
+      apiNA: ' N/A', apiCalculating: '计算中...',
       apiConsulting: '查询API中...', apiLoading: '加载API数据中...',
       apiLoadingViews: '加载播放量...', apiGettingViews: '获取API中...',
       apiLoadStats: '加载中...', apiCalcScore: '计算中...',
@@ -1353,7 +1386,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       upcoming: '公開予定', upcomingTitle: '近日公開作品',
       noUpcoming: '公開予定の作品はありません。',
       goTop: 'トップへ戻る', otherCategory: 'その他',
-      apiNA: 'API N/A', apiCalculating: '計算中...',
+      apiNA: ' N/A', apiCalculating: '計算中...',
       apiConsulting: 'API照会中...', apiLoading: 'データ読み込み中...',
       apiLoadingViews: '再生回数を取得中...', apiGettingViews: 'API取得中...',
       apiLoadStats: '読み込み中...', apiCalcScore: '計算中...',
@@ -1402,7 +1435,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       stateAutoAdaptive: 'Авто (Адаптивный)', stateStandardFormat: 'Стандарт H.264 / AAC',
       score: 'Рейтинг', classification: 'Возраст', genre: 'Жанр',
       duration: 'Длительность', views: 'Просмотры',
-      likesDislikes: 'Лайки / Дизлайки', currentQuality: 'Текущее качество', apiFormats: 'Форматы API',
+      likesDislikes: 'Лайки / Дизлайки', currentQuality: 'Текущее качество', apiFormats: 'Форматы ',
       author: 'Автор / Канал', tags: 'Теги', playerState: 'Состояние плеера',
       helpTitle: 'Горячие клавиши', helpSpace: 'Пауза / Воспроизведение',
       helpArrows: 'Назад / Вперед на 10с', helpEsc: 'Закрыть плеер',
@@ -1416,9 +1449,9 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       upcoming: 'Скоро', upcomingTitle: 'Скоро в эфире',
       noUpcoming: 'Запланированных релизов нет.',
       goTop: 'Наверх', otherCategory: 'Другие',
-      apiNA: 'API Н/Д', apiCalculating: 'Вычисление...',
-      apiConsulting: 'Запрос к API...', apiLoading: 'Загрузка данных API...',
-      apiLoadingViews: 'Загрузка просмотров...', apiGettingViews: 'Получение API...',
+      apiNA: ' Н/Д', apiCalculating: 'Вычисление...',
+      apiConsulting: 'Запрос к ...', apiLoading: 'Загрузка данных ...',
+      apiLoadingViews: 'Загрузка просмотров...', apiGettingViews: 'Получение ...',
       apiLoadStats: 'Загрузка...', apiCalcScore: 'Вычисление...',
       confirmDeleteCollection: 'Удалить коллекцию "{name}"?',
       confirmClearHistory: 'Очистить всю историю просмотров?',
@@ -1465,7 +1498,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       stateAutoAdaptive: 'تلقائي (تكيفي)', stateStandardFormat: 'قياسي H.264 / AAC',
       score: 'التقييم', classification: 'التصنيف', genre: 'النوع',
       duration: 'المدة', views: 'المشاهدات',
-      likesDislikes: 'إعجاب / عدم إعجاب', currentQuality: 'الجودة الحالية', apiFormats: 'صيغ API',
+      likesDislikes: 'إعجاب / عدم إعجاب', currentQuality: 'الجودة الحالية', apiFormats: 'صيغ ',
       author: 'المؤلف / القناة', tags: 'العلامات', playerState: 'حالة المشغل',
       helpTitle: 'اختصارات لوحة المفاتيح', helpSpace: 'إيقاف / تشغيل الفيديو',
       helpArrows: 'تراجع / تقديم 10 ثوانٍ', helpEsc: 'إغلاق النافذة',
@@ -1479,7 +1512,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       upcoming: 'قريباً', upcomingTitle: 'الإصدارات القادمة',
       noUpcoming: 'لا توجد إصدارات قادمة مجدولة.',
       goTop: 'الاعلى', otherCategory: 'أخرى',
-      apiNA: 'API غير متاح', apiCalculating: 'جاري الحساب...',
+      apiNA: ' غير متاح', apiCalculating: 'جاري الحساب...',
       apiConsulting: 'جاري الاستعلام...', apiLoading: 'جاري تحميل البيانات...',
       apiLoadingViews: 'جاري تحميل المشاهدات...', apiGettingViews: 'جاري جلب البيانات...',
       apiLoadStats: 'جاري التحميل...', apiCalcScore: 'جاري الحساب...',
@@ -1528,7 +1561,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       stateAutoAdaptive: 'ऑटो (अनुकूली)', stateStandardFormat: 'मानक H.264 / AAC',
       score: 'स्कोर', classification: 'रेटिंग', genre: 'शैली',
       duration: 'अवधि', views: 'दृश्य',
-      likesDislikes: 'पसंद / नापसंद', currentQuality: 'वर्तमान गुणवत्ता', apiFormats: 'API प्रारूप',
+      likesDislikes: 'पसंद / नापसंद', currentQuality: 'वर्तमान गुणवत्ता', apiFormats: ' प्रारूप',
       author: 'लेखक / चैनल', tags: 'टैग', playerState: 'प्लेयर स्थिति',
       helpTitle: 'कीबोर्ड शॉर्टकट', helpSpace: 'वीडियो रोकें / चलाएं',
       helpArrows: '10 सेकंड पीछे / आगे करें', helpEsc: 'प्लेबैक मॉडल बंद करें',
@@ -1542,9 +1575,9 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       upcoming: 'आगामी', upcomingTitle: 'आगामी रिलीज़',
       noUpcoming: 'कोई आगामी रिलीज़ निर्धारित नहीं है।',
       goTop: 'ऊपर जाएं', otherCategory: 'अन्य',
-      apiNA: 'API N/A', apiCalculating: 'गणना हो रही है...',
-      apiConsulting: 'API खोज रहे हैं...', apiLoading: 'API डेटा लोड हो रहा है...',
-      apiLoadingViews: 'दृश्य लोड हो रहे हैं...', apiGettingViews: 'API प्राप्त कर रहे हैं...',
+      apiNA: ' N/A', apiCalculating: 'गणना हो रही है...',
+      apiConsulting: ' खोज रहे हैं...', apiLoading: ' डेटा लोड हो रहा है...',
+      apiLoadingViews: 'दृश्य लोड हो रहे हैं...', apiGettingViews: ' प्राप्त कर रहे हैं...',
       apiLoadStats: 'लोड हो रहा है...', apiCalcScore: 'गणना हो रही है...',
       confirmDeleteCollection: 'संग्रह "{name}" हटाएं?',
       confirmClearHistory: 'क्या सभी देखने का इतिहास साफ़ करें?',
@@ -1591,7 +1624,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       stateAutoAdaptive: '자동 (가변)', stateStandardFormat: '표준 H.264 / AAC',
       score: '평점', classification: '등급', genre: '장르',
       duration: '재생 시간', views: '조회수',
-      likesDislikes: '좋아요 / 싫어요', currentQuality: '현재 화질', apiFormats: 'API 형식',
+      likesDislikes: '좋아요 / 싫어요', currentQuality: '현재 화질', apiFormats: ' 형식',
       author: '작성자 / 채널', tags: '태그', playerState: '플레이어 상태',
       helpTitle: '키보드 단축키', helpSpace: '일시정지 / 재생',
       helpArrows: '10초 되감기 / 빨리감기', helpEsc: '창 닫기',
@@ -1605,9 +1638,9 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       upcoming: '개봉 예정', upcomingTitle: '개봉 예정작',
       noUpcoming: '예정된 개봉작이 없습니다.',
       goTop: '맨 위로', otherCategory: '기타',
-      apiNA: 'API N/A', apiCalculating: '계산 중...',
-      apiConsulting: 'API 조회 중...', apiLoading: '데이터 로딩 중...',
-      apiLoadingViews: '조회수 로딩 중...', apiGettingViews: 'API 가져오는 중...',
+      apiNA: ' N/A', apiCalculating: '계산 중...',
+      apiConsulting: ' 조회 중...', apiLoading: '데이터 로딩 중...',
+      apiLoadingViews: '조회수 로딩 중...', apiGettingViews: ' 가져오는 중...',
       apiLoadStats: '로딩 중...', apiCalcScore: '계산 중...',
       confirmDeleteCollection: '컬렉션 "{name}"을(를) 삭제하시겠습니까?',
       confirmClearHistory: '모든 시청 기록을 삭제하시겠습니까?',
@@ -1654,7 +1687,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       stateAutoAdaptive: 'Auto (Adaptief)', stateStandardFormat: 'Standaard H.264 / AAC',
       score: 'Score', classification: 'Beoordeling', genre: 'Genre',
       duration: 'Duur', views: 'Weergaven',
-      likesDislikes: 'Likes / Dislikes', currentQuality: 'Huidige kwaliteit', apiFormats: 'API-formaten',
+      likesDislikes: 'Likes / Dislikes', currentQuality: 'Huidige kwaliteit', apiFormats: 'formaten',
       author: 'Auteur / Kanaal', tags: 'Tags', playerState: 'Spelerstatus',
       helpTitle: 'Sneltoetsen', helpSpace: 'Pauzeer / Speel video',
       helpArrows: '10s terug / vooruit', helpEsc: 'Sluit venster',
@@ -1668,9 +1701,9 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       upcoming: 'Binnenkort', upcomingTitle: 'Binnenkort verwachte releases',
       noUpcoming: 'Geen komende releases gepland.',
       goTop: 'Naar boven', otherCategory: 'Overige',
-      apiNA: 'API N.v.t.', apiCalculating: 'Berekenen...',
-      apiConsulting: 'API raadplegen...', apiLoading: 'API-gegevens laden...',
-      apiLoadingViews: 'Weergaven laden...', apiGettingViews: 'API ophalen...',
+      apiNA: ' N.v.t.', apiCalculating: 'Berekenen...',
+      apiConsulting: ' raadplegen...', apiLoading: 'gegevens laden...',
+      apiLoadingViews: 'Weergaven laden...', apiGettingViews: ' ophalen...',
       apiLoadStats: 'Laden...', apiCalcScore: 'Berekenen...',
       confirmDeleteCollection: 'Collectie "{name}" verwijderen?',
       confirmClearHistory: 'Gehele kijkgeschiedenis wissen?',
@@ -1717,7 +1750,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       stateAutoAdaptive: 'Auto (Adaptacyjny)', stateStandardFormat: 'Standard H.264 / AAC',
       score: 'Ocena', classification: 'Kategoria', genre: 'Gatunek',
       duration: 'Czas trwania', views: 'Wyświetlenia',
-      likesDislikes: 'Polubienia / Niepolubienia', currentQuality: 'Aktualna jakość', apiFormats: 'Formaty API',
+      likesDislikes: 'Polubienia / Niepolubienia', currentQuality: 'Aktualna jakość', apiFormats: 'Formaty ',
       author: 'Autor / Kanał', tags: 'Tagi', playerState: 'Stan odtwarzacza',
       helpTitle: 'Skróty klawiszowe', helpSpace: 'Pauza / Odtwarzaj wideo',
       helpArrows: 'Cofnij / Do przodu 10s', helpEsc: 'Zamknij okno odtwarzania',
@@ -1731,9 +1764,9 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       upcoming: 'Nadchodzące', upcomingTitle: 'Nadchodzące premery',
       noUpcoming: 'Brak zaplanowanych nadchodzących premier.',
       goTop: 'Do góry', otherCategory: 'Inne',
-      apiNA: 'API N/D', apiCalculating: 'Obliczanie...',
-      apiConsulting: 'Zapytanie API...', apiLoading: 'Ładowanie danych API...',
-      apiLoadingViews: 'Ładowanie wyświetleń...', apiGettingViews: 'Pobieranie API...',
+      apiNA: ' N/D', apiCalculating: 'Obliczanie...',
+      apiConsulting: 'Zapytanie...', apiLoading: 'Ładowanie danych...',
+      apiLoadingViews: 'Ładowanie wyświetleń...', apiGettingViews: 'Pobieranie...',
       apiLoadStats: 'Ładowanie...', apiCalcScore: 'Obliczanie...',
       confirmDeleteCollection: 'Usunąć kolekcję "{name}"?',
       confirmClearHistory: 'Wyczyścić całą historię oglądania?',
@@ -1780,7 +1813,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       stateAutoAdaptive: 'Otomatik (Uyarlanabilir)', stateStandardFormat: 'Standart H.264 / AAC',
       score: 'Puan', classification: 'Sınıflandırma', genre: 'Tür',
       duration: 'Süre', views: 'Görüntülenme',
-      likesDislikes: 'Beğeni / Beğenmeme', currentQuality: 'Mevcut Kalite', apiFormats: 'API Formatları',
+      likesDislikes: 'Beğeni / Beğenmeme', currentQuality: 'Mevcut Kalite', apiFormats: 'Formatları',
       author: 'Yazar / Kanal', tags: 'Etiketler', playerState: 'Oynatıcı Durumu',
       helpTitle: 'Klavye Kısayolları', helpSpace: 'Videoyu Duraklat / Oynat',
       helpArrows: '10s Geri / İleri', helpEsc: 'Pencereyi Kapat',
@@ -1794,9 +1827,9 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       upcoming: 'Yakında', upcomingTitle: 'Gelecek Programlar',
       noUpcoming: 'Planlanan gelecek yayın yok.',
       goTop: 'Yukarı Çık', otherCategory: 'Diğer',
-      apiNA: 'API N/A', apiCalculating: 'Hesaplanıyor...',
-      apiConsulting: 'API\'ye danışılıyor...', apiLoading: 'API verileri yükleniyor...',
-      apiLoadingViews: 'Görüntülenmeler yükleniyor...', apiGettingViews: 'API alınıyor...',
+      apiNA: 'N/A', apiCalculating: 'Hesaplanıyor...',
+      apiConsulting: '\'ye danışılıyor...', apiLoading: 'verileri yükleniyor...',
+      apiLoadingViews: 'Görüntülenmeler yükleniyor...', apiGettingViews: 'alınıyor...',
       apiLoadStats: 'Yükleniyor...', apiCalcScore: 'Hesaplanıyor...',
       confirmDeleteCollection: '"{name}" koleksiyonu silinsin mi?',
       confirmClearHistory: 'Tüm izleme geçmişi temizlensin mi?',
@@ -1910,8 +1943,17 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
   let videoDurations = {};
 
   try {
-    CATALOGO = JSON.parse(document.getElementById('cartelera-data').textContent);
-  } catch(e) { console.error('JSON Error', e); }
+    let rawContent = document.getElementById('cartelera-data').textContent.trim();
+  
+    // Busca cualquier bloque entre backticks `...` y lo convierte en una cadena JSON válida de 1 sola línea
+    rawContent = rawContent.replace(/`([\s\S]*?)`/g, (match, contenidoInterno) => {
+      return JSON.stringify(contenidoInterno);
+    });
+  
+    CATALOGO = JSON.parse(rawContent);
+  } catch (e) {
+    console.error('JSON Error', e);
+  }
 
   /* ====== UTILIDADES ====== */
   function formatTime(seconds) {
@@ -1966,10 +2008,24 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
 
   function getPlayState(item) {
     const now = Math.floor(Date.now() / 1000);
-    if (item.disponibleUnixInicio && item.disponibleUnixInicio > 0 && now < item.disponibleUnixInicio)
+    const UNA_SEMANA_EN_SEGUNDOS = 7 * 24 * 60 * 60; // 604,800 segundos
+
+    // 1. Aún no ha iniciado
+    if (item.disponibleUnixInicio && item.disponibleUnixInicio > 0 && now < item.disponibleUnixInicio) {
       return { canPlay: false, status: 'NOT_STARTED' };
-    if (item.disponibleUnixFin && item.disponibleUnixFin > 0 && now > item.disponibleUnixFin)
+    }
+
+    // 2. Ya expiró
+    if (item.disponibleUnixFin && item.disponibleUnixFin > 0 && now > item.disponibleUnixFin) {
       return { canPlay: false, status: 'EXPIRED' };
+    }
+
+    // 3. Próximo a expirar (Faltan 7 días o menos para disponibleUnixFin)
+    if (item.disponibleUnixFin && item.disponibleUnixFin > 0 && now >= (item.disponibleUnixFin - UNA_SEMANA_EN_SEGUNDOS)) {
+      return { canPlay: true, status: 'PROX_EXPIRED' };
+    }
+
+    // 4. Disponible normalmente
     return { canPlay: true, status: 'AVAILABLE' };
   }
 
@@ -2123,6 +2179,8 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
         statusBadge = `<span class="badge badge--timer"><i class="fa-solid fa-hourglass-half"></i> ${t('premiere')}</span>`;
       } else if (playState.status === 'EXPIRED') {
         statusBadge = `<span class="badge badge--expired"><i class="fa-solid fa-ban"></i> ${t('finished')}</span>`;
+      } else if (playState.status === 'PROX_EXPIRED') {
+        statusBadge = `<span class="badge badge--warning"><i class="fa-solid fa-clock-rotate-left"></i> ${t('expiringSoon')}</span>`;
       }
 
       let resumeInfo = '';
@@ -2469,10 +2527,19 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
       const releaseDateText = getFormattedReleaseDate(v.disponibleUnixInicio);
       statusBadge = `<span class="badge badge--timer"><i class="fa-solid fa-hourglass-half"></i> ${t('premiere')}: ${releaseDateText}</span>`;
       playButtonHTML = `<button class="btn btn--disabled"><i class="fa-solid fa-clock"></i> ${t('comingSoon')}</button>`;
+
     } else if (playState.status === 'EXPIRED') {
       statusBadge = `<span class="badge badge--expired"><i class="fa-solid fa-ban"></i> ${t('finished')}</span>`;
       playButtonHTML = `<button class="btn btn--disabled"><i class="fa-solid fa-ban"></i> ${t('notAvailable')}</button>`;
+
+    } else if (playState.status === 'PROX_EXPIRED') {
+      const expirationDateText = getFormattedReleaseDate(v.disponibleUnixFin); // O una función para la fecha fin
+      statusBadge = `<span class="badge badge--warning"><i class="fa-solid fa-triangle-exclamation"></i> ${t('expiringSoon')}: ${expirationDateText}</span>`;
+      playButtonHTML = `<button class="btn btn--primary"><i class="fa-solid fa-play"></i> ${t('playNow')}</button>`;
+
     } else {
+      // Estado AVAILABLE normal
+      statusBadge = ''; // O el badge por defecto si manejas uno
       playButtonHTML = `<button class="btn btn--primary"><i class="fa-solid fa-play"></i> ${t('playNow')}</button>`;
     }
 
@@ -2510,8 +2577,11 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
             <h3 class="fcard__title">${v.titulo}</h3>
             <p class="fcard__desc">${v.descripcion}</p>
             ${tagsHTML}
-            ${resumeHTML}
-            <div style="margin-top:6px;">${playButtonHTML}</div>
+            <div style="margin-top:6px;">
+              ${(playState.status === 'NOT_STARTED' || playState.status === 'EXPIRED')
+                ? playButtonHTML
+                : (resumeHTML || playButtonHTML)}
+            </div>
           </div>
         </div>`;
     } else {
@@ -2530,7 +2600,11 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
               ${statusBadge ? `<br>${statusBadge}` : ''}
             </div>
             ${tagsHTML}
-            ${resumeHTML}
+            <div style="margin-top:6px;">
+              ${(playState.status === 'NOT_STARTED' || playState.status === 'EXPIRED') 
+                ? playButtonHTML 
+                : (resumeHTML || playButtonHTML)}
+            </div>
           </div>
         </div>`;
     }
@@ -2777,7 +2851,7 @@ kbd { background: var(--surface-2); border: 1px solid var(--line); padding: 2px 
     const ytBtn = document.getElementById('watch-on-yt-btn');
 
     document.getElementById('modal-title-text').textContent = item.titulo || '...';
-    document.getElementById('modal-desc').textContent = item.descripcion || '...';
+    document.getElementById('modal-desc').textContent = item.descripcion.replace(/\n/g, '<br>') || '...';
     document.getElementById('modal').hidden = false;
     document.getElementById('skip-intro-btn').style.display = 'none';
     document.getElementById('resume-banner-container').innerHTML = '';
