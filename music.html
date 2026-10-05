@@ -2325,7 +2325,7 @@ function updateKaraokeUI(activeIndex) {
       var srcUrl = str;
       if (srcUrl.includes("youtube.com/watch?v=")) srcUrl = srcUrl.replace("watch?v=", "embed/");
       else if (srcUrl.includes("youtu.be/")) srcUrl = srcUrl.replace("youtu.be/", "youtube.com/embed/");
-      return '<iframe src="' + escapeHtml(srcUrl) + '" height="152" allow="autoplay; encrypted-media"></iframe>';
+      return '<iframe src="' + escapeHtml(srcUrl) + '" height="152" allow="autoplay; encrypted-media" referrerpolicy="strict-origin-when-cross-origin"></iframe>';
     }
     return str;
   }
